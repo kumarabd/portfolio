@@ -8,14 +8,16 @@ import { theme } from "@/theme";
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:3000";
 
+type HealthState = "loading" | "error" | HealthStatus;
+
 export default function HomeScreen() {
-  const [status, setStatus] = useState<HealthStatus | null>(null);
+  const [health, setHealth] = useState<HealthState>("loading");
   const [fontsLoaded] = useFonts({ Inter_400Regular, Inter_700Bold });
 
   useEffect(() => {
     fetchHealthStatus(API_BASE_URL)
-      .then(setStatus)
-      .catch(() => setStatus(null));
+      .then(setHealth)
+      .catch(() => setHealth("error"));
   }, []);
 
   if (!fontsLoaded) {
@@ -25,7 +27,13 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>MeSpace</Text>
-      {status ? <HealthStatusBadge status={status} /> : null}
+      {health === "loading" ? <Text style={styles.status}>Loading...</Text> : null}
+      {health === "error" ? (
+        <Text style={styles.error}>Unable to load status</Text>
+      ) : null}
+      {health !== "loading" && health !== "error" ? (
+        <HealthStatusBadge status={health} />
+      ) : null}
     </View>
   );
 }
@@ -44,5 +52,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Inter_700Bold",
     color: theme.colors.foreground,
+  },
+  status: {
+    fontFamily: "Inter_400Regular",
+    color: theme.colors.secondary,
+  },
+  error: {
+    fontFamily: "Inter_400Regular",
+    color: theme.colors.destructive,
   },
 });
