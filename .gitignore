@@ -1,2 +1,12 @@
-./public/
-.worktrees/
+node_modules
+.turbo
+.next
+out
+dist
+build
+.expo
+.expo-shared
+*.log
+.DS_Store
+.env
+.env.local
