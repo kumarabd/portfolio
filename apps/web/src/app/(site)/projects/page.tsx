@@ -8,18 +8,15 @@ export default async function ProjectsPage() {
   const publishedProjects = projects.filter((p) => p.published);
 
   return (
-    <main
-      style={{
-        maxWidth: "720px",
-        margin: "0 auto",
-        padding: "var(--space-3xl) var(--space-md)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "var(--space-lg)",
-      }}
-    >
-      <h1 style={{ margin: 0 }}>Projects</h1>
-      <div style={{ display: "grid", gap: "var(--space-md)" }}>
+    <main className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-12 sm:px-6 sm:py-20">
+      <div className="flex flex-col gap-2">
+        <h1 className="m-0 text-3xl font-bold tracking-tight text-[var(--color-foreground)]">
+          <span className="text-[var(--color-primary)]">$</span> ls ~/projects
+        </h1>
+        <p className="m-0 text-[var(--color-secondary)]">{publishedProjects.length} published — things I&rsquo;ve built and shipped.</p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {publishedProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}

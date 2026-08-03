@@ -24,39 +24,29 @@ export function WorkspaceTabs({
     <div>
       <div
         role="tablist"
-        style={{
-          display: "flex",
-          gap: "var(--space-sm)",
-          padding: "var(--space-md)",
-          borderBottom: "1px solid var(--color-border)",
-          position: "sticky",
-          top: 0,
-          background: "var(--color-background)",
-        }}
+        className="sticky top-0 flex gap-2 border-b border-[var(--color-border)] bg-[var(--color-background)] p-4"
       >
-        {TABS.map((tab) => (
-          <button
-            key={tab}
-            role="tab"
-            aria-selected={activeTab === tab}
-            onClick={() => setActiveTab(tab)}
-            style={{
-              cursor: "pointer",
-              padding: "var(--space-sm) var(--space-md)",
-              borderRadius: "8px",
-              border: "1px solid var(--color-border)",
-              background: activeTab === tab ? "var(--color-primary)" : "transparent",
-              color: activeTab === tab ? "var(--color-on-primary)" : "var(--color-foreground)",
-              fontWeight: 600,
-              transition: "all 200ms ease",
-            }}
-          >
-            {tab}
-          </button>
-        ))}
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab;
+          return (
+            <button
+              key={tab}
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setActiveTab(tab)}
+              className={`cursor-pointer rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                isActive
+                  ? "bg-[var(--color-primary)] text-[var(--color-on-primary)]"
+                  : "bg-transparent text-[var(--color-foreground)]"
+              }`}
+            >
+              {tab}
+            </button>
+          );
+        })}
       </div>
 
-      <div style={{ padding: "var(--space-md)" }}>
+      <div className="p-4">
         {activeTab === "Tasks" && <TaskList tasks={tasks} />}
         {activeTab === "Notes" && <NoteList notes={notes} />}
         {activeTab === "Projects" && <WorkspaceProjectList projects={projects} />}

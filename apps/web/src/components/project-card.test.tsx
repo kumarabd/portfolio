@@ -20,6 +20,6 @@ describe("ProjectCard", () => {
 
     expect(screen.getByText("MeSpace")).toBeInTheDocument();
     expect(screen.getByText("Personal branding and workspace app.")).toBeInTheDocument();
-    expect(screen.getByText("nextjs")).toBeInTheDocument();
+    expect(screen.getByText("#nextjs")).toBeInTheDocument();
   });
 });

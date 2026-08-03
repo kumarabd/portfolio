@@ -7,8 +7,10 @@ export default async function WorkspacePage() {
   const [tasks, notes, projects] = await Promise.all([fetchTasks(), fetchNotes(), fetchProjects()]);
 
   return (
-    <main style={{ maxWidth: "960px", margin: "0 auto" }}>
-      <h1 style={{ padding: "var(--space-md)", margin: 0 }}>Workspace</h1>
+    <main className="mx-auto max-w-3xl">
+      <h1 className="m-0 px-4 pt-8 text-2xl font-bold tracking-tight text-[var(--color-foreground)]">
+        Workspace
+      </h1>
       <WorkspaceTabs tasks={tasks} notes={notes} projects={projects} />
     </main>
   );
