@@ -1,12 +1,12 @@
 {
   "name": "mobile",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo/ui": "~57.0.8",
-    "@mespace/api-client": "workspace:^",
-    "@mespace/core": "workspace:^",
+    "@mespace/api-client": "workspace:*",
+    "@mespace/core": "workspace:*",
     "expo": "~57.0.9",
     "expo-constants": "~57.0.8",
     "expo-device": "~57.0.1",

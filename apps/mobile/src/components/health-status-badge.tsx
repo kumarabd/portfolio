@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { Platform, StyleSheet, Text } from "react-native";
 import type { HealthStatus } from "@mespace/core";
 import { theme } from "@/theme";
 
@@ -15,11 +15,22 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
     color: theme.colors.foreground,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: 8,
-    paddingVertical: theme.spacing.sm,
+    borderColor: theme.colors.accent,
+    borderRadius: 12,
+    paddingVertical: theme.spacing.lg,
     paddingHorizontal: theme.spacing.lg,
     fontFamily: "Inter_400Regular",
     overflow: "hidden",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
 });

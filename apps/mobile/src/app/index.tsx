@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     padding: theme.spacing.xxl,
   },
   heading: {
-    fontSize: 40,
+    fontSize: 48,
     fontWeight: "700",
     fontFamily: "Inter_700Bold",
     color: theme.colors.foreground,
