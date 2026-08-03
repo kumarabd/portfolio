@@ -124,10 +124,10 @@ importers:
   apps/web:
     dependencies:
       '@mespace/api-client':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/api-client
       '@mespace/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       next:
         specifier: 16.2.12
@@ -9220,7 +9220,7 @@ snapshots:
       tinyglobby: 0.2.17
       unrs-resolver: 1.12.2
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.65.0(eslint@9.39.5)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.5)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.65.0(eslint@9.39.5)(typescript@6.0.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.5)
     transitivePeerDependencies:
       - supports-color
 
