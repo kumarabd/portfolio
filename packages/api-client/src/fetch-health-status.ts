@@ -1,7 +1,11 @@
 import { HealthStatusSchema, type HealthStatus } from "@mespace/core";
 
+const REQUEST_TIMEOUT_MS = 10_000;
+
 export async function fetchHealthStatus(baseUrl: string): Promise<HealthStatus> {
-  const response = await fetch(`${baseUrl}/api/health`);
+  const response = await fetch(`${baseUrl}/api/health`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
 
   if (!response.ok) {
     throw new Error(`Health check request failed with status ${response.status}`);

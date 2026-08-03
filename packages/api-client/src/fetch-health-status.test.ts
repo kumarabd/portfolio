@@ -39,4 +39,17 @@ describe("fetchHealthStatus", () => {
 
     await expect(fetchHealthStatus("http://localhost:3000")).rejects.toThrow();
   });
+
+  it("passes an abort signal with a timeout to fetch", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ status: "ok", timestamp: "2026-08-01T00:00:00.000Z" }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await fetchHealthStatus("http://localhost:3000");
+
+    const [, options] = fetchMock.mock.calls[0];
+    expect(options.signal).toBeInstanceOf(AbortSignal);
+  });
 });
