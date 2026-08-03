@@ -31,3 +31,84 @@ body {
   color: var(--color-foreground);
   margin: 0;
 }
+
+a {
+  color: inherit;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: var(--color-accent);
+  color: var(--color-on-primary);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all 200ms ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  color: var(--color-secondary);
+}
+
+/*
+ * Workspace theme override (design-system/mespace/pages/workspace.md).
+ * Deliberately distinct from the public site tokens above — signals
+ * you've left the portfolio and entered the personal tool.
+ */
+.workspace-theme {
+  --color-primary: #0d9488;
+  --color-on-primary: #ffffff;
+  --color-secondary: #14b8a6;
+  --color-accent: #ea580c;
+  --color-background: #134e4a;
+  --color-foreground: #f0fdfa;
+  --color-muted: #145d58;
+  --color-border: #1f6b64;
+  --color-destructive: #dc2626;
+  --color-ring: #0d9488;
+
+  --space-xs: 2px;
+  --space-sm: 4px;
+  --space-md: 8px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+
+  background: var(--color-background);
+  color: var(--color-foreground);
+  min-height: 100vh;
+}
+
+.workspace-theme .card {
+  background: var(--color-muted);
+  border-color: var(--color-border);
+  color: var(--color-foreground);
+}
