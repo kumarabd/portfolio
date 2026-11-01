@@ -46,8 +46,9 @@ export async function fetchGithubRepos(username: string, limit = 6): Promise<Pro
   const response = await fetch(`${GITHUB_API_BASE}/users/${username}/repos?per_page=100&sort=pushed`, {
     headers: { Accept: "application/vnd.github+json" },
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    // `next` is a Next.js fetch extension, absent from the DOM RequestInit type.
     next: { revalidate: 3600 },
-  });
+  } as RequestInit);
 
   if (!response.ok) {
     throw new Error(`GitHub API request failed with status ${response.status}`);
