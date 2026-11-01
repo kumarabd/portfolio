@@ -29,6 +29,8 @@ const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").match
  * Also owns the route curtain and the custom cursor.
  * Hidden-until-animated is gated in site.css on motion being allowed.
  */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export function SiteMotion() {
   const pathname = usePathname();
   const router = useRouter();
@@ -48,10 +50,11 @@ export function SiteMotion() {
       const a = (e.target as Element).closest("a");
       if (!a || a.target || a.hasAttribute("download")) return;
       const u = new URL(a.href, location.href);
-      if (u.origin !== location.origin || u.pathname === location.pathname || u.pathname.startsWith("/workspace")) return;
+      const path = BASE && u.pathname.startsWith(BASE) ? u.pathname.slice(BASE.length) || "/" : u.pathname;
+      if (u.origin !== location.origin || u.pathname === location.pathname || path.startsWith("/workspace")) return;
       e.preventDefault();
       gsap.set(c, { transformOrigin: "50% 100%" });
-      gsap.to(c, { scaleY: 1, duration: 0.65, ease: "expo.inOut", onComplete: () => router.push(u.pathname + u.search + u.hash) });
+      gsap.to(c, { scaleY: 1, duration: 0.65, ease: "expo.inOut", onComplete: () => router.push(path + u.search + u.hash) });
     };
     document.addEventListener("click", onClick, true);
 

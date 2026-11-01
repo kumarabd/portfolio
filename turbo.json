@@ -3,7 +3,8 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "dist/**", "!.next/cache/**"]
+      "env": ["DEPLOY_PAGES", "NEXT_PUBLIC_BASE_PATH", "NEXT_PUBLIC_API_BASE_URL"],
+      "outputs": [".next/**", "out/**", "dist/**", "!.next/cache/**"]
     },
     "lint": {},
     "test": {

@@ -1,8 +1,6 @@
 import { fetchNotes, fetchProjects, fetchTasks } from "@mespace/api-client";
 import { WorkspaceTabs } from "@/components/workspace/workspace-tabs";
 
-export const dynamic = "force-dynamic";
-
 export default async function WorkspacePage() {
   const [tasks, notes, projects] = await Promise.all([fetchTasks(), fetchNotes(), fetchProjects()]);
 

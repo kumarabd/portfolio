@@ -1,8 +1,6 @@
 import { fetchProjects } from "@mespace/api-client";
 import { ProjectCard } from "@/components/project-card";
 
-export const dynamic = "force-dynamic";
-
 export default async function ProjectsPage() {
   const projects = (await fetchProjects()).filter((p) => p.published);
 
