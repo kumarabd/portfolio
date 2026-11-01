@@ -1,67 +1,58 @@
 import { RESUME } from "@/content/resume";
 
+const H2 = "mb-8 text-4xl tracking-[-0.02em] sm:text-5xl";
+
 export default function ResumePage() {
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-14 px-4 py-12 sm:px-6 sm:py-20">
-      <h1 className="m-0 text-3xl font-bold tracking-tight text-[var(--color-foreground)]">
-        <span className="text-[var(--color-primary)]">$</span> cat resume.md
+    <main className="px-5 pb-[14vh] pt-40 sm:px-10">
+      <div data-stage="0" data-side="1" data-dim="0.2">
+      <h1 data-split className="text-[clamp(3.25rem,11vw,6rem)] leading-[0.95] tracking-[-0.03em]">
+        About
       </h1>
+      <p data-reveal className="mb-20 mt-6 max-w-[40ch] text-lg text-dim">
+        {RESUME.headline}
+      </p>
+      </div>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="m-0 text-sm font-semibold tracking-tight text-[var(--color-secondary)]">
-          <span className="text-[var(--color-border)]">#</span> experience
+      <section data-stage="2" data-side="1" data-dim="0.55" className="mb-24">
+        <h2 data-split className={H2}>
+          Expertise
         </h2>
-        <div className="flex flex-col gap-4">
-          {RESUME.workHistory.map((job) => (
-            <article
-              key={`${job.company}-${job.period}`}
-              className="rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)] p-6"
-            >
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="m-0 text-base font-semibold text-[var(--color-foreground)]">
-                  {job.role} <span className="text-[var(--color-secondary)]">&middot; {job.company}</span>
-                </h3>
-                <p className="m-0 text-xs font-medium text-[var(--color-accent)]">{job.period}</p>
-              </div>
-              <p className="m-0 mt-2 text-sm leading-relaxed text-[var(--color-secondary)]">{job.summary}</p>
+        <div data-reveal>
+          {RESUME.expertise.map((e) => (
+            <article key={e.title} data-excite className="row-link grid gap-x-8 gap-y-3 px-1 py-8 sm:grid-cols-[1fr_1fr] sm:py-10">
+              <h3 className="row-title text-4xl leading-none tracking-tight sm:text-6xl">{e.title}</h3>
+              <p className="max-w-[48ch] leading-relaxed text-dim">{e.summary}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="m-0 text-sm font-semibold tracking-tight text-[var(--color-secondary)]">
-          <span className="text-[var(--color-border)]">#</span> skills
+      <section data-stage="1" data-side="1" data-dim="0.4" className="mb-24">
+        <h2 data-split className={H2}>
+          Toolbox
         </h2>
-        <div className="flex flex-wrap gap-2">
-          {RESUME.skills.map((skill) => (
-            <span
-              key={skill}
-              className="inline-block rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs font-medium text-[var(--color-foreground)]"
-            >
-              {skill}
-            </span>
+        <dl data-reveal className="m-0 grid max-w-[1000px] gap-x-12 gap-y-8 sm:grid-cols-2">
+          {RESUME.skills.map((group) => (
+            <div key={group.label}>
+              <dt className="data-label mb-2 text-signal">{group.label}</dt>
+              <dd className="m-0 leading-relaxed text-bone">{group.items.join(" · ")}</dd>
+            </div>
           ))}
-        </div>
+        </dl>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="m-0 text-sm font-semibold tracking-tight text-[var(--color-secondary)]">
-          <span className="text-[var(--color-border)]">#</span> education
+      <section data-stage="3" data-side="1" data-dim="0.5">
+        <h2 data-split className={H2}>
+          What I like
         </h2>
-        <div className="flex flex-col gap-4">
-          {RESUME.education.map((school) => (
-            <article
-              key={school.school}
-              className="rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)] p-6"
-            >
-              <h3 className="m-0 text-base font-semibold text-[var(--color-foreground)]">{school.degree}</h3>
-              <p className="m-0 mt-1 text-sm text-[var(--color-secondary)]">
-                {school.school} &middot; {school.period}
-              </p>
-            </article>
+        <ul data-reveal className="m-0 flex max-w-[68ch] list-none flex-col gap-4 p-0 text-lg leading-relaxed text-bone">
+          {RESUME.likes.map((l) => (
+            <li key={l} className="relative pl-6 before:absolute before:left-0 before:top-[0.8em] before:h-px before:w-3 before:bg-signal">
+              {l}
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     </main>
   );

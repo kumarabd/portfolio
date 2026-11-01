@@ -1,46 +1,35 @@
-import type { Project } from "@mespace/core";
-import { StatusDot } from "@/components/terminal/status-dot";
+import type { Project, ProjectStatus } from "@mespace/core";
 
+const STATUS: Record<ProjectStatus, string> = { done: "Shipped", "in-progress": "In progress", idea: "Idea" };
+
+/** A project as a full-width row: title leads, everything else is data. */
 export function ProjectCard({ project }: { project: Project }) {
-  return (
-    <article className="group flex flex-col gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)] p-6 transition-all duration-200 hover:-translate-y-1 hover:border-[var(--color-primary)]/40 hover:shadow-[var(--glow-primary)]">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="m-0 text-base font-semibold tracking-tight text-[var(--color-foreground)]">
-          {project.title}
-        </h3>
-        <StatusDot status={project.status} className="shrink-0 pt-0.5" />
-      </div>
-
-      <p className="m-0 text-sm leading-relaxed text-[var(--color-secondary)]">{project.description}</p>
-
-      <div className="flex flex-wrap gap-2">
-        {project.tags.map((tag) => (
-          <span key={tag} className="inline-block text-xs font-medium text-[var(--color-accent)]">
-            #{tag}
-          </span>
-        ))}
-      </div>
-
-      {(project.repoUrl || project.demoUrl) && (
-        <div className="mt-auto flex gap-4 border-t border-[var(--color-border)] pt-3 text-sm">
-          {project.repoUrl && (
-            <a
-              href={project.repoUrl}
-              className="inline-flex items-center gap-1 font-medium text-[var(--color-foreground)] no-underline transition-colors group-hover:text-[var(--color-primary)]"
-            >
-              <span className="text-[var(--color-border)]">$</span> repo
-            </a>
-          )}
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              className="inline-flex items-center gap-1 font-medium text-[var(--color-foreground)] no-underline transition-colors group-hover:text-[var(--color-primary)]"
-            >
-              <span className="text-[var(--color-border)]">$</span> demo
-            </a>
-          )}
+  const href = project.repoUrl ?? project.demoUrl;
+  const body = (
+    <article className="grid gap-x-8 gap-y-3 px-1 py-8 sm:grid-cols-[1fr_auto] sm:py-10">
+      <div className="flex flex-col gap-3">
+        <h3 className="row-title text-4xl leading-none tracking-tight sm:text-6xl">{project.title}</h3>
+        <p className="max-w-[56ch] text-base leading-relaxed text-dim">{project.description}</p>
+        <div className="data-label flex flex-wrap gap-x-4 gap-y-1 text-dim">
+          {project.tags.map((tag) => (
+            <span key={tag}>#{tag}</span>
+          ))}
         </div>
-      )}
+      </div>
+      <div className="data-label flex items-start gap-3 text-dim sm:flex-col sm:items-end sm:text-right">
+        <span data-scramble className="text-bone">{STATUS[project.status]}</span>
+        {href && <span aria-hidden="true">Open &#8599;</span>}
+      </div>
     </article>
+  );
+
+  return href ? (
+    <a href={href} data-excite className="row-link">
+      {body}
+    </a>
+  ) : (
+    <div data-excite className="row-link">
+      {body}
+    </div>
   );
 }

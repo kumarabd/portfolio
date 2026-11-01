@@ -4,20 +4,18 @@ import { ProjectCard } from "@/components/project-card";
 export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
-  const projects = await fetchProjects();
-  const publishedProjects = projects.filter((p) => p.published);
+  const projects = (await fetchProjects()).filter((p) => p.published);
 
   return (
-    <main className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-12 sm:px-6 sm:py-20">
-      <div className="flex flex-col gap-2">
-        <h1 className="m-0 text-3xl font-bold tracking-tight text-[var(--color-foreground)]">
-          <span className="text-[var(--color-primary)]">$</span> ls ~/projects
-        </h1>
-        <p className="m-0 text-[var(--color-secondary)]">{publishedProjects.length} published — things I&rsquo;ve built and shipped.</p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {publishedProjects.map((project) => (
+    <main data-stage="3" data-side="1" data-dim="0.45" className="px-5 pb-[14vh] pt-40 sm:px-10">
+      <h1 data-split className="text-[clamp(3.25rem,11vw,6rem)] leading-[0.95] tracking-[-0.03em]">
+        Projects
+      </h1>
+      <p data-reveal className="mb-16 mt-6 max-w-[40ch] text-lg text-dim">
+        {projects.length} published &mdash; things I&rsquo;ve built and shipped.
+      </p>
+      <div data-reveal>
+        {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>

@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 // generator tag and the footer credit, not in visitor-facing copy.
 export const metadata: Metadata = {
   title: `${PROFILE.name} — ${PROFILE.role}`,
-  description: `${PROFILE.role} building small, focused tools. Portfolio, projects, and resume.`,
+  description: `${PROFILE.role} building small, focused tools. Portfolio, projects, and what I care about.`,
   generator: "MeSpace",
 };
 

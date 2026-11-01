@@ -6,6 +6,22 @@
  */
 @custom-variant dark (&:is(.dark *));
 
+/* Public-site "signal" world tokens (see src/app/(site)/site.css). */
+@theme inline {
+  --color-ink: #101820;
+  --color-bone: #e9eef0;
+  --color-dim: #a5afb1;
+  --color-signal: #e9eef0;
+  --color-slate: #1d3040;
+  --color-steel: #344b5c;
+  --color-mute: #687b86;
+  --color-oil: #a5afb1;
+  --color-hairline: rgb(104 123 134 / 0.32);
+  --font-display: var(--font-instrument), "Times New Roman", serif;
+  --font-body: var(--font-hanken), system-ui, sans-serif;
+  --font-data: var(--font-geist-mono), ui-monospace, monospace;
+}
+
 :root {
   /*
    * Terminal / OLED-dark palette (design-system/mespace MASTER: Dark Mode

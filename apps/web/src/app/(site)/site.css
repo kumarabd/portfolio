@@ -1,0 +1,71 @@
+/* Signal world: slate-navy void, bone type, one cool palette in flight. */
+.site {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  min-height: 100vh;
+  color: var(--color-bone);
+  font-family: var(--font-hanken), system-ui, sans-serif;
+  background:
+    radial-gradient(60% 50% at 70% 30%, rgb(52 75 92 / 0.55), transparent 70%),
+    var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  scrollbar-color: var(--color-signal) var(--color-ink);
+}
+.site ::selection { background: var(--color-signal); color: var(--color-ink); }
+.site :focus-visible { outline: 2px solid var(--color-oil); outline-offset: 4px; border-radius: 2px; }
+.site a { text-decoration: none; }
+.site h1, .site h2, .site h3 { font-family: var(--font-instrument), "Times New Roman", serif; font-weight: 400; text-wrap: balance; }
+
+.signal-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0; transition: opacity 1.6s var(--ease-out);
+}
+.signal-canvas[data-ready="true"] { opacity: 1; }
+.signal-canvas canvas { display: block; width: 100%; height: 100%; }
+/* edge vignette keeps type readable over the particles */
+.site::after {
+  content: ""; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 45%, rgb(16 24 32 / 0.75));
+}
+.site-content { position: relative; z-index: 2; }
+.site-nav { z-index: 20; }
+.site-nav::before { content: ""; position: absolute; inset: 0 0 -1.5rem; z-index: -1; pointer-events: none; background: linear-gradient(var(--color-ink) 15%, rgb(16 24 32 / 0)); }
+
+.data-label { font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+
+/* hide-until-animated only when JS + motion are both available */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-split], [data-chars], [data-words], [data-reveal] { visibility: hidden; }
+}
+
+/* project / experience rows */
+a.row-link { display: block; }
+.row-link { position: relative; border-top: 1px solid var(--color-hairline); transition: padding 0.7s var(--ease-out), background-color 0.5s; }
+.row-link:last-child { border-bottom: 1px solid var(--color-hairline); }
+.row-link:hover, .row-link:focus-within { padding-left: 1.25rem; background: rgb(104 123 134 / 0.1); }
+.row-link .row-title { transition: color 0.4s, font-style 0.4s; }
+.row-link:hover .row-title { color: var(--color-signal); font-style: italic; }
+
+.btn-solid { background: var(--color-signal); color: var(--color-ink); }
+.btn-solid:hover { background: var(--color-oil); }
+.btn-solid, .btn-ghost { display: inline-flex; align-items: center; gap: 0.6rem; border-radius: 999px; padding: 0.85rem 1.6rem; font-weight: 600; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+.btn-ghost { border: 1px solid var(--color-hairline); }
+.btn-ghost:hover { border-color: var(--color-bone); }
+
+.scroll-line { width: 1px; height: 3rem; background: linear-gradient(var(--color-bone), transparent); transform-origin: top; animation: scroll-line 2.4s var(--ease-out) infinite; }
+@keyframes scroll-line { 0% { transform: scaleY(0); } 55% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .scroll-line { animation: none; } .site * { transition-duration: 0.01ms !important; } }
+
+/* route curtain */
+.curtain { position: fixed; inset: 0; z-index: 60; background: var(--color-slate); transform: scaleY(0); pointer-events: none; }
+.curtain::after { content: ""; position: absolute; inset: 0; background: linear-gradient(var(--color-steel), transparent 60%); opacity: 0.5; }
+
+/* custom cursor (fine pointers only) */
+.cursor { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; display: none; }
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cursor { display: block; }
+  .site, .site a, .site button { cursor: none; }
+}
+.cursor span { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-bone); mix-blend-mode: difference; opacity: 0; transition: transform 0.5s var(--ease-out), opacity 0.4s; }
+.cursor[data-on="true"] span { opacity: 1; }
+.cursor[data-hot="true"] span { transform: scale(4.5); }
