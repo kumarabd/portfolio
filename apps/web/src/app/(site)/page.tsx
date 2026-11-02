@@ -1,9 +1,9 @@
-import { GameShell } from "@/components/game/game-shell";
+import { Hub } from "@/components/hub/hub";
 
 export default function HomePage() {
   return (
     <main>
-      <GameShell />
+      <Hub />
     </main>
   );
 }

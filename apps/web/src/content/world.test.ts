@@ -1,14 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { ENTRIES, REALMS, byRealm } from "./world";
+import { AWARDS, COMPANIES, HOBBIES, IMPACT, MILESTONES, PRESS, REALMS, SCHOOLS } from "./world";
 
 describe("world content", () => {
-  it("has unique entry ids", () => {
-    expect(new Set(ENTRIES.map((e) => e.id)).size).toBe(ENTRIES.length);
+  it("links every realm to its own page", () => {
+    expect(new Set(REALMS.map((r) => r.href)).size).toBe(REALMS.length);
   });
-  it("fills every realm", () => {
-    for (const r of REALMS) expect(byRealm(r.id).length).toBeGreaterThan(0);
+  it("fills every world", () => {
+    for (const list of [COMPANIES, SCHOOLS, IMPACT, MILESTONES, AWARDS, PRESS, HOBBIES]) expect(list.length).toBeGreaterThan(0);
   });
-  it("flags every hobby as a placeholder", () => {
-    expect(byRealm("hobby").every((e) => e.placeholder)).toBe(true);
+  it("gives every company a tech stack and highlights", () => {
+    for (const c of COMPANIES) {
+      expect(c.stack.length).toBeGreaterThan(0);
+      expect(c.highlights.length).toBeGreaterThan(0);
+    }
   });
 });

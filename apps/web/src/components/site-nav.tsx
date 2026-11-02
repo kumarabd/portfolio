@@ -5,11 +5,7 @@ import { usePathname } from "next/navigation";
 import { PROFILE } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
-const LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Work" },
-  { href: "/resume", label: "About" },
-];
+import { REALMS } from "@/content/world";
 
 export function SiteNav() {
   const pathname = usePathname();
@@ -24,18 +20,19 @@ export function SiteNav() {
           {PROFILE.name.split(" ").map((w) => w[0]).join("")}
           <span className="text-signal">.</span>
         </Link>
-        <ul className="m-0 flex list-none items-center gap-5 p-0 text-sm sm:gap-8">
-          {LINKS.map((link) => (
-            <li key={link.href}>
+        <ul className="m-0 flex list-none items-center gap-4 p-0 text-[13px] sm:gap-8 sm:text-sm">
+          {REALMS.map((r) => (
+            <li key={r.id}>
               <Link
-                href={link.href}
-                aria-current={pathname === link.href ? "page" : undefined}
+                href={r.href}
+                aria-current={pathname.startsWith(r.href) ? "page" : undefined}
                 className={cn(
-                  "py-2 transition-colors",
-                  pathname === link.href ? "text-bone" : "text-dim hover:text-bone",
+                  "flex items-center gap-2 py-2 transition-colors",
+                  pathname.startsWith(r.href) ? "text-bone" : "text-dim hover:text-bone",
                 )}
               >
-                {link.label}
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full" style={{ background: r.color }} />
+                {r.name}
               </Link>
             </li>
           ))}

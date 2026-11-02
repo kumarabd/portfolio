@@ -1,7 +1,7 @@
 // Point-cloud targets the particle body morphs between. Every shape stands for
 // something on the page; the id is what [data-stage] points at.
-export const SHAPE = { net: 0, rack: 1, blocks: 2, shield: 3, pulse: 4, wheel: 5, globe: 6 } as const;
-export const SHAPE_COUNT = 7;
+export const SHAPE = { net: 0, rack: 1, blocks: 2, shield: 3, pulse: 4, wheel: 5, globe: 6, trophy: 7, peaks: 8, reel: 9, cap: 10, mic: 11 } as const;
+export const SHAPE_COUNT = 12;
 
 const r = Math.random;
 const g = () => (r() + r() + r() - 1.5) * 0.67; // soft gaussian-ish, ~[-1,1]
@@ -265,7 +265,7 @@ function globe(n: number) {
   });
 }
 
-/** A trophy cup: the Hall of Fame landmark (game world only, not a morph target). */
+/** 7 — a trophy cup: the Hall of Fame. */
 export function trophy(n: number) {
   const bowl = (t: number) => 0.4 + 1.5 * Math.pow(Math.sin(t * 1.45), 0.9);
   return build(n, (a, o) => {
@@ -290,7 +290,110 @@ export function trophy(n: number) {
   });
 }
 
-/** Single builders, for scenes that need just one shape. */
-export const SHAPE_BUILDERS = { net, rack, blocks, shield, pulse, wheel, globe, trophy };
+/** 8 — hikes: two ridgelines of peaks under a low sun. */
+function peaks(n: number) {
+  const P: [number, number, number][] = [[-3.6, 2.6, 2.6], [-0.6, 4.0, 3.2], [2.9, 3.1, 2.8]]; // x, height, half-width
+  const ridge = (x: number, dx: number, s: number) => {
+    let h = 0;
+    for (const [x0, hh, w] of P) h = Math.max(h, Math.max(0, hh * s * (1 - Math.abs(x - (x0 + dx)) / (w * s))));
+    return h > 0 ? h + Math.sin(x * 6 + dx) * 0.05 : 0;
+  };
+  return build(n, (a, o) => {
+    const u = r();
+    const x = (r() * 2 - 1) * 6.2;
+    if (u < 0.5) {
+      const back = r() < 0.4;
+      put(a, o, x, ridge(x, back ? 1.3 : 0, back ? 0.72 : 1) - 2.2, back ? -1.8 : 0.4, 0.03);
+    } else if (u < 0.78) {
+      const h = ridge(x, 0, 1);
+      put(a, o, x, h - Math.pow(r(), 2.4) * h - 2.2, 0.4, 0.025); // thickest near the ridge
+    } else if (u < 0.9) {
+      const t = r() * TAU;
+      put(a, o, 4.3 + Math.cos(t) * 0.9, 2.4 + Math.sin(t) * 0.9, -2.6, 0.02);
+    } else put(a, o, x, -2.2, r() * 3 - 2, 0.015);
+  });
+}
 
-export const makeShapes = (n: number) => [net(n), rack(n), blocks(n), shield(n), pulse(n), wheel(n), globe(n)];
+/** 9 — movies: a film reel with its strip trailing off. */
+function reel(n: number) {
+  return build(n, (a, o) => {
+    const u = r();
+    const t = r() * TAU;
+    const z = (r() < 0.5 ? -1 : 1) * 0.22;
+    if (u < 0.34) {
+      const rad = 3.1 + (r() - 0.5) * 0.16;
+      put(a, o, Math.cos(t) * rad, Math.sin(t) * rad + 0.7, z, 0.015);
+    } else if (u < 0.6) {
+      const k = (r() * 6) | 0;
+      const c = (k / 6) * TAU;
+      put(a, o, Math.cos(c) * 1.75 + Math.cos(t) * 0.62, Math.sin(c) * 1.75 + Math.sin(t) * 0.62 + 0.7, z, 0.012);
+    } else if (u < 0.7) {
+      const rad = r() < 0.5 ? 0.38 : 0.16;
+      put(a, o, Math.cos(t) * rad, Math.sin(t) * rad + 0.7, z, 0.012);
+    } else if (u < 0.8) {
+      const c = ((((r() * 6) | 0) + 0.5) / 6) * TAU;
+      const d = 0.5 + r() * 2.55;
+      put(a, o, Math.cos(c) * d, Math.sin(c) * d + 0.7, z * 0.6, 0.02);
+    } else {
+      // the strip: two edges plus perforations
+      const s = r();
+      const cx = 2.3 - s * 4.6;
+      const cy = -2.1 - s * 1.5 + Math.sin(s * 3) * 0.3;
+      if (r() < 0.55) put(a, o, cx, cy + (r() < 0.5 ? 0.5 : -0.5), 0, 0.012);
+      else put(a, o, Math.round(cx / 0.28) * 0.28, cy + (r() < 0.5 ? 0.34 : -0.34), 0, 0.02);
+    }
+  });
+}
+
+/** 10 — schools: a mortarboard with its tassel. */
+function cap(n: number) {
+  const A: V[] = [[0, 1.1, -2.1], [3.6, 1.1, 0], [0, 1.1, 2.1], [-3.6, 1.1, 0]];
+  return build(n, (a, o) => {
+    const u = r();
+    if (u < 0.3) {
+      const k = (r() * 4) | 0;
+      const v = lerp3(A[k], A[(k + 1) % 4], r());
+      put(a, o, v[0], v[1] - 0.2, v[2], 0.02);
+    } else if (u < 0.46) {
+      const x = r() * 2 - 1;
+      const z = r() * 2 - 1;
+      if (Math.abs(x) + Math.abs(z) <= 1) put(a, o, x * 3.6, 0.9, z * 2.1, 0.015);
+      else put(a, o, 0, 0.92, 0, 0.01);
+    } else if (u < 0.78) {
+      const th = r() * TAU;
+      const y = r() < 0.4 ? -0.6 + Math.round(r() * 3) * 0.7 - 0.7 : -1.1 + r() * 1.9;
+      put(a, o, Math.cos(th) * 1.7, y, Math.sin(th) * 1.7, 0.02);
+    } else if (u < 0.88) {
+      put(a, o, 0, 0.95, 0, 0.12);
+    } else if (u < 0.96) {
+      put(a, o, 3.0, 0.85 - r() * 2.1, 0, 0.02);
+    } else put(a, o, 3.0, -1.4, 0, 0.16);
+  });
+}
+
+/** 11 — press and podcasts: a studio microphone on a yoke. */
+function mic(n: number) {
+  return build(n, (a, o) => {
+    const u = r();
+    const th = r() * TAU;
+    if (u < 0.55) {
+      const y = 0.4 + r() * 2.4;
+      const ring = r() < 0.5 ? 0.4 + Math.round(r() * 8) * 0.3 : y;
+      const rad = ring > 2.8 ? Math.sqrt(Math.max(0, 0.9 * 0.9 - (ring - 2.8) ** 2)) : 0.9;
+      put(a, o, Math.cos(th) * rad, Math.min(ring, 3.5), Math.sin(th) * rad, 0.015);
+    } else if (u < 0.75) {
+      const t = Math.PI + r() * Math.PI;
+      put(a, o, Math.cos(t) * 1.55, 1.2 + Math.sin(t) * 1.55, 0, 0.025);
+    } else if (u < 0.85) {
+      put(a, o, 0, -0.35 - r() * 1.9, 0, 0.03);
+    } else {
+      const rad = r() < 0.4 ? 1.35 : Math.sqrt(r()) * 1.35;
+      put(a, o, Math.cos(th) * rad, -2.3, Math.sin(th) * rad * 0.7, 0.012);
+    }
+  });
+}
+
+/** Single builders, for scenes that need just one shape (the hub). */
+export const SHAPE_BUILDERS = { net, rack, blocks, shield, pulse, wheel, globe, trophy, peaks, reel, cap, mic };
+
+export const makeShapes = (n: number) => [net(n), rack(n), blocks(n), shield(n), pulse(n), wheel(n), globe(n), trophy(n), peaks(n), reel(n), cap(n), mic(n)];

@@ -13,6 +13,9 @@ export function SiteFooter() {
             {link.label}
           </a>
         ))}
+        <Link href="/projects" className="transition-colors hover:text-bone">
+          Projects
+        </Link>
         <Link href="/workspace" className="transition-colors hover:text-bone">
           Workspace
         </Link>

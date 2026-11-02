@@ -8,18 +8,23 @@ import { makeShapes } from "./shapes";
 const MUTE = new THREE.Color("#687b86");
 const BONE = new THREE.Color("#e9eef0");
 
+import { SHAPE_COUNT } from "./shapes";
+
+const EXTRA = Array.from({ length: SHAPE_COUNT - 1 }, (_, i) => `a${i + 1}`);
+const PICK = ["position * step(abs(k), 0.5)", ...EXTRA.map((a, i) => `${a} * step(abs(k - ${i + 1}.0), 0.5)`)].join(" + ");
+
 const VERT = /* glsl */ `
-  // position = shape 0; a1..a6 = shapes 1..6
-  attribute vec3 a1, a2, a3, a4, a5, a6;
+  // position = shape 0; a1.. = the other shapes
+  attribute vec3 ${EXTRA.join(", ")};
   attribute float aSeed;
   uniform float uTime, uPixel, uExcite, uFrom, uTo, uT, uIntro, uDim;
+  uniform vec3 uCA, uCB;
   uniform vec2 uMouse;
   varying float vAlpha, vTone;
+  varying vec3 vCol;
 
   vec3 pick(float k) {
-    return position * step(abs(k), 0.5) + a1 * step(abs(k - 1.0), 0.5) + a2 * step(abs(k - 2.0), 0.5)
-         + a3 * step(abs(k - 3.0), 0.5) + a4 * step(abs(k - 4.0), 0.5)
-         + a5 * step(abs(k - 5.0), 0.5) + a6 * step(abs(k - 6.0), 0.5);
+    return ${PICK};
   }
   float ease(float x) { x = clamp(x, 0.0, 1.0); return x * x * (3.0 - 2.0 * x); }
 
@@ -29,6 +34,7 @@ const VERT = /* glsl */ `
     float t = ease(uT * 1.7 - s * 0.7);
     vec3 p = mix(pick(uFrom), pick(uTo), t);
     float burst = sin(t * 3.14159);
+    vCol = mix(uCA, uCB, t);
     vec3 dir = normalize(vec3(fract(s * 91.7) - 0.5, fract(s * 47.3) - 0.5, fract(s * 13.1) - 0.5) + 1e-3);
     p += dir * burst * (1.0 + s * 3.0);
 
@@ -53,18 +59,21 @@ const VERT = /* glsl */ `
   }
 `;
 const FRAG = /* glsl */ `
-  uniform vec3 uMute, uBone;
+  uniform vec3 uBone;
   varying float vAlpha, vTone;
+  varying vec3 vCol;
   void main() {
     float r = length(gl_PointCoord - 0.5);
-    gl_FragColor = vec4(mix(uMute, uBone, vTone), smoothstep(0.5, 0.05, r) * vAlpha);
+    gl_FragColor = vec4(mix(vCol * 0.72, mix(vCol, uBone, 0.55), vTone), smoothstep(0.5, 0.05, r) * vAlpha);
   }
 `;
 
 // per shape id: resting X tilt, and whether it turns all the way round (1) or
 // only sways (0: flat or text-like shapes that must stay readable)
-const TILT = [0.08, 0.28, 0.32, 0, 0.1, 0, 0.1];
-const TURN = [0, 0, 1, 0, 0, 0, 1];
+const TILT = [0.08, 0.28, 0.32, 0, 0.1, 0, 0.1, 0, 0.08, 0.05, 0.3, 0.05];
+const TURN = [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+// each shape wears the colour of what it means (the page theme stays slate)
+const PALETTE = ["#8fa2ff", "#6fd3ff", "#ff8f6b", "#5ee0a0", "#ffb454", "#6ea8ff", "#b79cff", "#f2c14e", "#6ee7b7", "#ff7ab6", "#ffd166", "#ff9f68"].map((c) => new THREE.Color(c));
 type Stage = { el: HTMLElement; shape: number; side: number; dim: number };
 const smooth = (x: number) => (x = Math.min(1, Math.max(0, x))) * x * (3 - 2 * x);
 
@@ -109,7 +118,8 @@ export function SignalField() {
       uIntro: { value: reduced ? 1 : 0 },
       uDim: { value: 0 },
       uMouse: { value: new THREE.Vector2(99, 99) },
-      uMute: { value: MUTE },
+      uCA: { value: PALETTE[0].clone() },
+      uCB: { value: PALETTE[0].clone() },
       uBone: { value: BONE },
     };
     const body = new THREE.Points(
@@ -176,7 +186,7 @@ export function SignalField() {
     const t0 = performance.now();
     let last = t0;
     let time = 0;
-    const vA = { side: 1, dim: 0, tilt: 0, turn: 0 };
+    const vA = { side: 1, dim: 0, tilt: 0, turn: 0, lift: 0, scale: 1 };
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
@@ -187,9 +197,14 @@ export function SignalField() {
       readStages();
 
       // which shape are we on, and how far into the hand-off to the next?
+      // A pinned world page drives this directly; other pages read [data-stage] from the DOM.
+      const deck = signal.deck;
+      const list: { shape: number; side: number; dim: number; lift?: number; scale?: number }[] = deck ? deck.scenes : stages;
       const line = scrollY + innerHeight * 0.55;
       let target = 0;
-      if (stages.length) {
+      if (deck) {
+        target = deck.pos;
+      } else if (stages.length) {
         const tops = stages.map((s) => s.el.getBoundingClientRect().top + scrollY);
         let i = 0;
         while (i + 1 < tops.length && tops[i + 1] <= line) i++;
@@ -200,20 +215,26 @@ export function SignalField() {
         }
         else target = i;
       }
-      pos += (target - pos) * (reduced ? 1 : 0.07);
-      const i = Math.min(Math.floor(pos), Math.max(stages.length - 1, 0));
+      pos += (target - pos) * (reduced ? 1 : deck ? 0.2 : 0.07);
+      const i = Math.min(Math.floor(pos), Math.max(list.length - 1, 0));
       const f = pos - i;
-      const a = stages[i];
-      const b = stages[Math.min(i + 1, stages.length - 1)] ?? a;
+      const a = list[i];
+      const b = list[Math.min(i + 1, list.length - 1)] ?? a;
       uniforms.uFrom.value = a?.shape ?? 0;
       uniforms.uTo.value = b?.shape ?? 0;
       uniforms.uT.value = f;
+      uniforms.uCA.value.copy(PALETTE[a?.shape ?? 0]);
+      uniforms.uCB.value.copy(PALETTE[b?.shape ?? 0]);
       const e = smooth(f);
       const side = a ? a.side + ((b?.side ?? a.side) - a.side) * e : 1;
       const dim = a ? a.dim + ((b?.dim ?? a.dim) - a.dim) * e : 0;
       const tilt = a ? TILT[a.shape] + (TILT[b?.shape ?? a.shape] - TILT[a.shape]) * e : 0;
       const turn = a ? TURN[a.shape] + (TURN[b?.shape ?? a.shape] - TURN[a.shape]) * e : 0;
       vA.turn += (turn - vA.turn) * 0.1;
+      const lift = a ? (a.lift ?? 0) + ((b?.lift ?? 0) - (a.lift ?? 0)) * e : 0;
+      const scl = a ? (a.scale ?? 1) + ((b?.scale ?? 1) - (a.scale ?? 1)) * e : 1;
+      vA.lift += (lift - vA.lift) * 0.1;
+      vA.scale += (scl - vA.scale) * 0.1;
       vA.tilt += (tilt - vA.tilt) * 0.1;
       vA.side += (side - vA.side) * 0.1;
       vA.dim += (dim - vA.dim) * 0.1;
@@ -235,8 +256,8 @@ export function SignalField() {
 
       const halfW = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z * camera.aspect;
       body.position.x = small ? 0 : vA.side * halfW * 0.5;
-      body.position.y = small ? 2.2 : 0;
-      body.scale.setScalar((small ? 0.62 : 1) * (1 + signal.excite * 0.06));
+      body.position.y = small ? 2.2 : vA.lift;
+      body.scale.setScalar((small ? 0.62 : vA.scale) * (1 + signal.excite * 0.06));
       body.rotation.y = vA.turn * time * 0.14 + (1 - vA.turn) * Math.sin(time * 0.35) * 0.45 + spin * 6 + mouse.sx * 0.35;
       body.rotation.x = vA.tilt + mouse.sy * 0.22 + Math.sin(time * 0.2) * 0.08;
       dust.position.y = scrollY * 0.004;

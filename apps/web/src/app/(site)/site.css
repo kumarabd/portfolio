@@ -70,19 +70,88 @@ a.row-link { display: block; }
 .cursor[data-on="true"] span { opacity: 1; }
 .cursor[data-hot="true"] span { transform: scale(4.5); }
 
-/* ---- the explorable world ---- */
-.game { z-index: 5; background: var(--color-ink); }
-.game-menu { background: linear-gradient(90deg, rgb(16 24 32 / 0.92), rgb(16 24 32 / 0.55) 55%, transparent); }
-.game-choice { display: block; }
-.world-labels { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.world-label { position: absolute; left: 0; top: 0; font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-bone); white-space: nowrap; transition: opacity 0.4s; will-change: transform; }
-.game-pill { display: inline-flex; align-items: center; gap: 0.6rem; border: 1px solid var(--color-hairline); border-radius: 999px; background: rgb(16 24 32 / 0.75); padding: 0.55rem 1rem; font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--color-bone); cursor: pointer; backdrop-filter: blur(6px); transition: border-color 0.3s, background-color 0.3s; }
-.game-pill:hover, .game-pill[aria-current] { border-color: var(--color-bone); background: rgb(52 75 92 / 0.55); }
-.game-card { position: absolute; border: 1px solid var(--color-hairline); border-radius: 0.25rem; background: rgb(16 24 32 / 0.88); padding: 1.75rem; backdrop-filter: blur(10px); animation: game-in 0.6s var(--ease-out); }
-.game-toast { animation: game-in 0.6s var(--ease-out); }
-.game-close { position: absolute; right: 0.75rem; top: 0.5rem; width: 2.5rem; height: 2.5rem; border: 0; background: none; color: var(--color-dim); font-size: 1.75rem; line-height: 1; cursor: pointer; }
-.game-close:hover { color: var(--color-bone); }
-.game-codex { z-index: 5; background: rgb(16 24 32 / 0.96); }
-@keyframes game-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@media (min-width: 640px) { .game-card { animation-name: game-in-side; } @keyframes game-in-side { from { opacity: 0; transform: translate(18px, -50%); } to { opacity: 1; transform: translate(0, -50%); } } }
-@media (prefers-reduced-motion: reduce) { .game-card, .game-toast { animation: none; } }
+/* ---- the hub: three worlds, each a link ---- */
+.hub { z-index: 5; background: var(--color-ink); }
+.hub-links { position: absolute; inset: 0; pointer-events: none; }
+.hub-link { pointer-events: auto; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-align: center; color: var(--color-bone); }
+.hub-icon { color: var(--realm); }
+.hub-name { font-family: var(--font-display-face), system-ui, sans-serif; font-weight: 600; font-size: clamp(1.5rem, 2.6vw, 2.5rem); line-height: 1; letter-spacing: -0.02em; transition: color 0.3s; }
+.hub-tag { color: var(--color-dim); }
+.hub-link[data-hot="true"] .hub-name, .hub-link:focus-visible .hub-name { color: var(--realm); }
+/* before the 3D loads, or with no WebGL: the same links as a plain row */
+.hub-canvas:not([data-live]) .hub-links { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 2.5rem; padding: 0 1.25rem 6rem; }
+.hub-canvas[data-live] .hub-link { position: absolute; left: 0; top: 0; will-change: transform; }
+.hub-canvas[data-layout="column"] .hub-link { align-items: flex-start; text-align: left; }
+
+/* ---- a world: one pinned frame, scenes swap in place ---- */
+.stage { position: relative; }
+.scene { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 85svh; padding: 7rem 1.25rem 6rem; }
+.scene-body { width: 100%; max-width: 46rem; padding: 0.6rem 0.9rem 1.1rem; margin: -0.6rem -0.9rem -1.1rem; }
+.stage-bar, .stage-rail, .stage-hint { display: none; }
+@media (scripting: enabled) {
+  .stage:not([data-flow]) { position: fixed; inset: 0; z-index: 5; overflow: hidden; }
+  .stage:not([data-flow]) .scene { position: absolute; inset: 0; min-height: 0; visibility: hidden; opacity: 0; }
+  .stage:not([data-flow]):not([data-live]) .scene:first-of-type { visibility: visible; opacity: 1; }
+  .stage:not([data-flow]) .scene-body { max-height: 100%; overflow-y: auto; scrollbar-width: none; }
+  .stage[data-live] .scene[data-active] { visibility: visible; opacity: 1; }
+  .stage[data-live] .stage-bar { display: flex; }
+  .stage[data-live] .stage-hint { display: block; }
+  .site-content:has(.stage:not([data-flow])) > footer { display: none; }
+}
+@media (min-width: 1024px) {
+  .scene { justify-content: center; padding: 5.5rem 2.5rem 4rem; }
+  .stage[data-nav="rail"] .scene { padding-left: 18rem; }
+  .stage[data-live][data-nav="rail"] .stage-rail { display: flex; }
+  .stage[data-nav="rail"] .stage-bar { display: none !important; }
+}
+/* the three compositions */
+.stage[data-nav="steps"] .scene { align-items: center; justify-content: flex-end; padding-bottom: 6.5rem; text-align: center; }
+.stage[data-nav="steps"] .scene-body { max-width: 62rem; }
+@media (min-width: 1024px) { .stage[data-nav="rail"] .scene-body { max-width: 36rem; } .stage[data-nav="pills"] .scene-body { max-width: 42rem; } }
+
+/* professional: vertical index */
+.stage-rail { position: absolute; left: 2.5rem; top: 6rem; bottom: 2rem; width: 13.5rem; flex-direction: column; gap: 1.75rem; overflow-y: auto; scrollbar-width: none; }
+.rail-group .data-label { margin-bottom: 0.5rem; color: var(--color-dim); text-transform: uppercase; letter-spacing: 0.14em; }
+.rail-item { display: block; width: 100%; padding: 0.4rem 0 0.4rem 0.9rem; border: 0; border-left: 1px solid var(--color-hairline); background: none; text-align: left; font-size: 0.9rem; color: var(--color-dim); cursor: pointer; transition: color 0.3s, border-color 0.3s, padding 0.5s var(--ease-out); }
+.rail-item:hover { color: var(--color-bone); }
+.rail-item[aria-current] { padding-left: 1.4rem; border-left-color: var(--realm); color: var(--color-bone); }
+.rail-foot { display: flex; flex-direction: column; gap: 1rem; margin-top: auto; padding-top: 1rem; }
+
+/* bar: the compact navigation (and the whole nav for hobby and hall of fame) */
+.stage-bar { position: absolute; inset: auto 0 0; z-index: 6; align-items: center; justify-content: space-between; gap: 1rem; padding: 2rem 1.25rem 1.1rem; background: linear-gradient(transparent, rgb(16 24 32 / 0.92) 55%); }
+@media (min-width: 640px) { .stage-bar { padding-inline: 2.5rem; } }
+.stage-chips { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; }
+.stage-chip { flex: none; border: 1px solid var(--color-hairline); border-radius: 999px; background: rgb(16 24 32 / 0.6); padding: 0.5rem 1rem; font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--color-dim); cursor: pointer; transition: color 0.3s, border-color 0.3s, background-color 0.3s, transform 0.4s var(--ease-out); }
+.stage-chip:hover { color: var(--color-bone); transform: translateY(-2px); }
+.stage-chip[aria-current] { border-color: var(--realm); color: var(--color-bone); background: color-mix(in srgb, var(--realm) 18%, transparent); }
+.stage-bar[data-variant="steps"] { justify-content: space-between; }
+.stage-steps { display: flex; align-items: center; gap: 0.35rem; }
+.stage-step { position: relative; width: 1.25rem; height: 2px; padding: 0; border: 0; background: var(--color-hairline); cursor: pointer; transition: width 0.5s var(--ease-out), background-color 0.4s; }
+.stage-step::before { content: ""; position: absolute; inset: -12px -2px; }
+.stage-step[aria-current] { width: 2.5rem; background: var(--realm); }
+.stage-next { flex: none; color: var(--color-dim); transition: color 0.3s; white-space: nowrap; }
+.stage-next:hover { color: var(--link); }
+.stage-link { display: flex; align-items: center; gap: 0.75rem; color: var(--color-bone); font-family: var(--font-display-face), system-ui, sans-serif; font-size: 1.25rem; line-height: 1.1; }
+.stage-link svg { color: var(--link); }
+.stage-hint { position: absolute; right: 1.25rem; top: 50%; z-index: 6; color: var(--color-dim); writing-mode: vertical-rl; animation: hint-fade 1s 2s both; }
+@media (min-width: 640px) { .stage-hint { right: 2.5rem; } }
+@keyframes hint-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* shared content bits */
+.chip { display: inline-block; border: 1px solid var(--color-hairline); border-radius: 999px; padding: 0.3rem 0.75rem; font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.03em; color: var(--color-bone); }
+.dash-list li { position: relative; padding-left: 1.25rem; }
+.dash-list li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: 0.7rem; height: 1px; background: var(--realm); }
+
+/* hobby: loose, tilted tiles */
+.tile { display: block; border: 1px solid var(--color-hairline); border-radius: 0.5rem; background: rgb(16 24 32 / 0.55); padding: 1.1rem 1.25rem; backdrop-filter: blur(6px); transition: transform 0.5s var(--ease-out), border-color 0.3s, background-color 0.3s; }
+.tile:nth-child(odd) { transform: rotate(-0.9deg); }
+.tile:nth-child(even) { transform: rotate(0.7deg) translateY(0.4rem); }
+.tile:hover { transform: rotate(0) translateY(-4px); border-color: var(--realm); background: color-mix(in srgb, var(--realm) 10%, rgb(16 24 32 / 0.7)); }
+.tile[data-placeholder] { border-style: dashed; }
+
+/* hall of fame: framed, ceremonial */
+.frame { position: relative; border: 1px solid color-mix(in srgb, var(--realm) 45%, transparent); padding: 1.5rem 1.4rem; background: rgb(16 24 32 / 0.5); backdrop-filter: blur(6px); }
+.frame::before, .frame::after { content: ""; position: absolute; width: 0.6rem; height: 0.6rem; border: solid var(--realm); }
+.frame::before { left: -1px; top: -1px; border-width: 2px 0 0 2px; }
+.frame::after { right: -1px; bottom: -1px; border-width: 0 2px 2px 0; }
+.frame[data-placeholder] { border-style: dashed; }

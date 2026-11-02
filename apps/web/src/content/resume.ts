@@ -4,31 +4,28 @@ export const RESUME = {
   expertise: [
     {
       title: "AI infrastructure",
+      stack: ["MCP Gateway", "Temporal", "gRPC", "Qdrant/pgvector"],
       shape: 0, // scene shape id (see components/scene/shapes.ts)
       summary: "The plumbing under agents and LLM apps: orchestration, tool access, guardrails, and the reliability that lets them run unattended.",
     },
     {
       title: "Security & policy",
+      stack: ["OPA/Rego", "OAuth2/OIDC", "SPIFFE/SPIRE", "OpenFGA", "HashiCorp Vault"],
       shape: 3, // scene shape id (see components/scene/shapes.ts)
       summary: "Authorization that is explicit and auditable. Identity, least privilege, and policy-as-code instead of rules buried in application logic.",
     },
     {
       title: "Observability",
+      stack: ["OpenTelemetry", "Prometheus", "Grafana", "Loki", "ClickHouse"],
       shape: 4, // scene shape id (see components/scene/shapes.ts)
       summary: "Turning billions of signals into answers: telemetry pipelines, sane cardinality, and dashboards people actually trust.",
     },
     {
       title: "Cloud-native systems",
+      stack: ["Kubernetes", "Istio/Envoy", "Argo CD", "Helm", "Terraform"],
       shape: 5, // scene shape id (see components/scene/shapes.ts)
       summary: "Kubernetes, service meshes and GitOps. Systems that deploy the same way every time and fail in boring, recoverable ways.",
     },
-  ],
-  likes: [
-    "Small tools with sharp edges and honest interfaces",
-    "Making complex systems legible",
-    "Open source and learning in public",
-    "Mentoring, and explaining things plainly",
-    "Craft in the details: motion, type, and the feel of software",
   ],
   skills: [
     { label: "Languages", items: ["Go", "Java", "Python", "TypeScript/JavaScript", "Rust", "C/C++", "SQL"] },
