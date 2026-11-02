@@ -265,4 +265,32 @@ function globe(n: number) {
   });
 }
 
+/** A trophy cup: the Hall of Fame landmark (game world only, not a morph target). */
+export function trophy(n: number) {
+  const bowl = (t: number) => 0.4 + 1.5 * Math.pow(Math.sin(t * 1.45), 0.9);
+  return build(n, (a, o) => {
+    const u = r();
+    const th = r() * TAU;
+    if (u < 0.55) {
+      const t = r();
+      const rad = bowl(t);
+      const y = 0.9 + t * 2.3;
+      const ring = r() < 0.35 ? Math.round(t * 8) / 8 : t; // horizontal bands
+      const rr = bowl(ring);
+      put(a, o, Math.cos(th) * (r() < 0.5 ? rad : rr), (r() < 0.5 ? y : 0.9 + ring * 2.3), Math.sin(th) * (r() < 0.5 ? rad : rr), 0.025);
+    } else if (u < 0.65) put(a, o, Math.cos(th) * 0.2, -0.2 + r() * 1.2, Math.sin(th) * 0.2, 0.02);
+    else if (u < 0.82) {
+      const rad = 0.3 + r() * 1.3;
+      put(a, o, Math.cos(th) * rad, -0.6 + (r() < 0.5 ? 0 : 0.4), Math.sin(th) * rad, 0.03);
+    } else {
+      const side = r() < 0.5 ? -1 : 1;
+      const t = -Math.PI / 2 + r() * Math.PI;
+      put(a, o, side * (1.85 + Math.cos(t) * 0.7), 2.3 + Math.sin(t) * 0.7, 0, 0.03);
+    }
+  });
+}
+
+/** Single builders, for scenes that need just one shape. */
+export const SHAPE_BUILDERS = { net, rack, blocks, shield, pulse, wheel, globe, trophy };
+
 export const makeShapes = (n: number) => [net(n), rack(n), blocks(n), shield(n), pulse(n), wheel(n), globe(n)];

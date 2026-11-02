@@ -70,23 +70,19 @@ a.row-link { display: block; }
 .cursor[data-on="true"] span { opacity: 1; }
 .cursor[data-hot="true"] span { transform: scale(4.5); }
 
-/* ---- home deck: pinned single screen, scenes swap in place ---- */
-.scene { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 1.5rem; min-height: 80svh; padding: 7rem 1.25rem 5rem; }
-@media (min-width: 640px) { .scene { justify-content: center; padding-inline: 2.5rem; } .scene[data-stage="0"] { justify-content: flex-end; } }
-.deck-rail { display: none; }
-.deck[data-live] { height: calc(100svh + (var(--n) - 1) * 85svh); }
-.deck[data-live] .deck-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
-.deck[data-live] .scene { position: absolute; inset: 0; min-height: 0; visibility: hidden; opacity: 0; }
-.deck[data-live] .scene[data-active] { visibility: visible; opacity: 1; }
-.deck[data-live] .deck-rail { position: absolute; left: 1.25rem; bottom: 1.5rem; z-index: 5; display: flex; align-items: center; gap: 0.35rem; }
-@media (min-width: 640px) { .deck[data-live] .deck-rail { left: 2.5rem; } }
-.deck-dot { position: relative; width: 1.25rem; height: 2px; padding: 0; border: 0; background: var(--color-hairline); transition: width 0.5s var(--ease-out), background-color 0.4s; cursor: pointer; }
-.deck-dot::before { content: ""; position: absolute; inset: -12px -2px; }
-.deck-dot[aria-current] { width: 2.5rem; background: var(--color-bone); }
-.deck-dot:hover { background: var(--color-oil); }
-.deck-rail [data-rail-label] { margin-left: 0.9rem; }
-/* before the deck boots (JS on, motion allowed) show only the hero, so there is no flash of a long stacked page */
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .deck:not([data-live]):not([data-flow]) .scene:not(:first-child), .deck:not([data-live]):not([data-flow]) .deck-rail { display: none; }
-  .deck:not([data-live]):not([data-flow]) .scene:first-child { min-height: 100svh; }
-}
+/* ---- the explorable world ---- */
+.game { z-index: 5; background: var(--color-ink); }
+.game-menu { background: linear-gradient(90deg, rgb(16 24 32 / 0.92), rgb(16 24 32 / 0.55) 55%, transparent); }
+.game-choice { display: block; }
+.world-labels { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.world-label { position: absolute; left: 0; top: 0; font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-bone); white-space: nowrap; transition: opacity 0.4s; will-change: transform; }
+.game-pill { display: inline-flex; align-items: center; gap: 0.6rem; border: 1px solid var(--color-hairline); border-radius: 999px; background: rgb(16 24 32 / 0.75); padding: 0.55rem 1rem; font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--color-bone); cursor: pointer; backdrop-filter: blur(6px); transition: border-color 0.3s, background-color 0.3s; }
+.game-pill:hover, .game-pill[aria-current] { border-color: var(--color-bone); background: rgb(52 75 92 / 0.55); }
+.game-card { position: absolute; border: 1px solid var(--color-hairline); border-radius: 0.25rem; background: rgb(16 24 32 / 0.88); padding: 1.75rem; backdrop-filter: blur(10px); animation: game-in 0.6s var(--ease-out); }
+.game-toast { animation: game-in 0.6s var(--ease-out); }
+.game-close { position: absolute; right: 0.75rem; top: 0.5rem; width: 2.5rem; height: 2.5rem; border: 0; background: none; color: var(--color-dim); font-size: 1.75rem; line-height: 1; cursor: pointer; }
+.game-close:hover { color: var(--color-bone); }
+.game-codex { z-index: 5; background: rgb(16 24 32 / 0.96); }
+@keyframes game-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (min-width: 640px) { .game-card { animation-name: game-in-side; } @keyframes game-in-side { from { opacity: 0; transform: translate(18px, -50%); } to { opacity: 1; transform: translate(0, -50%); } } }
+@media (prefers-reduced-motion: reduce) { .game-card, .game-toast { animation: none; } }

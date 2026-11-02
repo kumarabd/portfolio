@@ -1,13 +1,16 @@
 import { test, expect } from "@playwright/test";
 
-test("home page shows the hero", async ({ page }) => {
+test("home is a game that starts from a realm choice", async ({ page }) => {
   await page.goto("/");
 
-  // The visible name is split-animated and aria-hidden; the sr-only text
-  // carries the accessible h1 name for SEO/screen readers.
-  await expect(page.getByRole("heading", { name: "Abishek Kumar — Software Engineer", level: 1 })).toBeAttached();
+  await expect(page.getByRole("heading", { name: "Abishek Kumar — Software Engineer", level: 1 })).toBeVisible();
   await expect(page.getByRole("link", { name: /Say hello/ })).toBeVisible();
-  await expect(page.getByTestId("health-status-badge")).toContainText("API status: ok");
+  for (const realm of ["Professional", "Hobby", "Hall of Fame"]) {
+    await expect(page.getByRole("button", { name: new RegExp(realm) })).toBeVisible();
+  }
+
+  await page.getByRole("button", { name: /Professional/ }).click();
+  await expect(page.getByText(/Unlocked 0\/\d+/)).toBeVisible();
 });
 
 test("projects page lists published projects", async ({ page }) => {
