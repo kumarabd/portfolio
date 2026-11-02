@@ -186,9 +186,14 @@ export function SignalField() {
       readStages();
 
       // which shape are we on, and how far into the hand-off to the next?
+      // The pinned home deck drives this directly; other pages read [data-stage] from the DOM.
+      const deck = signal.deck;
+      const list: { shape: number; side: number; dim: number }[] = deck ? deck.scenes : stages;
       const line = scrollY + innerHeight * 0.55;
       let target = 0;
-      if (stages.length) {
+      if (deck) {
+        target = deck.pos;
+      } else if (stages.length) {
         const tops = stages.map((s) => s.el.getBoundingClientRect().top + scrollY);
         let i = 0;
         while (i + 1 < tops.length && tops[i + 1] <= line) i++;
@@ -199,11 +204,11 @@ export function SignalField() {
         }
         else target = i;
       }
-      pos += (target - pos) * (reduced ? 1 : 0.07);
-      const i = Math.min(Math.floor(pos), Math.max(stages.length - 1, 0));
+      pos += (target - pos) * (reduced ? 1 : deck ? 0.14 : 0.07);
+      const i = Math.min(Math.floor(pos), Math.max(list.length - 1, 0));
       const f = pos - i;
-      const a = stages[i];
-      const b = stages[Math.min(i + 1, stages.length - 1)] ?? a;
+      const a = list[i];
+      const b = list[Math.min(i + 1, list.length - 1)] ?? a;
       uniforms.uFrom.value = a?.shape ?? 0;
       uniforms.uTo.value = b?.shape ?? 0;
       uniforms.uT.value = f;

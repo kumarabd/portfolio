@@ -15,6 +15,9 @@ export default function ResumePage() {
       </p>
       </div>
 
+      <h2 data-split className={H2}>
+        Expertise
+      </h2>
       <ExpertiseChapters />
 
       <section data-stage="1" data-side="1" data-dim="0.4" className="mb-24">

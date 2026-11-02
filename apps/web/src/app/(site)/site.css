@@ -69,3 +69,24 @@ a.row-link { display: block; }
 .cursor span { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-bone); mix-blend-mode: difference; opacity: 0; transition: transform 0.5s var(--ease-out), opacity 0.4s; }
 .cursor[data-on="true"] span { opacity: 1; }
 .cursor[data-hot="true"] span { transform: scale(4.5); }
+
+/* ---- home deck: pinned single screen, scenes swap in place ---- */
+.scene { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 1.5rem; min-height: 80svh; padding: 7rem 1.25rem 5rem; }
+@media (min-width: 640px) { .scene { justify-content: center; padding-inline: 2.5rem; } .scene[data-stage="0"] { justify-content: flex-end; } }
+.deck-rail { display: none; }
+.deck[data-live] { height: calc(100svh + (var(--n) - 1) * 85svh); }
+.deck[data-live] .deck-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.deck[data-live] .scene { position: absolute; inset: 0; min-height: 0; visibility: hidden; opacity: 0; }
+.deck[data-live] .scene[data-active] { visibility: visible; opacity: 1; }
+.deck[data-live] .deck-rail { position: absolute; left: 1.25rem; bottom: 1.5rem; z-index: 5; display: flex; align-items: center; gap: 0.35rem; }
+@media (min-width: 640px) { .deck[data-live] .deck-rail { left: 2.5rem; } }
+.deck-dot { position: relative; width: 1.25rem; height: 2px; padding: 0; border: 0; background: var(--color-hairline); transition: width 0.5s var(--ease-out), background-color 0.4s; cursor: pointer; }
+.deck-dot::before { content: ""; position: absolute; inset: -12px -2px; }
+.deck-dot[aria-current] { width: 2.5rem; background: var(--color-bone); }
+.deck-dot:hover { background: var(--color-oil); }
+.deck-rail [data-rail-label] { margin-left: 0.9rem; }
+/* before the deck boots (JS on, motion allowed) show only the hero, so there is no flash of a long stacked page */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .deck:not([data-live]):not([data-flow]) .scene:not(:first-child), .deck:not([data-live]):not([data-flow]) .deck-rail { display: none; }
+  .deck:not([data-live]):not([data-flow]) .scene:first-child { min-height: 100svh; }
+}
