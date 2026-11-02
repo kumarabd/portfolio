@@ -1,3 +1,4 @@
+import { ExpertiseChapters } from "@/components/expertise-chapters";
 import { RESUME } from "@/content/resume";
 
 const H2 = "mb-8 text-4xl tracking-[-0.02em] sm:text-5xl";
@@ -14,19 +15,7 @@ export default function ResumePage() {
       </p>
       </div>
 
-      <section data-stage="2" data-side="1" data-dim="0.55" className="mb-24">
-        <h2 data-split className={H2}>
-          Expertise
-        </h2>
-        <div data-reveal>
-          {RESUME.expertise.map((e) => (
-            <article key={e.title} data-excite className="row-link grid gap-x-8 gap-y-3 px-1 py-8 sm:grid-cols-[1fr_1fr] sm:py-10">
-              <h3 className="row-title text-4xl leading-none tracking-tight sm:text-6xl">{e.title}</h3>
-              <p className="max-w-[48ch] leading-relaxed text-dim">{e.summary}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ExpertiseChapters />
 
       <section data-stage="1" data-side="1" data-dim="0.4" className="mb-24">
         <h2 data-split className={H2}>
@@ -42,7 +31,7 @@ export default function ResumePage() {
         </dl>
       </section>
 
-      <section data-stage="3" data-side="1" data-dim="0.5">
+      <section data-stage="2" data-side="1" data-dim="0.5">
         <h2 data-split className={H2}>
           What I like
         </h2>

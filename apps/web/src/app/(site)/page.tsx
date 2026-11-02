@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Project } from "@mespace/core";
 import { fetchGithubRepos, fetchHealthStatus, fetchProjects } from "@mespace/api-client";
 import { PROFILE } from "@/content/profile";
-import { RESUME } from "@/content/resume";
+import { ExpertiseChapters } from "@/components/expertise-chapters";
 import { ProjectCard } from "@/components/project-card";
 import { HealthStatusBadge } from "@/components/health-status-badge";
 
@@ -38,7 +38,7 @@ export default async function HomePage() {
           <p
             data-split
             data-delay="0.5"
-            className="max-w-[24ch] font-display text-[clamp(1.5rem,3.4vw,2.5rem)] italic leading-[1.15] text-dim"
+            className="max-w-[24ch] font-display text-[clamp(1.5rem,3.4vw,2.5rem)] leading-[1.2] text-dim"
           >
             {PROFILE.headline}
           </p>
@@ -102,9 +102,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Expertise */}
-      <section data-stage="3" data-side="0" data-dim="0.6" className="px-5 pb-[18vh] sm:px-10">
-        <div className="mb-10 flex items-end justify-between gap-6">
+      {/* Expertise: one chapter per area */}
+      <section className="px-5 sm:px-10">
+        <div className="flex items-end justify-between gap-6 pb-4 pt-[10vh]">
           <h2 data-split className="text-[clamp(2.5rem,7vw,5rem)] leading-none tracking-[-0.02em]">
             Expertise
           </h2>
@@ -112,16 +112,7 @@ export default async function HomePage() {
             More about me &rarr;
           </Link>
         </div>
-        <div data-reveal>
-          {RESUME.expertise.map((e) => (
-            <Link key={e.title} href="/resume" data-excite className="row-link">
-              <div className="grid gap-x-8 gap-y-3 px-1 py-7 sm:grid-cols-[1fr_1fr] sm:items-baseline">
-                <span className="row-title font-display text-3xl leading-none sm:text-5xl">{e.title}</span>
-                <span className="max-w-[48ch] leading-relaxed text-dim">{e.summary}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <ExpertiseChapters />
       </section>
 
       {/* Focus marquee */}
@@ -131,7 +122,7 @@ export default async function HomePage() {
             <ul key={copy} aria-hidden={copy === 1} className="m-0 flex list-none gap-12 p-0">
               {[...focus, ...focus].map((f, i) => (
                 <li key={`${f}-${i}`} className="flex items-center gap-12">
-                  <span className={i % 2 ? "italic text-signal" : ""}>{f}</span>
+                  <span className={i % 2 ? "text-mute" : ""}>{f}</span>
                   <span className="text-hairline" aria-hidden="true">&#10022;</span>
                 </li>
               ))}
@@ -141,7 +132,7 @@ export default async function HomePage() {
       </section>
 
       {/* Contact */}
-      <section data-stage="4" data-side="1" className="flex min-h-[80svh] flex-col justify-center gap-10 px-5 py-[14vh] sm:px-10">
+      <section data-stage="6" data-side="1" className="flex min-h-[80svh] flex-col justify-center gap-10 px-5 py-[14vh] sm:px-10">
         <h2 data-split className="max-w-[14ch] text-[clamp(3rem,10vw,6rem)] leading-[0.95] tracking-[-0.03em]">
           Let&rsquo;s build something small and sharp.
         </h2>
@@ -150,7 +141,7 @@ export default async function HomePage() {
           data-magnetic
           data-excite
           href={`mailto:${PROFILE.contactEmail}`}
-          className="w-fit break-all border-b border-signal pb-1 font-display text-[clamp(1.5rem,4.4vw,3rem)] italic text-signal transition-colors hover:text-bone"
+          className="w-fit break-all border-b border-signal pb-1 font-display text-[clamp(1.5rem,4.4vw,3rem)] text-signal transition-colors hover:text-bone"
         >
           {PROFILE.contactEmail}
         </a>

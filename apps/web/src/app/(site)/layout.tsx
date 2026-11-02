@@ -1,17 +1,17 @@
-import { Geist_Mono, Hanken_Grotesk, Instrument_Serif } from "next/font/google";
+import { Bricolage_Grotesque, Inter, JetBrains_Mono } from "next/font/google";
 import { SceneMount } from "@/components/scene/scene-mount";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteMotion } from "@/components/site-motion";
 import { SiteNav } from "@/components/site-nav";
 import "./site.css";
 
-const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-instrument" });
-const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken" });
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
+const display = Bricolage_Grotesque({ subsets: ["latin"], axes: ["opsz"], variable: "--font-display-face" });
+const body = Inter({ subsets: ["latin"], variable: "--font-body-face" });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono-face" });
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`site ${instrument.variable} ${hanken.variable} ${geistMono.variable}`}>
+    <div className={`site ${display.variable} ${body.variable} ${mono.variable}`}>
       <SceneMount />
       <SiteNav />
       <SiteMotion />

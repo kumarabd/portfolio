@@ -9,8 +9,8 @@ const MUTE = new THREE.Color("#687b86");
 const BONE = new THREE.Color("#e9eef0");
 
 const VERT = /* glsl */ `
-  // position = shape 0; a1..a4 = shapes 1..4
-  attribute vec3 a1, a2, a3, a4;
+  // position = shape 0; a1..a6 = shapes 1..6
+  attribute vec3 a1, a2, a3, a4, a5, a6;
   attribute float aSeed;
   uniform float uTime, uPixel, uExcite, uFrom, uTo, uT, uIntro, uDim;
   uniform vec2 uMouse;
@@ -18,7 +18,8 @@ const VERT = /* glsl */ `
 
   vec3 pick(float k) {
     return position * step(abs(k), 0.5) + a1 * step(abs(k - 1.0), 0.5) + a2 * step(abs(k - 2.0), 0.5)
-         + a3 * step(abs(k - 3.0), 0.5) + a4 * step(abs(k - 4.0), 0.5);
+         + a3 * step(abs(k - 3.0), 0.5) + a4 * step(abs(k - 4.0), 0.5)
+         + a5 * step(abs(k - 5.0), 0.5) + a6 * step(abs(k - 6.0), 0.5);
   }
   float ease(float x) { x = clamp(x, 0.0, 1.0); return x * x * (3.0 - 2.0 * x); }
 
@@ -60,8 +61,10 @@ const FRAG = /* glsl */ `
   }
 `;
 
-// resting X tilt per shape id (flat shapes need to face the camera at an angle)
-const TILT = [0, 0, 0, 0.3, 1.05];
+// per shape id: resting X tilt, and whether it turns all the way round (1) or
+// only sways (0: flat or text-like shapes that must stay readable)
+const TILT = [0.08, 0.28, 0.32, 0, 0.1, 0, 0.1];
+const TURN = [0, 0, 1, 0, 0, 0, 1];
 type Stage = { el: HTMLElement; shape: number; side: number; dim: number };
 const smooth = (x: number) => (x = Math.min(1, Math.max(0, x))) * x * (3 - 2 * x);
 
@@ -173,7 +176,7 @@ export function SignalField() {
     const t0 = performance.now();
     let last = t0;
     let time = 0;
-    const vA = { side: 1, dim: 0, tilt: 0 };
+    const vA = { side: 1, dim: 0, tilt: 0, turn: 0 };
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
@@ -189,7 +192,11 @@ export function SignalField() {
         const tops = stages.map((s) => s.el.getBoundingClientRect().top + scrollY);
         let i = 0;
         while (i + 1 < tops.length && tops[i + 1] <= line) i++;
-        if (i + 1 < tops.length) target = i + smooth(1 - (tops[i + 1] - line) / (innerHeight * 0.75));
+        if (i + 1 < tops.length) {
+          // the hand-off window shrinks for closely spaced stages so each shape still gets a rest
+          const win = Math.min(innerHeight * 0.75, (tops[i + 1] - tops[i]) * 0.7);
+          target = i + smooth(1 - (tops[i + 1] - line) / Math.max(win, 1));
+        }
         else target = i;
       }
       pos += (target - pos) * (reduced ? 1 : 0.07);
@@ -204,6 +211,8 @@ export function SignalField() {
       const side = a ? a.side + ((b?.side ?? a.side) - a.side) * e : 1;
       const dim = a ? a.dim + ((b?.dim ?? a.dim) - a.dim) * e : 0;
       const tilt = a ? TILT[a.shape] + (TILT[b?.shape ?? a.shape] - TILT[a.shape]) * e : 0;
+      const turn = a ? TURN[a.shape] + (TURN[b?.shape ?? a.shape] - TURN[a.shape]) * e : 0;
+      vA.turn += (turn - vA.turn) * 0.1;
       vA.tilt += (tilt - vA.tilt) * 0.1;
       vA.side += (side - vA.side) * 0.1;
       vA.dim += (dim - vA.dim) * 0.1;
@@ -227,7 +236,7 @@ export function SignalField() {
       body.position.x = small ? 0 : vA.side * halfW * 0.5;
       body.position.y = small ? 2.2 : 0;
       body.scale.setScalar((small ? 0.62 : 1) * (1 + signal.excite * 0.06));
-      body.rotation.y = time * 0.14 + spin * 6 + mouse.sx * 0.35;
+      body.rotation.y = vA.turn * time * 0.14 + (1 - vA.turn) * Math.sin(time * 0.35) * 0.45 + spin * 6 + mouse.sx * 0.35;
       body.rotation.x = vA.tilt + mouse.sy * 0.22 + Math.sin(time * 0.2) * 0.08;
       dust.position.y = scrollY * 0.004;
       dust.rotation.y = time * 0.01;

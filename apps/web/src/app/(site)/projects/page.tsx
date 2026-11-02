@@ -5,7 +5,7 @@ export default async function ProjectsPage() {
   const projects = (await fetchProjects()).filter((p) => p.published);
 
   return (
-    <main data-stage="3" data-side="1" data-dim="0.45" className="px-5 pb-[14vh] pt-40 sm:px-10">
+    <main data-stage="2" data-side="1" data-dim="0.45" className="px-5 pb-[14vh] pt-40 sm:px-10">
       <h1 data-split className="text-[clamp(3.25rem,11vw,6rem)] leading-[0.95] tracking-[-0.03em]">
         Projects
       </h1>

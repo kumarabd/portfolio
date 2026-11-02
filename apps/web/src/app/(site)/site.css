@@ -4,7 +4,7 @@
   position: relative;
   min-height: 100vh;
   color: var(--color-bone);
-  font-family: var(--font-hanken), system-ui, sans-serif;
+  font-family: var(--font-body-face), system-ui, sans-serif;
   background:
     radial-gradient(60% 50% at 70% 30%, rgb(52 75 92 / 0.55), transparent 70%),
     var(--color-ink);
@@ -14,7 +14,7 @@
 .site ::selection { background: var(--color-signal); color: var(--color-ink); }
 .site :focus-visible { outline: 2px solid var(--color-oil); outline-offset: 4px; border-radius: 2px; }
 .site a { text-decoration: none; }
-.site h1, .site h2, .site h3 { font-family: var(--font-instrument), "Times New Roman", serif; font-weight: 400; text-wrap: balance; }
+.site h1, .site h2, .site h3 { font-family: var(--font-display-face), system-ui, sans-serif; font-weight: 600; font-optical-sizing: auto; text-wrap: balance; }
 
 .signal-canvas {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -31,7 +31,7 @@
 .site-nav { z-index: 20; }
 .site-nav::before { content: ""; position: absolute; inset: 0 0 -1.5rem; z-index: -1; pointer-events: none; background: linear-gradient(var(--color-ink) 15%, rgb(16 24 32 / 0)); }
 
-.data-label { font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.data-label { font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
 
 /* hide-until-animated only when JS + motion are both available */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
@@ -44,7 +44,7 @@ a.row-link { display: block; }
 .row-link:last-child { border-bottom: 1px solid var(--color-hairline); }
 .row-link:hover, .row-link:focus-within { padding-left: 1.25rem; background: rgb(104 123 134 / 0.1); }
 .row-link .row-title { transition: color 0.4s, font-style 0.4s; }
-.row-link:hover .row-title { color: var(--color-signal); font-style: italic; }
+.row-link:hover .row-title { color: var(--color-signal); }
 
 .btn-solid { background: var(--color-signal); color: var(--color-ink); }
 .btn-solid:hover { background: var(--color-oil); }

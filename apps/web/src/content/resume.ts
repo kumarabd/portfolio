@@ -4,18 +4,22 @@ export const RESUME = {
   expertise: [
     {
       title: "AI infrastructure",
+      shape: 0, // scene shape id (see components/scene/shapes.ts)
       summary: "The plumbing under agents and LLM apps: orchestration, tool access, guardrails, and the reliability that lets them run unattended.",
     },
     {
       title: "Security & policy",
+      shape: 3, // scene shape id (see components/scene/shapes.ts)
       summary: "Authorization that is explicit and auditable. Identity, least privilege, and policy-as-code instead of rules buried in application logic.",
     },
     {
       title: "Observability",
+      shape: 4, // scene shape id (see components/scene/shapes.ts)
       summary: "Turning billions of signals into answers: telemetry pipelines, sane cardinality, and dashboards people actually trust.",
     },
     {
       title: "Cloud-native systems",
+      shape: 5, // scene shape id (see components/scene/shapes.ts)
       summary: "Kubernetes, service meshes and GitOps. Systems that deploy the same way every time and fail in boring, recoverable ways.",
     },
   ],
