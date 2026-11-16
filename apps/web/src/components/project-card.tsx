@@ -9,26 +9,26 @@ export function ProjectCard({ project }: { project: Project }) {
     <article className="grid gap-x-8 gap-y-3 px-1 py-8 sm:grid-cols-[1fr_auto] sm:py-10">
       <div className="flex flex-col gap-3">
         <h3 className="row-title text-4xl leading-none tracking-tight sm:text-6xl">{project.title}</h3>
-        <p className="max-w-[56ch] text-base leading-relaxed text-dim">{project.description}</p>
-        <div className="data-label flex flex-wrap gap-x-4 gap-y-1 text-dim">
+        <p className="max-w-[56ch] text-base leading-relaxed text-[var(--ink-2)]">{project.description}</p>
+        <div className="data-label flex flex-wrap gap-x-4 gap-y-1 text-[var(--ink-2)]">
           {project.tags.map((tag) => (
             <span key={tag}>#{tag}</span>
           ))}
         </div>
       </div>
-      <div className="data-label flex items-start gap-3 text-dim sm:flex-col sm:items-end sm:text-right">
-        <span data-scramble className="text-bone">{STATUS[project.status]}</span>
+      <div className="data-label flex items-start gap-3 text-[var(--ink-2)] sm:flex-col sm:items-end sm:text-right">
+        <span className="font-semibold">{STATUS[project.status]}</span>
         {href && <span aria-hidden="true">Open &#8599;</span>}
       </div>
     </article>
   );
 
   return href ? (
-    <a href={href} data-excite className="row-link">
+    <a href={href} className="row-link">
       {body}
     </a>
   ) : (
-    <div data-excite className="row-link">
+    <div className="row-link">
       {body}
     </div>
   );

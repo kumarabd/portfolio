@@ -1,6 +1,5 @@
 // What the three worlds say. Facts come from the resume; hobbies are
 // placeholders (flagged) until real ones are filled in.
-import { SHAPE } from "@/components/scene/shapes";
 
 export type RealmId = "professional" | "hobby" | "fame";
 
@@ -47,7 +46,6 @@ export const COMPANIES = [
   {
     name: "Palo Alto Networks",
     location: "Santa Clara, CA",
-    shape: SHAPE.net,
     roles: [
       { title: "Senior Staff Software Engineer", period: "Oct 2024 – Present" },
       { title: "Staff Software Engineer", period: "Nov 2023 – Oct 2024" },
@@ -62,7 +60,6 @@ export const COMPANIES = [
   {
     name: "Layer5",
     location: "Austin, TX (Remote)",
-    shape: SHAPE.wheel,
     roles: [{ title: "Senior Software Engineer", period: "Oct 2020 – Jul 2021" }],
     highlights: [
       "Mentored interns building Meshery, an open source service mesh management plane.",
@@ -73,7 +70,6 @@ export const COMPANIES = [
   {
     name: "Bookmyshow",
     location: "Mumbai, India",
-    shape: SHAPE.pulse,
     roles: [{ title: "Site Reliability Engineer", period: "Jul 2018 – Oct 2020" }],
     highlights: [
       "Telemetry systems for billions of metrics, logs and traces a day.",
@@ -118,7 +114,6 @@ export const HOBBIES = [
   {
     id: "hikes",
     label: "Hikes",
-    shape: SHAPE.peaks,
     tiles: [
       { title: "A favourite trail", note: "The name, the place and the view." },
       { title: "The hard one", note: "Distance, elevation and how it went." },
@@ -128,7 +123,6 @@ export const HOBBIES = [
   {
     id: "travel",
     label: "Travel",
-    shape: SHAPE.globe,
     tiles: [
       { title: "A place that stuck", note: "Where, when and why it stayed." },
       { title: "A long journey", note: "The route and the stops." },
@@ -138,7 +132,6 @@ export const HOBBIES = [
   {
     id: "movies",
     label: "Movies",
-    shape: SHAPE.reel,
     tiles: [
       { title: "An all-time favourite", note: "The film and why it holds up." },
       { title: "Recently watched", note: "What was on last weekend." },
@@ -148,7 +141,6 @@ export const HOBBIES = [
   {
     id: "music",
     label: "On repeat",
-    shape: SHAPE.pulse,
     tiles: [
       { title: "A record", note: "The album that's always on." },
       { title: "A podcast", note: "What fills the commute." },

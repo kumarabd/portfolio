@@ -1,0 +1,25 @@
+[
+  {
+    "slug": "how-this-blog-works",
+    "title": "How this blog works",
+    "summary": "A sample series that shows the shape of one. Delete it when you publish your own.",
+    "posts": [
+      {
+        "slug": "series-and-posts",
+        "file": "01-series-and-posts.md",
+        "title": "Series and posts",
+        "summary": "A series is a folder; each post in it is a Markdown file.",
+        "date": "2026-11-16",
+        "minutes": 1
+      },
+      {
+        "slug": "where-it-shows-up",
+        "file": "02-where-it-shows-up.md",
+        "title": "Where it shows up",
+        "summary": "Every series becomes a branch on the map and a page of its own.",
+        "date": "2026-11-17",
+        "minutes": 1
+      }
+    ]
+  }
+]
