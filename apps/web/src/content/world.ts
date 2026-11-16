@@ -1,7 +1,6 @@
-// What the three worlds say. Facts come from the resume; hobbies are
-// placeholders (flagged) until real ones are filled in.
+// What the worlds say. Facts come from the resume.
 
-export type RealmId = "professional" | "hobby" | "fame";
+export type RealmId = "professional" | "fame";
 
 export interface Realm {
   id: RealmId;
@@ -21,14 +20,6 @@ export const REALMS: Realm[] = [
     tagline: "What I build, and where",
     intro: "AI infrastructure, security and observability: the unglamorous layers that make intelligent systems trustworthy.",
     color: "#6fd3ff",
-  },
-  {
-    id: "hobby",
-    name: "Hobby",
-    href: "/hobby",
-    tagline: "Life off the clock",
-    intro: "What I do when nobody is paging me.",
-    color: "#ff8f6b",
   },
   {
     id: "fame",
@@ -96,55 +87,4 @@ export const MILESTONES = [
   { title: "MCP gateway in production", where: "Palo Alto Networks", detail: "A production-grade security and observability layer for multi-agent systems at scale." },
   { title: "Billions of signals a day", where: "Bookmyshow", detail: "Telemetry systems for billions of metrics, logs and traces every day." },
   { title: "Open source mentor", where: "Layer5 · Meshery", detail: "Mentored interns shipping an open source service mesh management plane." },
-];
-
-/** Placeholders: every one says so on stage until real entries replace it. */
-export const AWARDS = [
-  { title: "An award", note: "Name, year and why it was given." },
-  { title: "Another one", note: "Name, year and why it was given." },
-  { title: "A recognition", note: "Name, year and why it was given." },
-];
-export const PRESS = [
-  { title: "A podcast", note: "Show, episode and what we talked about." },
-  { title: "A newspaper feature", note: "Publication, headline and the story." },
-  { title: "A conference talk", note: "Event, title and the room." },
-];
-
-export const HOBBIES = [
-  {
-    id: "hikes",
-    label: "Hikes",
-    tiles: [
-      { title: "A favourite trail", note: "The name, the place and the view." },
-      { title: "The hard one", note: "Distance, elevation and how it went." },
-      { title: "Next on the list", note: "Where to, and when." },
-    ],
-  },
-  {
-    id: "travel",
-    label: "Travel",
-    tiles: [
-      { title: "A place that stuck", note: "Where, when and why it stayed." },
-      { title: "A long journey", note: "The route and the stops." },
-      { title: "Somewhere to go", note: "The next stamp." },
-    ],
-  },
-  {
-    id: "movies",
-    label: "Movies",
-    tiles: [
-      { title: "An all-time favourite", note: "The film and why it holds up." },
-      { title: "Recently watched", note: "What was on last weekend." },
-      { title: "Watch-list", note: "Queued up and waiting." },
-    ],
-  },
-  {
-    id: "music",
-    label: "On repeat",
-    tiles: [
-      { title: "A record", note: "The album that's always on." },
-      { title: "A podcast", note: "What fills the commute." },
-      { title: "A playlist", note: "Built for deep work." },
-    ],
-  },
 ];

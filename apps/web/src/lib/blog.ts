@@ -16,7 +16,9 @@ export function getPost(series: string, post: string) {
   if (!s || i < 0) return undefined;
   const raw = readFileSync(join(process.cwd(), "content/blog", series, s.posts[i].file), "utf8");
   const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "");
-  return { series: s, post: s.posts[i], index: i, prev: s.posts[i - 1], next: s.posts[i + 1], html: marked.parse(body, { async: false }) as string };
+  // a closing "Where it stands" section is set apart as the verdict panel
+  const wrap = (h: string) => h.replace(/<h2>(Where it stands[\s\S]*)$/, '<section class="verdict"><h2>$1</section>');
+  return { series: s, post: s.posts[i], index: i, prev: s.posts[i - 1], next: s.posts[i + 1], html: wrap(marked.parse(body, { async: false }) as string) };
 }
 
 export const formatDate = (iso: string) => new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });

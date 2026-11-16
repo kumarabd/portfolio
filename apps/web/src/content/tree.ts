@@ -3,7 +3,7 @@
 import { PROFILE } from "./profile";
 import { RESUME } from "./resume";
 import blog from "./blog.generated.json";
-import { AWARDS, COMPANIES, HOBBIES, IMPACT, MILESTONES, PRESS, SCHOOLS } from "./world";
+import { COMPANIES, IMPACT, MILESTONES, SCHOOLS } from "./world";
 
 export interface MindNode {
   id: string;
@@ -17,8 +17,6 @@ export interface MindNode {
   href?: string;
   /** an extra link shown in the detail panel */
   link?: { label: string; href: string };
-  /** content still to be filled in: drawn dashed and labelled */
-  placeholder?: boolean;
   children?: MindNode[];
   /** set by build: top-level branch colour, inherited down */
   color: string;
@@ -29,7 +27,7 @@ export interface MindNode {
 type Raw = Omit<MindNode, "color" | "depth" | "parent" | "children"> & { children?: Raw[] };
 
 export const ROOT_COLOR = "#1c1a24";
-const COLORS = { professional: "#4338ca", writing: "#a16207", hobby: "#c2410c", fame: "#0f766e", contact: "#be185d" };
+const COLORS = { professional: "#4338ca", writing: "#a16207", fame: "#0f766e", contact: "#be185d" };
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -88,17 +86,6 @@ const raw: Raw = {
       })),
     },
     {
-      id: "hobby",
-      label: "Hobby",
-      sub: "Life off the clock",
-      body: ["What I do when nobody is paging me."],
-      children: HOBBIES.map((h) => ({
-        id: h.id,
-        label: h.label,
-        children: h.tiles.map((t) => ({ id: `${h.id}-${slug(t.title)}`, label: t.title, body: [t.note], placeholder: true })),
-      })),
-    },
-    {
       id: "fame",
       label: "Hall of Fame",
       sub: "Wins, in numbers",
@@ -119,8 +106,6 @@ const raw: Raw = {
           label: "Milestones",
           children: MILESTONES.map((m) => ({ id: slug(m.title), label: m.title, sub: m.where, body: [m.detail] })),
         },
-        { id: "awards", label: "Awards", children: AWARDS.map((a) => ({ id: slug(a.title), label: a.title, body: [a.note], placeholder: true })) },
-        { id: "press", label: "Press", children: PRESS.map((a) => ({ id: slug(a.title), label: a.title, body: [a.note], placeholder: true })) },
       ],
     },
     {

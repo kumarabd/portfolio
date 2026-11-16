@@ -1,24 +1,119 @@
 [
   {
-    "slug": "how-this-blog-works",
-    "title": "How this blog works",
-    "summary": "A sample series that shows the shape of one. Delete it when you publish your own.",
+    "slug": "benchmarks-rtx-3080",
+    "title": "Benchmarks with RTX 3080",
+    "summary": "What a 10 GB RTX 3080 can and cannot do for machine learning, from first principles. Specs, honest measurement, and ceilings you can check any benchmark against.",
     "posts": [
       {
-        "slug": "series-and-posts",
-        "file": "01-series-and-posts.md",
-        "title": "Series and posts",
-        "summary": "A series is a folder; each post in it is a Markdown file.",
+        "slug": "the-card-on-paper",
+        "file": "01-the-card-on-paper.md",
+        "title": "The card on paper",
+        "summary": "Every spec on the RTX 3080 box reduces to two numbers that decide most ML workloads.",
         "date": "2026-11-16",
-        "minutes": 1
+        "minutes": 2
       },
       {
-        "slug": "where-it-shows-up",
-        "file": "02-where-it-shows-up.md",
-        "title": "Where it shows up",
-        "summary": "Every series becomes a branch on the map and a page of its own.",
-        "date": "2026-11-17",
-        "minutes": 1
+        "slug": "measuring-honestly",
+        "file": "02-measuring-honestly.md",
+        "title": "Measuring honestly",
+        "summary": "GPU work is asynchronous, clocks move, and cards throttle. A small timing harness and a short checklist keep the numbers trustworthy.",
+        "date": "2026-11-16",
+        "minutes": 2
+      },
+      {
+        "slug": "two-ceilings",
+        "file": "03-two-ceilings.md",
+        "title": "Two ceilings, measured",
+        "summary": "A copy kernel finds the memory bandwidth ceiling and a big matrix multiply finds the compute ceiling. Compare both to the datasheet.",
+        "date": "2026-11-16",
+        "minutes": 2
+      },
+      {
+        "slug": "will-it-fit",
+        "file": "04-will-it-fit.md",
+        "title": "Will it fit in 10 GB?",
+        "summary": "Model memory is arithmetic. Weights, KV cache and training state, worked out in bytes before you download anything.",
+        "date": "2026-11-16",
+        "minutes": 2
+      },
+      {
+        "slug": "tokens-per-second",
+        "file": "05-tokens-per-second.md",
+        "title": "Tokens per second is a bandwidth problem",
+        "summary": "Generating text one token at a time reads the whole model from memory for every token. That gives a ceiling you can compute before running anything.",
+        "date": "2026-11-16",
+        "minutes": 3
+      },
+      {
+        "slug": "choosing-an-engine",
+        "file": "06-choosing-an-engine.md",
+        "title": "Choosing an engine for one 10 GB card",
+        "summary": "Seven months, three setups, one GPU shared by everything. How I went from vLLM to Ollama, with the VRAM budget at every step.",
+        "date": "2026-11-16",
+        "minutes": 7
+      },
+      {
+        "slug": "harness-and-sweep",
+        "file": "07-harness-and-sweep.md",
+        "title": "A harness, then the sweep",
+        "summary": "Three small scripts, 15 planned configurations and one question from last time answered with numbers. Raw speed on the 3080, and what it does to the ceilings from posts 1 to 5.",
+        "date": "2026-11-16",
+        "minutes": 8
+      },
+      {
+        "slug": "does-bigger-pay-off",
+        "file": "08-does-bigger-pay-off.md",
+        "title": "Does a bigger model pay off?",
+        "summary": "Speed is not the question that matters. I ran my agent's decision suite on Qwen3 8B and on a 35B mixture-of-experts model, then put every number from the series in one place.",
+        "date": "2026-11-16",
+        "minutes": 10
+      }
+    ]
+  },
+  {
+    "slug": "wtf-is-ai",
+    "title": "WTF is AI?",
+    "summary": "A plain-English tour of what \"AI\" actually means, from machine learning to language models to agents, with no hype and no maths you cannot do on a napkin.",
+    "posts": [
+      {
+        "slug": "ai-is-a-label",
+        "file": "01-ai-is-a-label.md",
+        "title": "AI is a label, not a thing",
+        "summary": "AI\" covers a stack of ideas from rule-based programs to language models. Knowing which layer someone means clears up most of the confusion.",
+        "date": "2026-11-16",
+        "minutes": 2
+      },
+      {
+        "slug": "machine-learning",
+        "file": "02-machine-learning.md",
+        "title": "Machine learning is fitting a curve",
+        "summary": "Instead of writing rules, you show a program examples and let it find the rules. Training, inference and overfitting in one small example.",
+        "date": "2026-11-16",
+        "minutes": 2
+      },
+      {
+        "slug": "neural-networks",
+        "file": "03-neural-networks.md",
+        "title": "Neural networks are lots of tiny dials",
+        "summary": "A neuron is a weighted sum plus a bend. Stack millions of them and you have a network, and a reason GPUs matter.",
+        "date": "2026-11-16",
+        "minutes": 2
+      },
+      {
+        "slug": "language-models",
+        "file": "04-language-models.md",
+        "title": "Language models are autocomplete at scale",
+        "summary": "Predict the next token, over and over. How that one trick produces fluent text, why it also produces confident nonsense, and what the knobs do.",
+        "date": "2026-11-16",
+        "minutes": 2
+      },
+      {
+        "slug": "agents-and-tools",
+        "file": "05-agents-and-tools.md",
+        "title": "Agents are language models with hands",
+        "summary": "Give a model tools and a loop and it can act. How agents work, what MCP standardizes, and why access control suddenly matters.",
+        "date": "2026-11-16",
+        "minutes": 2
       }
     ]
   }

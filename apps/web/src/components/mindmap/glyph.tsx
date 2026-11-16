@@ -1,6 +1,6 @@
 import {
-  Activity, Award, BookOpen, Brain, Clapperboard, Cloud, Code, Database, Flag, Footprints, GraduationCap, Headphones, Layers,
-  Newspaper, Plane, Shield, TrendingUp, Wrench, type LucideIcon,
+  Activity, BookOpen, Brain, Cloud, Code, Database, Flag, GraduationCap, Layers,
+  Shield, TrendingUp, Wrench, type LucideIcon,
 } from "lucide-react";
 import {
   siApachekafka, siArgo, siBookmyshow, siClickhouse, siCplusplus, siDocker, siElasticsearch, siFluentbit,
@@ -34,15 +34,9 @@ const NODE: Record<string, Spec> = {
   "professional.toolbox.security-policy": { lucide: Shield },
   "professional.toolbox.data-streaming": { lucide: Database },
   "writing": { lucide: BookOpen },
-  "hobby.hikes": { lucide: Footprints },
-  "hobby.travel": { lucide: Plane },
-  "hobby.movies": { lucide: Clapperboard },
-  "hobby.music": { lucide: Headphones },
   "fame.schools": { lucide: GraduationCap },
   "fame.impact": { lucide: TrendingUp },
   "fame.milestones": { lucide: Flag },
-  "fame.awards": { lucide: Award },
-  "fame.press": { lucide: Newspaper },
   "contact.github": brand(siGithub),
   "contact.linkedin": { custom: LINKEDIN },
   "contact.email": brand(siGmail),

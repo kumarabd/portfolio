@@ -21,7 +21,7 @@ export const sizeOf = (depth: number) => SIZE[Math.min(depth, SIZE.length - 1)];
 const RING = [0, 270, 260, 250];
 const MARGIN = 18;
 const MAX_FAN = 2.7; // radians
-const ROOT_ANGLES = [-126, -54, 18, 90, 162].map((d) => (d * Math.PI) / 180);
+const ROOT_ANGLES = [-135, -45, 45, 135].map((d) => (d * Math.PI) / 180);
 
 /** Angular step that keeps two neighbours on a ring from touching. */
 function step(r: number, at: number, w: number, h: number) {

@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Briefcase, ChevronRight, Maximize2, Minus, Mountain, Plus, Send, Trophy, X } from "lucide-react";
+import { ArrowUpRight, Briefcase, ChevronRight, Maximize2, Minus, Plus, Send, Trophy, X } from "lucide-react";
 import { PROFILE } from "@/content/profile";
 import { TREE, nodeById, pathTo, type MindNode } from "@/content/tree";
 import { NodeGlyph, TagGlyph } from "./glyph";
 import { layout, openFor, type Box } from "./layout";
 
-const ICON: Record<string, typeof Briefcase> = { professional: Briefcase, hobby: Mountain, fame: Trophy, contact: Send };
+const ICON: Record<string, typeof Briefcase> = { professional: Briefcase, fame: Trophy, contact: Send };
 const SPRING = { type: "spring", stiffness: 170, damping: 22, mass: 0.9 } as const;
 
 const edge = (a: { x: number; y: number }, b: { x: number; y: number }) => {
@@ -201,7 +201,7 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
                   data-depth={Math.min(n.depth, 2)}
                   data-leaf={kids === 0}
                   data-focus={isFocus}
-                  data-placeholder={n.placeholder || undefined}
+                 
                   style={{ "--c": n.color, "--bob": `${(i * 0.7) % 5}s` } as React.CSSProperties}
                   aria-expanded={kids ? open.has(n.id) : undefined}
                   aria-current={isFocus || undefined}
@@ -242,7 +242,6 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
             </ol>
             <h2><span className="title-glyph"><NodeGlyph id={node.id} size={22} colored /></span>{node.label}</h2>
             {node.sub && <p className="sub">{node.sub}</p>}
-            {node.placeholder && <p className="placeholder-note">To be filled in.</p>}
             {node.body?.map((p) => <p key={p} className="body">{p}</p>)}
             {node.tags && (
               <ul className="tags">
