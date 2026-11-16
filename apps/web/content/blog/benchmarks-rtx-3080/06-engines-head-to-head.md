@@ -1,8 +1,8 @@
 ---
 title: Engines head to head
 summary: Ollama against the llama.cpp server underneath it, then a third engine that cannot reuse a prompt. Decode speed, first-token time and load.
+verdict: Stay on Ollama: it costs 2 to 8% decode speed. Strata cannot reuse a prompt, which makes a warm start 42x slower.
 date: 2026-11-11
-until: 2026-11-16
 ---
 
 Post 3 chose Ollama for operations and left a doubt: does it cost speed compared with the llama.cpp server it runs on? I put the same model, prompts and client in front of both, then later added a third engine.
@@ -13,6 +13,13 @@ Post 3 chose Ollama for operations and left a doubt: does it cost speed compared
 <div><b>2.5×</b><span>aggregate throughput from a 4-slot llama.cpp server</span></div>
 <div><b>42×</b><span>slower warm first token on Strata, which cannot reuse a prompt</span></div>
 </div>
+
+| Engine | Decode at 1k | Warm first token, 14k | 4 requests at once | |
+|---|---|---|---|---|
+| Ollama, 8B | 101 tok/s | 0.20 s | 77 tok/s aggregate | <span class="pill good">keep</span> |
+| llama.cpp server, 8B | 109 tok/s | 0.16 s | 226 tok/s with 4 slots | <span class="pill good">if agents run in parallel</span> |
+| Strata, 35B | 54 tok/s | 8.27 s | 47 tok/s, flat | <span class="pill bad">cannot reuse a prompt</span> |
+
 
 <ol class="timeline">
 <li><time>Nov 11</time><b>Ollama against llama.cpp</b> on Qwen3 8B, then llama.cpp with 4 parallel slots.</li>

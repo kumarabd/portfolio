@@ -82,7 +82,7 @@ const raw: Raw = {
         sub: `${s.posts.length} ${s.posts.length === 1 ? "post" : "posts"}`,
         body: [s.summary],
         link: { label: "Open the series", href: `/blog/${s.slug}` },
-        children: s.posts.map((p) => ({ id: p.slug, label: p.title, sub: `${p.when} · ${p.minutes} min read`, body: [p.summary], href: `/blog/${s.slug}/${p.slug}` })),
+        children: s.posts.map((p) => ({ id: p.slug, label: p.title, sub: `${p.when} · ${p.minutes} min read`, body: p.verdict ? [`In short: ${p.verdict}`, p.summary] : [p.summary], href: `/blog/${s.slug}/${p.slug}` })),
       })),
     },
     {

@@ -1,6 +1,7 @@
 ---
 title: The chip, and what I want from it
 summary: What an RTX 3080 is on paper, the job I bought it for, and the questions this series answers with measurements.
+verdict: A 10 GB, 760 GB/s card should fit a quantized 8B model and generate fast on paper. Sharing the card and decision quality are the open risks.
 date: 2026-04-19
 ---
 
@@ -12,6 +13,18 @@ I have one GPU: an RTX 3080 with 10 GB of memory, in the machine that runs my Ku
 <div><b>29.8 <small>TFLOPS</small></b><span>FP32 peak, 8,704 CUDA cores</span></div>
 <div><b>320 <small>W</small></b><span>board power, always on</span></div>
 </div>
+
+**The series at a glance**
+
+| Post | Question |
+|---|---|
+| 2 | What are the tests, and where can you get them? |
+| 3 | Which engine runs it, and why did the first one not stay? |
+| 4 | Which model fits? |
+| 5 | How fast is it against the paper ceilings? |
+| 6 | Which engine is fastest and cheapest to run? |
+| 7 | Does a bigger model pay off, and did I reach the goal? |
+
 
 ## The chip on paper
 
@@ -74,16 +87,8 @@ Before measuring anything, the specs already make claims. These are what the res
 | It makes decisions I would trust | Pass rate on tool-calling and routing cases | `llm_bench.py`, the decision suite |
 | One person can keep it running | Number of moving parts, what breaks | Notes in each post |
 
-The next post describes the instruments. The rest follow the optimisation in order.
+The next post describes the instruments, and the rest follow the optimisation in order (the table at the top maps them).
 
-| Post | Question |
-|---|---|
-| 2 | What are the tests, and where can you get them? |
-| 3 | Which engine runs it, and why did the first one not stay? |
-| 4 | Which model fits? |
-| 5 | How fast is it against the paper ceilings? |
-| 6 | Which engine is fastest and cheapest to run? |
-| 7 | Does a bigger model pay off, and did I reach the goal? |
 
 ## Where it stands, and my verdict
 

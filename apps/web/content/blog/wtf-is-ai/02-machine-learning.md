@@ -1,10 +1,20 @@
 ---
 title: Machine learning is fitting a curve
 summary: Instead of writing rules, you show a program examples and let it find the rules. Training, inference and overfitting in one small example.
+verdict: Machine learning finds rules from examples by nudging parameters to shrink the error. Only data the model has never seen counts.
 date: 2026-11-16
 ---
 
 Traditional programming goes: *rules + data → answers*. Machine learning flips it: *data + answers → rules*. You provide examples with the right answers attached, and a training procedure works out the rules.
+
+**At a glance**
+
+| Step | What happens |
+|---|---|
+| 1. Predict | Use the current parameters on the examples |
+| 2. Measure | Compare with the right answers: the error, or loss |
+| 3. Nudge | Move each parameter a little to shrink the error (gradient descent) |
+| 4. Repeat | Until the error stops falling, then test on unseen data |
 
 ## The smallest possible example
 

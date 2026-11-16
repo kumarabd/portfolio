@@ -26,6 +26,12 @@ export default async function PostPage({ params }: Props) {
         <p className="meta">
           Part {index + 1} of {s.posts.length} · {p.when} · {p.minutes} min read
         </p>
+        {p.verdict && (
+          <p className="tldr">
+            <b>In short</b> {p.verdict}
+            {html.includes('id="verdict"') && <a href="#verdict">Full verdict &darr;</a>}
+          </p>
+        )}
         <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
       </article>
       <nav className="pager" aria-label="In this series">

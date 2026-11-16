@@ -1,10 +1,21 @@
 ---
 title: Neural networks are lots of tiny dials
 summary: A neuron is a weighted sum plus a bend. Stack millions of them and you have a network, and a reason GPUs matter.
+verdict: A neural network is stacked weighted sums with a bend, trained by gradient descent. It is matrix multiplication, which is why GPUs matter.
 date: 2026-11-16
 ---
 
 The line from the last post has two parameters and can only ever be a straight line. Real problems are not straight lines. Neural networks are a way to get flexible, curvy functions out of the same fit-by-nudging recipe.
+
+**At a glance**
+
+| Piece | What it does |
+|---|---|
+| Neuron | A weighted sum of its inputs, then a bend (ReLU) |
+| Layer | Many neurons reading the same inputs: one matrix multiplication |
+| Network | Layers chained; "deep" means many |
+| Training | Backpropagation tells every weight how to change |
+| Hardware | All of it is matrix maths, which is what GPUs do best |
 
 ## One neuron
 

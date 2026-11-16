@@ -25,7 +25,7 @@ export default async function SeriesPage({ params }: Props) {
           <li key={p.slug}>
             <Link href={`/blog/${s.slug}/${p.slug}`}>
               <span className="n">{i + 1}</span>
-              <span className="t">{p.title}<small>{p.summary}</small></span>
+              <span className="t">{p.title}<small>{p.verdict || p.summary}</small></span>
               <span className="m">{p.when}</span>
             </Link>
           </li>

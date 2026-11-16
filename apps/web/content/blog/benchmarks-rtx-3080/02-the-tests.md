@@ -1,8 +1,8 @@
 ---
 title: The tests I wrote
 summary: Four instruments, 82 decision cases and 15 tool-calling prompts, all published. What each one measures and how I kept it honest.
+verdict: Speed and fit can be repeated by anyone from the published folder. Quality rests on one suite I wrote for my own agent.
 date: 2026-11-09
-until: 2026-11-16
 ---
 
 Before any result, here is what I measured with. Everything below is published so you can run it on your own card, or argue with it.

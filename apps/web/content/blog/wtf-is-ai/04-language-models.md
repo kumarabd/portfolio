@@ -1,10 +1,22 @@
 ---
 title: Language models are autocomplete at scale
 summary: Predict the next token, over and over. How that one trick produces fluent text, why it also produces confident nonsense, and what the knobs do.
+verdict: A language model predicts the next token. Its output is fluent and plausible but unverified, so give it sources and check what matters.
 date: 2026-11-16
 ---
 
 A large language model is trained on one task: given some text, predict what comes next. Everything else it appears to do emerges from doing that extremely well, on an enormous amount of text.
+
+**At a glance**
+
+| Term | Plain meaning |
+|---|---|
+| Token | A chunk of text, often a word or part of one |
+| Next-token prediction | The only thing it is trained to do |
+| Attention | How it links words that are far apart |
+| Context window | How many tokens it can see at once |
+| Temperature | How adventurous the choice of next token is |
+| Hallucination | A fluent answer that is not true |
 
 ## Tokens
 

@@ -1,8 +1,8 @@
 ---
 title: Fitting a real model in 10 GB
 summary: September to October. A 14B, a 9B and an 8B on the same card, and the arithmetic that predicts which fits before you download anything.
+verdict: Qwen3 8B at 40k context with a q8_0 KV cache: the only candidate that is fully resident and best at choosing tools.
 date: 2026-09-26
-until: 2026-10-27
 ---
 
 With Ollama as the only GPU tenant, one question remained: which model do I leave resident? The card gave very different answers for three candidates.

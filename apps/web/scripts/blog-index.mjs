@@ -37,7 +37,7 @@ for (const s of readdirSync(dir).filter((n) => statSync(join(dir, n)).isDirector
     const { data: d, body } = parse(file);
     need(file, d, "title", "summary", "date");
     if (d.draft === "true") continue;
-    posts.push({ slug: f.replace(/^\d+-/, "").replace(/\.md$/, ""), file: f, title: d.title, summary: d.summary, date: d.date, when: when(d.date, d.until), minutes: Math.max(1, Math.round(body.split(/\s+/).length / 200)) });
+    posts.push({ slug: f.replace(/^\d+-/, "").replace(/\.md$/, ""), file: f, title: d.title, summary: d.summary, date: d.date, when: when(d.date, d.until), verdict: d.verdict ?? "", minutes: Math.max(1, Math.round(body.split(/\s+/).length / 200)) });
   }
   if (posts.length) series.push({ slug: s, title: data.title, summary: data.summary, order: Number(data.order ?? 100), posts });
 }

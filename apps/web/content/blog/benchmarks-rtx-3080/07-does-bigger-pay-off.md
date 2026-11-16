@@ -1,6 +1,7 @@
 ---
 title: Does a bigger model pay off?
 summary: Speed is settled, so I measured decisions. My agent's suite on Qwen3 8B and a 35B mixture-of-experts model, then the whole series scored against the goal.
+verdict: Stay on the 8B: the 35B scores 58.9% against 61.6 to 62.8% and takes over twice as long. Hardware is not the blocker; decision quality is unproven.
 date: 2026-11-11
 ---
 
@@ -12,6 +13,13 @@ Post 5 left the 35B model at 1.8× slower generation and 5.4× slower prompts th
 <div><b>2.2–2.5×</b><span>longer to run the whole suite on the 35B: 128 min against 52 and 57</span></div>
 <div><b>9 / 24</b><span>"start a task now" score that no run ever beat by more than one</span></div>
 </div>
+
+| Setup | Decisions correct | Suite time | |
+|---|---|---|---|
+| Qwen3 8B on Ollama | 62.8% and 61.6% (two runs) | 52 and 57 min | <span class="pill good">keep</span> |
+| 35B-A3B on Strata | 58.9% | 128 min | <span class="pill bad">not worth it</span> |
+| Goal: fully local agents | hardware fits and is fast enough | decision quality unproven | <span class="pill warn">partly there</span> |
+
 
 <ol class="timeline">
 <li><time>Nov 11</time><b>Baseline.</b> Qwen3 8B through Ollama, fast and thinking.</li>

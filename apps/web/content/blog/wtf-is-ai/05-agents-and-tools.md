@@ -1,10 +1,21 @@
 ---
 title: Agents are language models with hands
 summary: Give a model tools and a loop and it can act. How agents work, what MCP standardizes, and why access control suddenly matters.
+verdict: An agent is a model in a loop with tools. The new risk is access, so permissions, policy, audit trails and untrusted input matter.
 date: 2026-11-16
 ---
 
 A language model on its own only produces text. An **agent** is a language model placed in a loop where it can also *do* things, by calling tools.
+
+**At a glance**
+
+| Part | Role |
+|---|---|
+| Model | Decides the next step and asks for a tool |
+| Tool | An ordinary function that does the work |
+| Loop | Feed the result back until the model says it is done |
+| MCP | An open standard for describing and calling tools |
+| Guardrails | Least privilege, explicit policy, audit trail, untrusted input |
 
 ## The loop
 

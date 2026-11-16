@@ -1,8 +1,8 @@
 ---
 title: vLLM first, and why it did not stay
 summary: April to September. The serious serving engine took the whole card, sharing the card did not hold, and the budget explains both.
+verdict: vLLM claimed 8.5 of 10 GiB for a 7B model and sharing failed twice, so Ollama became the single GPU tenant.
 date: 2026-04-19
-until: 2026-09-23
 ---
 
 The goal from post 1 was one card carrying many jobs. The first engine I reached for was the one built for serious inference, and it taught me the most important rule about this card quickly.
@@ -13,6 +13,16 @@ The goal from post 1 was one card carrying many jobs. The first engine I reached
 <div><b>4</b><span>weeks that GPU time-slicing lasted</span></div>
 <div><b>0</b><span>requests a resident chat model received in 72 hours</span></div>
 </div>
+
+<div class="chart">
+<div class="cap">VRAM budget over time <small>GiB of the 10 GiB card. From my GPU budget notes: Aug and Sep are planned allocations, Oct is measured and derived parts.</small></div>
+<div class="vram"><span class="k">Jun · vLLM</span><div class="stack"><i style="--g:8.5;--bg:#a16207">vLLM 8.5</i><i class="free" style="--g:1.5">1.5 free</i></div></div>
+<div class="vram"><span class="k">Aug · Ollama + STT</span><div class="stack"><i style="--g:4;--bg:#1c1a24">OCR 4.0</i><i style="--g:.4;--bg:#0f766e"></i><i style="--g:1.7;--bg:#6b6677">KV 1.7</i><i style="--g:3;--bg:#be185d">WhisperLive 3.0</i><i class="free" style="--g:.9"></i></div></div>
+<div class="vram"><span class="k">Sep · Ollama</span><div class="stack"><i style="--g:4;--bg:#1c1a24">OCR 4.0</i><i style="--g:.4;--bg:#0f766e"></i><i style="--g:1.7;--bg:#6b6677">KV 1.7</i><i class="free" style="--g:3.9">3.9 free</i></div></div>
+<div class="vram"><span class="k">Oct · Qwen3 8B</span><div class="stack"><i style="--g:4.7;--bg:#1c1a24">weights 4.7</i><i style="--g:3;--bg:#4338ca">KV 3.0</i><i style="--g:.6;--bg:#6b6677"></i><i style="--g:.3;--bg:#0f766e"></i><i class="free" style="--g:1.4">1.4 free</i></div></div>
+<div class="legend"><span><i style="--bg:#a16207"></i>vLLM (all in)</span><span><i style="--bg:#1c1a24"></i>model weights</span><span><i style="--bg:#4338ca"></i>KV cache</span><span><i style="--bg:#6b6677"></i>overhead</span><span><i style="--bg:#0f766e"></i>embedder</span><span><i style="--bg:#be185d"></i>real-time STT</span></div>
+</div>
+
 
 <ol class="timeline">
 <li><time>Apr 19–20</time><b>Ray Serve + vLLM.</b> An inference image built in CI, served through KubeRay, with OpenTelemetry and monitoring from day one.</li>
@@ -37,16 +47,7 @@ Only the first is fixed. The KV cache is a budget you choose, and that is where 
 
 vLLM is built for throughput: continuous batching, a paged KV cache, many concurrent requests. On paper it is the serious option. On this card it had one visible problem.
 
-<div class="chart">
-<div class="cap">VRAM budget over time <small>GiB of the 10 GiB card. From my GPU budget notes: Aug and Sep are planned allocations, Oct is measured and derived parts.</small></div>
-<div class="vram"><span class="k">Jun · vLLM</span><div class="stack"><i style="--g:8.5;--bg:#a16207">vLLM 8.5</i><i class="free" style="--g:1.5">1.5 free</i></div></div>
-<div class="vram"><span class="k">Aug · Ollama + STT</span><div class="stack"><i style="--g:4;--bg:#1c1a24">OCR 4.0</i><i style="--g:.4;--bg:#0f766e"></i><i style="--g:1.7;--bg:#6b6677">KV 1.7</i><i style="--g:3;--bg:#be185d">WhisperLive 3.0</i><i class="free" style="--g:.9"></i></div></div>
-<div class="vram"><span class="k">Sep · Ollama</span><div class="stack"><i style="--g:4;--bg:#1c1a24">OCR 4.0</i><i style="--g:.4;--bg:#0f766e"></i><i style="--g:1.7;--bg:#6b6677">KV 1.7</i><i class="free" style="--g:3.9">3.9 free</i></div></div>
-<div class="vram"><span class="k">Oct · Qwen3 8B</span><div class="stack"><i style="--g:4.7;--bg:#1c1a24">weights 4.7</i><i style="--g:3;--bg:#4338ca">KV 3.0</i><i style="--g:.6;--bg:#6b6677"></i><i style="--g:.3;--bg:#0f766e"></i><i class="free" style="--g:1.4">1.4 free</i></div></div>
-<div class="legend"><span><i style="--bg:#a16207"></i>vLLM (all in)</span><span><i style="--bg:#1c1a24"></i>model weights</span><span><i style="--bg:#4338ca"></i>KV cache</span><span><i style="--bg:#6b6677"></i>overhead</span><span><i style="--bg:#0f766e"></i>embedder</span><span><i style="--bg:#be185d"></i>real-time STT</span></div>
-</div>
-
-The first row is the whole story of round 1. `gpu_memory_utilization=0.90` tells vLLM to claim 90% of the card up front and carve its own pool for the KV cache. That is good engineering for a dedicated server and the wrong shape for a shared card: **the weights of a 7B 4-bit model are a fraction of the 8.5 GiB it took, and the rest was reserved for concurrency I was not using.**
+The top row of the chart above is the whole story of round 1. `gpu_memory_utilization=0.90` tells vLLM to claim 90% of the card up front and carve its own pool for the KV cache. That is good engineering for a dedicated server and the wrong shape for a shared card: **the weights of a 7B 4-bit model are a fraction of the 8.5 GiB it took, and the rest was reserved for concurrency I was not using.**
 
 ## Round 2: sharing the card
 

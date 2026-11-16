@@ -1,6 +1,7 @@
 ---
 title: Raw speed against the ceilings
 summary: November 11. The datasheet drew two ceilings. A sweep measured an 8B model and a 35B mixture-of-experts model against them, and one prediction was wrong.
+verdict: The 8B generates at 79% of the bandwidth ceiling and reads prompts faster than my ceiling allowed, so the ceiling was wrong. The 35B runs but is 1.8x slower to generate.
 date: 2026-11-11
 ---
 
@@ -12,6 +13,15 @@ With the model chosen, I wanted to know how close the card gets to what the data
 <div><b>79%</b><span>of the 151 tok/s bandwidth ceiling</span></div>
 <div><b>67 <small>tok/s</small></b><span>a 35B mixture-of-experts model with experts partly on CPU</span></div>
 </div>
+
+| Measured on the 8B and the 35B | Result | Ceiling or comparison | |
+|---|---|---|---|
+| 8B generation | 119.3 tok/s | 151 tok/s ceiling | <span class="pill good">79%</span> |
+| 8B prompt processing | 4,580 tok/s | about 3,660 tok/s ceiling | <span class="pill bad">ceiling was wrong</span> |
+| 35B generation, best split | 67.5 tok/s | 8B does 119.3 | <span class="pill warn">1.8× slower</span> |
+| 35B prompt processing | 852 tok/s | 8B does 4,580 | <span class="pill warn">5.4× slower</span> |
+| CPU threads on the 35B | 6 to 8 is best | 16 threads costs 26% | <span class="pill bad">more is worse</span> |
+
 
 ## The physics: two ceilings
 

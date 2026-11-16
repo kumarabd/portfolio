@@ -1,10 +1,20 @@
 ---
 title: AI is a label, not a thing
 summary: "AI" covers a stack of ideas from rule-based programs to language models. Knowing which layer someone means clears up most of the confusion.
+verdict: AI is a stack of ideas: AI, machine learning, deep learning, language models. Ask which layer someone means.
 date: 2026-11-16
 ---
 
 "AI" is used for everything from a spam filter to a chatbot to a science-fiction robot. That is not sloppiness so much as history: the term has always been a moving label for *software that does something we used to think needed a person*.
+
+**At a glance**
+
+| Layer | What it is | Example |
+|---|---|---|
+| Artificial intelligence | Any technique that does what we would call intelligent | A rule-based chess program |
+| Machine learning | Learns its behaviour from examples | A spam filter |
+| Deep learning | Machine learning with large neural networks | Photo recognition |
+| Language models | Deep learning on text at huge scale | Chat assistants |
 
 ## The nesting dolls
 

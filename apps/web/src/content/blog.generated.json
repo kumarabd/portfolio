@@ -11,6 +11,7 @@
         "summary": "What an RTX 3080 is on paper, the job I bought it for, and the questions this series answers with measurements.",
         "date": "2026-04-19",
         "when": "Apr 19, 2026",
+        "verdict": "A 10 GB, 760 GB/s card should fit a quantized 8B model and generate fast on paper. Sharing the card and decision quality are the open risks.",
         "minutes": 5
       },
       {
@@ -19,7 +20,8 @@
         "title": "The tests I wrote",
         "summary": "Four instruments, 82 decision cases and 15 tool-calling prompts, all published. What each one measures and how I kept it honest.",
         "date": "2026-11-09",
-        "when": "Nov 9–16, 2026",
+        "when": "Nov 9, 2026",
+        "verdict": "Speed and fit can be repeated by anyone from the published folder. Quality rests on one suite I wrote for my own agent.",
         "minutes": 5
       },
       {
@@ -28,7 +30,8 @@
         "title": "vLLM first, and why it did not stay",
         "summary": "April to September. The serious serving engine took the whole card, sharing the card did not hold, and the budget explains both.",
         "date": "2026-04-19",
-        "when": "Apr 19 – Sep 23, 2026",
+        "when": "Apr 19, 2026",
+        "verdict": "vLLM claimed 8.5 of 10 GiB for a 7B model and sharing failed twice, so Ollama became the single GPU tenant.",
         "minutes": 5
       },
       {
@@ -37,7 +40,8 @@
         "title": "Fitting a real model in 10 GB",
         "summary": "September to October. A 14B, a 9B and an 8B on the same card, and the arithmetic that predicts which fits before you download anything.",
         "date": "2026-09-26",
-        "when": "Sep 26 – Oct 27, 2026",
+        "when": "Sep 26, 2026",
+        "verdict": "Qwen3 8B at 40k context with a q8_0 KV cache: the only candidate that is fully resident and best at choosing tools.",
         "minutes": 4
       },
       {
@@ -47,7 +51,8 @@
         "summary": "November 11. The datasheet drew two ceilings. A sweep measured an 8B model and a 35B mixture-of-experts model against them, and one prediction was wrong.",
         "date": "2026-11-11",
         "when": "Nov 11, 2026",
-        "minutes": 5
+        "verdict": "The 8B generates at 79% of the bandwidth ceiling and reads prompts faster than my ceiling allowed, so the ceiling was wrong. The 35B runs but is 1.8x slower to generate.",
+        "minutes": 6
       },
       {
         "slug": "engines-head-to-head",
@@ -55,8 +60,9 @@
         "title": "Engines head to head",
         "summary": "Ollama against the llama.cpp server underneath it, then a third engine that cannot reuse a prompt. Decode speed, first-token time and load.",
         "date": "2026-11-11",
-        "when": "Nov 11–16, 2026",
-        "minutes": 5
+        "when": "Nov 11, 2026",
+        "verdict": "Stay on Ollama: it costs 2 to 8% decode speed. Strata cannot reuse a prompt, which makes a warm start 42x slower.",
+        "minutes": 6
       },
       {
         "slug": "does-bigger-pay-off",
@@ -65,6 +71,7 @@
         "summary": "Speed is settled, so I measured decisions. My agent's suite on Qwen3 8B and a 35B mixture-of-experts model, then the whole series scored against the goal.",
         "date": "2026-11-11",
         "when": "Nov 11, 2026",
+        "verdict": "Stay on the 8B: the 35B scores 58.9% against 61.6 to 62.8% and takes over twice as long. Hardware is not the blocker; decision quality is unproven.",
         "minutes": 8
       }
     ]
@@ -81,7 +88,8 @@
         "summary": "AI\" covers a stack of ideas from rule-based programs to language models. Knowing which layer someone means clears up most of the confusion.",
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
-        "minutes": 2
+        "verdict": "AI is a stack of ideas: AI, machine learning, deep learning, language models. Ask which layer someone means.",
+        "minutes": 3
       },
       {
         "slug": "machine-learning",
@@ -90,7 +98,8 @@
         "summary": "Instead of writing rules, you show a program examples and let it find the rules. Training, inference and overfitting in one small example.",
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
-        "minutes": 2
+        "verdict": "Machine learning finds rules from examples by nudging parameters to shrink the error. Only data the model has never seen counts.",
+        "minutes": 3
       },
       {
         "slug": "neural-networks",
@@ -99,6 +108,7 @@
         "summary": "A neuron is a weighted sum plus a bend. Stack millions of them and you have a network, and a reason GPUs matter.",
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
+        "verdict": "A neural network is stacked weighted sums with a bend, trained by gradient descent. It is matrix multiplication, which is why GPUs matter.",
         "minutes": 2
       },
       {
@@ -108,7 +118,8 @@
         "summary": "Predict the next token, over and over. How that one trick produces fluent text, why it also produces confident nonsense, and what the knobs do.",
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
-        "minutes": 2
+        "verdict": "A language model predicts the next token. Its output is fluent and plausible but unverified, so give it sources and check what matters.",
+        "minutes": 3
       },
       {
         "slug": "agents-and-tools",
@@ -117,7 +128,8 @@
         "summary": "Give a model tools and a loop and it can act. How agents work, what MCP standardizes, and why access control suddenly matters.",
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
-        "minutes": 2
+        "verdict": "An agent is a model in a loop with tools. The new risk is access, so permissions, policy, audit trails and untrusted input matter.",
+        "minutes": 3
       }
     ]
   }

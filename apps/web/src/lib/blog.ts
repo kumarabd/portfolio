@@ -17,7 +17,7 @@ export function getPost(series: string, post: string) {
   const raw = readFileSync(join(process.cwd(), "content/blog", series, s.posts[i].file), "utf8");
   const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "");
   // a closing "Where it stands" section is set apart as the verdict panel
-  const wrap = (h: string) => h.replace(/<h2>(Where it stands[\s\S]*)$/, '<section class="verdict"><h2>$1</section>');
+  const wrap = (h: string) => h.replace(/<h2>(Where it stands[\s\S]*)$/, '<section class="verdict" id="verdict"><h2>$1</section>');
   return { series: s, post: s.posts[i], index: i, prev: s.posts[i - 1], next: s.posts[i + 1], html: wrap(marked.parse(body, { async: false }) as string) };
 }
 
