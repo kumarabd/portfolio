@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { allSeries, formatDate, getPost } from "@/lib/blog";
+import { allSeries, getPost } from "@/lib/blog";
 
 type Props = { params: Promise<{ series: string; post: string }> };
 export const dynamicParams = false;
@@ -24,7 +24,7 @@ export default async function PostPage({ params }: Props) {
       <article>
         <h1>{p.title}</h1>
         <p className="meta">
-          Part {index + 1} of {s.posts.length} · {formatDate(p.date)} · {p.minutes} min read
+          Part {index + 1} of {s.posts.length} · {p.when} · {p.minutes} min read
         </p>
         <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
       </article>

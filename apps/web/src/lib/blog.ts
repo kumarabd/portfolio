@@ -21,4 +21,3 @@ export function getPost(series: string, post: string) {
   return { series: s, post: s.posts[i], index: i, prev: s.posts[i - 1], next: s.posts[i + 1], html: wrap(marked.parse(body, { async: false }) as string) };
 }
 
-export const formatDate = (iso: string) => new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });

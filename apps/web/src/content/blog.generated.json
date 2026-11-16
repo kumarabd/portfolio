@@ -2,71 +2,70 @@
   {
     "slug": "benchmarks-rtx-3080",
     "title": "Benchmarks with RTX 3080",
-    "summary": "What a 10 GB RTX 3080 can and cannot do for machine learning, from first principles. Specs, honest measurement, and ceilings you can check any benchmark against.",
+    "summary": "What I wanted from a 10 GB RTX 3080, the tests I wrote to find out, and how I tuned engines and models until it fit. Test code and cases are published.",
     "posts": [
       {
-        "slug": "the-card-on-paper",
-        "file": "01-the-card-on-paper.md",
-        "title": "The card on paper",
-        "summary": "Every spec on the RTX 3080 box reduces to two numbers that decide most ML workloads.",
-        "date": "2026-11-16",
-        "minutes": 2
+        "slug": "the-chip-and-the-goal",
+        "file": "01-the-chip-and-the-goal.md",
+        "title": "The chip, and what I want from it",
+        "summary": "What an RTX 3080 is on paper, the job I bought it for, and the questions this series answers with measurements.",
+        "date": "2026-04-19",
+        "when": "Apr 19, 2026",
+        "minutes": 5
       },
       {
-        "slug": "measuring-honestly",
-        "file": "02-measuring-honestly.md",
-        "title": "Measuring honestly",
-        "summary": "GPU work is asynchronous, clocks move, and cards throttle. A small timing harness and a short checklist keep the numbers trustworthy.",
-        "date": "2026-11-16",
-        "minutes": 2
+        "slug": "the-tests",
+        "file": "02-the-tests.md",
+        "title": "The tests I wrote",
+        "summary": "Four instruments, 82 decision cases and 15 tool-calling prompts, all published. What each one measures and how I kept it honest.",
+        "date": "2026-11-09",
+        "when": "Nov 9–16, 2026",
+        "minutes": 5
       },
       {
-        "slug": "two-ceilings",
-        "file": "03-two-ceilings.md",
-        "title": "Two ceilings, measured",
-        "summary": "A copy kernel finds the memory bandwidth ceiling and a big matrix multiply finds the compute ceiling. Compare both to the datasheet.",
-        "date": "2026-11-16",
-        "minutes": 2
+        "slug": "vllm-first",
+        "file": "03-vllm-first.md",
+        "title": "vLLM first, and why it did not stay",
+        "summary": "April to September. The serious serving engine took the whole card, sharing the card did not hold, and the budget explains both.",
+        "date": "2026-04-19",
+        "when": "Apr 19 – Sep 23, 2026",
+        "minutes": 5
       },
       {
-        "slug": "will-it-fit",
-        "file": "04-will-it-fit.md",
-        "title": "Will it fit in 10 GB?",
-        "summary": "Model memory is arithmetic. Weights, KV cache and training state, worked out in bytes before you download anything.",
-        "date": "2026-11-16",
-        "minutes": 2
+        "slug": "fitting-a-model",
+        "file": "04-fitting-a-model.md",
+        "title": "Fitting a real model in 10 GB",
+        "summary": "September to October. A 14B, a 9B and an 8B on the same card, and the arithmetic that predicts which fits before you download anything.",
+        "date": "2026-09-26",
+        "when": "Sep 26 – Oct 27, 2026",
+        "minutes": 4
       },
       {
-        "slug": "tokens-per-second",
-        "file": "05-tokens-per-second.md",
-        "title": "Tokens per second is a bandwidth problem",
-        "summary": "Generating text one token at a time reads the whole model from memory for every token. That gives a ceiling you can compute before running anything.",
-        "date": "2026-11-16",
-        "minutes": 3
+        "slug": "raw-speed",
+        "file": "05-raw-speed.md",
+        "title": "Raw speed against the ceilings",
+        "summary": "November 11. The datasheet drew two ceilings. A sweep measured an 8B model and a 35B mixture-of-experts model against them, and one prediction was wrong.",
+        "date": "2026-11-11",
+        "when": "Nov 11, 2026",
+        "minutes": 5
       },
       {
-        "slug": "choosing-an-engine",
-        "file": "06-choosing-an-engine.md",
-        "title": "Choosing an engine for one 10 GB card",
-        "summary": "Seven months, three setups, one GPU shared by everything. How I went from vLLM to Ollama, with the VRAM budget at every step.",
-        "date": "2026-11-16",
-        "minutes": 7
-      },
-      {
-        "slug": "harness-and-sweep",
-        "file": "07-harness-and-sweep.md",
-        "title": "A harness, then the sweep",
-        "summary": "Three small scripts, 15 planned configurations and one question from last time answered with numbers. Raw speed on the 3080, and what it does to the ceilings from posts 1 to 5.",
-        "date": "2026-11-16",
-        "minutes": 8
+        "slug": "engines-head-to-head",
+        "file": "06-engines-head-to-head.md",
+        "title": "Engines head to head",
+        "summary": "Ollama against the llama.cpp server underneath it, then a third engine that cannot reuse a prompt. Decode speed, first-token time and load.",
+        "date": "2026-11-11",
+        "when": "Nov 11–16, 2026",
+        "minutes": 5
       },
       {
         "slug": "does-bigger-pay-off",
-        "file": "08-does-bigger-pay-off.md",
+        "file": "07-does-bigger-pay-off.md",
         "title": "Does a bigger model pay off?",
-        "summary": "Speed is not the question that matters. I ran my agent's decision suite on Qwen3 8B and on a 35B mixture-of-experts model, then put every number from the series in one place.",
-        "date": "2026-11-16",
-        "minutes": 10
+        "summary": "Speed is settled, so I measured decisions. My agent's suite on Qwen3 8B and a 35B mixture-of-experts model, then the whole series scored against the goal.",
+        "date": "2026-11-11",
+        "when": "Nov 11, 2026",
+        "minutes": 8
       }
     ]
   },
@@ -81,6 +80,7 @@
         "title": "AI is a label, not a thing",
         "summary": "AI\" covers a stack of ideas from rule-based programs to language models. Knowing which layer someone means clears up most of the confusion.",
         "date": "2026-11-16",
+        "when": "Nov 16, 2026",
         "minutes": 2
       },
       {
@@ -89,6 +89,7 @@
         "title": "Machine learning is fitting a curve",
         "summary": "Instead of writing rules, you show a program examples and let it find the rules. Training, inference and overfitting in one small example.",
         "date": "2026-11-16",
+        "when": "Nov 16, 2026",
         "minutes": 2
       },
       {
@@ -97,6 +98,7 @@
         "title": "Neural networks are lots of tiny dials",
         "summary": "A neuron is a weighted sum plus a bend. Stack millions of them and you have a network, and a reason GPUs matter.",
         "date": "2026-11-16",
+        "when": "Nov 16, 2026",
         "minutes": 2
       },
       {
@@ -105,6 +107,7 @@
         "title": "Language models are autocomplete at scale",
         "summary": "Predict the next token, over and over. How that one trick produces fluent text, why it also produces confident nonsense, and what the knobs do.",
         "date": "2026-11-16",
+        "when": "Nov 16, 2026",
         "minutes": 2
       },
       {
@@ -113,6 +116,7 @@
         "title": "Agents are language models with hands",
         "summary": "Give a model tools and a loop and it can act. How agents work, what MCP standardizes, and why access control suddenly matters.",
         "date": "2026-11-16",
+        "when": "Nov 16, 2026",
         "minutes": 2
       }
     ]

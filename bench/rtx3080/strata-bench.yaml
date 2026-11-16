@@ -1,0 +1,35 @@
+# Strata engine bench pod (github.com/Niko1221/Strata), Docker flavour cuda13 (driver 580).
+#   kubectl apply -f strata-bench.yaml && kubectl logs -f -n core strata-bench   # first start downloads the model
+#   kubectl port-forward -n core pod/strata-bench 8081:8080
+#   python engine_bench.py http://localhost:8081 --model <name from /v1/models> --key $KEY --label strata
+# Swap FAMILY/MODEL to bench another pack (qwen36 ud-q4_k_xl | qwen IQ2_XS | coder IQ1_M). Delete the pod to free the GPU.
+# The GPU is shared with Ollama (idle models unload after 10m): check `ollama ps` is empty before timing anything.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: strata-data, namespace: core}
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources: {requests: {storage: 40Gi}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: strata-bench, namespace: core, labels: {app: strata-bench}}
+spec:
+  terminationGracePeriodSeconds: 120
+  containers:
+    - name: strata
+      image: ghcr.io/niko1221/strata:latest-cuda13
+      env:
+        - {name: FAMILY, value: qwen36}
+        - {name: MODEL, value: ud-q4_k_xl}
+        - {name: API_KEY, value: change-me}
+      ports: [{containerPort: 8080}]
+      resources: {limits: {nvidia.com/gpu: 1}}   # no memory limit: Strata plans from the whole node's RAM
+      volumeMounts:
+        - {name: data, mountPath: /data}
+        - {name: shm, mountPath: /dev/shm}
+      securityContext: {capabilities: {add: [IPC_LOCK]}}
+  volumes:
+    - {name: data, persistentVolumeClaim: {claimName: strata-data}}
+    - {name: shm, emptyDir: {medium: Memory, sizeLimit: 2Gi}}

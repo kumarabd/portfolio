@@ -1,35 +1,22 @@
 ---
 title: Does a bigger model pay off?
-summary: Speed is not the question that matters. I ran my agent's decision suite on Qwen3 8B and on a 35B mixture-of-experts model, then put every number from the series in one place.
-date: 2026-11-16
+summary: Speed is settled, so I measured decisions. My agent's suite on Qwen3 8B and a 35B mixture-of-experts model, then the whole series scored against the goal.
+date: 2026-11-11
 ---
 
-Post 7 left a doubt. The 35B mixture-of-experts model runs on this card, but at 1.8× slower generation and 5.4× slower prompts than the 8B. That is only worth paying if its answers are better. So I stopped measuring speed and measured **decisions**.
+Post 5 left the 35B model at 1.8× slower generation and 5.4× slower prompts than the 8B. That is only worth paying if its answers are better. So I stopped measuring speed and measured **decisions**, with the suite from post 2.
 
 <div class="stats">
 <div><b>58.9<small>%</small></b><span>35B-A3B on the decision suite, 258 of 438</span></div>
 <div><b>62.8<small>%</small></b><span>Qwen3 8B, 275 of 438 (61.6% on a repeat run)</span></div>
 <div><b>2.2–2.5×</b><span>longer to run the whole suite on the 35B: 128 min against 52 and 57</span></div>
-<div><b>42×</b><span>slower to re-read a 10k-token prompt it has seen before, on the new engine</span></div>
+<div><b>9 / 24</b><span>"start a task now" score that no run ever beat by more than one</span></div>
 </div>
-
-## What I ran, and why
-
-My agent harness makes one decision when a request arrives: **start a task with a skill, ask a question, schedule it for later, answer directly, or do the work itself.** A wrong decision wastes a whole run, so this is the model behaviour I care about most, and it is a better test than any leaderboard.
-
-| Suite | Cases | What it asks | Modes |
-|---|---|---|---|
-| Triage | 32 × 3 samples | Pick one of nine decisions from a short prompt | fast, thinking |
-| Freeform | 32 × 3 samples | The same decisions with the full tool catalog in context (about 10k tokens) | fast, thinking |
-| Delegate | 18 × 3 samples | Act, delegate, ask, schedule or answer | fast |
-
-Each case is run three times, so a suite is 96 samples (54 for delegate). I ran the 8B twice to see how much a result moves by itself.
 
 <ol class="timeline">
 <li><time>Nov 11</time><b>Baseline.</b> Qwen3 8B through Ollama, fast and thinking.</li>
-<li><time>Nov 11</time><b>Candidate.</b> Qwen3.6 35B-A3B on a different engine, Strata, with the same suites.</li>
-<li><time>Nov 11</time><b>Baseline again.</b> Same 8B, same suites, to measure run-to-run noise.</li>
-<li class="end"><time>Nov 16</time><b>Candidate speed.</b> The Strata engine through the same speed harness as post 7.</li>
+<li><time>Nov 11</time><b>Candidate.</b> Qwen3.6 35B-A3B on Strata, same suites.</li>
+<li class="end"><time>Nov 11</time><b>Baseline again.</b> Same 8B, same suites, to measure run-to-run noise.</li>
 </ol>
 
 ## Result 1: accuracy
@@ -64,7 +51,7 @@ The two 8B runs differ by up to 3 samples on a suite, so anything smaller than t
 
 Freeform, fast, by category:
 
-| Category | Cases × 3 | 8B | 35B |
+| Category | Samples | 8B | 35B |
 |---|---|---|---|
 | Live data (weather, scores, news, web search) | 15 | 15 | <span class="pill bad">0</span> |
 | Schedule for later | 12 | 3 | 6 |
@@ -96,43 +83,17 @@ Both models, both engines, both modes landed on 9 of 24 in 11 of 12 runs. When t
 | Freeform, thinking | 20.9 · 24.0 | 20.7 | <span class="pill good">level</span> |
 | Delegate | 0.8 · 0.8 | 1.8 | <span class="pill bad">2.3×</span> |
 
-Thinking is cheap for the 8B (about 9× the fast time on triage) and very expensive for the 35B (about 17×). And the large freeform gap in fast mode has a specific cause, found in the engine's own speed run:
+Thinking is cheap for the 8B (about 9× the fast time on triage) and very expensive for the 35B (about 17×). The large freeform gap in fast mode has a cause from post 6: Strata cannot reuse the 10k-token catalog between turns, so every case re-reads it. That, not generation speed, is why freeform takes 5× longer.
 
-<div class="chart">
-<div class="cap">Seconds to the first token on a prompt it has seen before <small>Warm start: what an agent loop sees when it resends the same system prompt</small></div>
-<div class="row"><span class="k">8B on Ollama, 1k</span><span class="bar a2"><i style="--w:1.9%"></i></span><span class="v">0.16</span></div>
-<div class="row"><span class="k">35B on Strata, 1k</span><span class="bar a4"><i style="--w:9.1%"></i></span><span class="v">0.75</span></div>
-<div class="row"><span class="k">8B on Ollama, 14k</span><span class="bar a2"><i style="--w:2.4%"></i></span><span class="v">0.20</span></div>
-<div class="row"><span class="k">35B on Strata, 14k</span><span class="bar a4"><i style="--w:100%"></i></span><span class="v">8.27</span></div>
-<div class="legend"><span>Axis 0 to 8.3 s</span></div>
-</div>
-
-On Strata a warm first token costs the same as a cold one at every length (4.58 s against 4.58 s at 8k), so it does not reuse the cached prompt. Ollama does, which is why its warm figure stays near 0.2 s. For an agent that resends a 10k-token catalog every turn, that is a **42× difference** at 14k. This, not generation speed, is why the freeform suite takes 5× longer.
-
-The generation speed of the 35B on this engine compares like this:
-
-| | 8B, Ollama | 35B, llama.cpp (best split) | 35B, Strata |
-|---|---|---|---|
-| Decode at 1k | 101.3 tok/s | 67.5 tok/s (empty context) | 54.1 tok/s |
-| Decode at 14k | 80.2 tok/s | not measured | 44.2 tok/s |
-| First token, cold, 8k | 1.88 s | not measured | 4.58 s |
-| Prompt speed, long context | 4,224 tok/s (llama-bench) | 840 tok/s | about 1,300 tok/s |
-| Aggregate, 4 in flight | 77 tok/s | not measured | 47 tok/s, flat |
-
-Strata processes long prompts about 1.5 times faster than llama.cpp's best split on the same model, and generates about 20% slower. The quantizations differ, so treat that as a rough comparison.
-
-## Limits and gotchas
+## Gotchas
 
 | Gotcha | Effect |
 |---|---|
 | Model and engine changed together | Accuracy differences cannot be attributed to the model alone |
 | Three samples, two baseline runs | Anything under 3 samples on a suite is noise |
-| A shared GPU | The speed run needs `ollama ps` empty first, and the pod deleted afterwards |
-| The engine plans from the whole node's RAM | The pod has no memory limit, which is a real risk on a shared node |
-| First start downloads the model | A 40 GiB volume claim and a long first boot |
-| Token counts differ | The same freeform prompt reports about 9.6k tokens on one setup and 15.9k on the other, so token figures are not comparable |
 | Triage has no home for two categories | Capability and live-data cases scored 0 for both models in every triage run, so those 27 of 96 samples look unwinnable by design and triage tops out near 69 |
-| Two skipped model families | Qwen3-30B-A3B and gpt-oss-20b were never run (post 7) |
+| Token counts differ | The same freeform prompt reports about 9.6k tokens on one setup and 15.9k on the other, so token figures are not comparable |
+| Two skipped model families | Qwen3-30B-A3B and gpt-oss-20b were never run (post 5) |
 
 ## Where it stands, and my verdict
 
@@ -141,12 +102,11 @@ Every post in the series, answered:
 | Post | Question | Answer |
 |---|---|---|
 | 1 | Is decode bandwidth-bound on this card? | Yes. It runs at 53 to 79% of the 151 tok/s ceiling <span class="pill good">held</span> |
-| 4 | Can I predict whether it fits? | Yes, to within 0.7 GiB at 40k <span class="pill good">held</span> |
+| 3 | Which engine and why? | Ollama, because vLLM wants the whole card <span class="pill good">held</span> |
+| 4 | Can I predict fit? | Yes, to within 0.7 GiB at 40k <span class="pill good">held</span> |
 | 5 | What limits prompt processing? | Not FP16. 4-bit kernels beat my ceiling by 25% <span class="pill bad">corrected</span> |
-| 6 | Which engine for this box? | Ollama, for operations, not speed <span class="pill good">held</span> |
-| 7 | What does Ollama cost? | 2 to 8% decode, under 6% first token <span class="pill good">held</span> |
-| 7 | Can a 35B model run here? | Yes, at 67.5 tok/s, with experts on CPU <span class="pill good">held</span> |
-| 8 | Does it pay off? | No <span class="pill bad">not worth it</span> |
+| 6 | What does Ollama cost? | 2 to 8% decode, under 6% first token <span class="pill good">small</span> |
+| 7 | Does a bigger model pay off? | No <span class="pill bad">not worth it</span> |
 
 The four setups side by side:
 
@@ -157,13 +117,26 @@ The four setups side by side:
 | 35B-A3B, llama.cpp, best split | 67.5 tok/s | not measured | not run | |
 | 35B-A3B, Strata | 54.1 tok/s | 4.58 s | 58.9% | 128 min |
 
-**Verdict: stay on Qwen3 8B on Ollama.** The 35B model is no better on my workload (58.9% against 61.6 to 62.8%), takes more than twice as long, and its engine cannot reuse a prompt, which is the main cost in an agent loop. It wins on two suites by margins close to the noise, and loses a whole category I could not explain. A file 4.4× larger, much of it living in system RAM, is a lot to pay for that.
+### The goal, scored
+
+Back to the criteria from post 1:
+
+| Criterion | Result | |
+|---|---|---|
+| Fits, resident, shareable | One 8B model resident at 40k context, 8.3 GB. Everything else moved to the CPU | <span class="pill good">met, with one LLM</span> |
+| Fast enough | About 90 to 109 tok/s, 0.36 s to the first token at 1k, 0.16 to 0.20 s warm | <span class="pill good">met</span> |
+| Decisions I would trust | 61.6 to 62.8% on my suite, capped by a 9 of 24 ceiling I have not yet explained | <span class="pill warn">not yet</span> |
+| Easy to run | One Ollama deployment, but it ties up the GPU for the one model | <span class="pill good">met</span> |
+
+**Verdict: stay on Qwen3 8B on Ollama.** The 35B model is no better on my workload (58.9% against 61.6 to 62.8%), takes more than twice as long, and its engine cannot reuse a prompt. It wins two suites by margins near the noise and loses a whole category I could not explain.
+
+For the goal itself, **the hardware is not the blocker.** The card runs an 8B model fully resident, at interactive speed, with 40k context, and the series' physics predicted that within a known margin. What is unproven is decision quality, and the suite that would settle it has a ceiling I have not found yet. So the honest status of "fully local personal agents" is: possible on this card, not yet trustworthy.
 
 What I would do next, in order of value:
 
 1. **Fix the 9 of 24 ceiling.** It caps every model and is almost certainly the suite or the skill catalog.
-2. **Rerun the 35B on llama.cpp with the same chat template**, to separate the model from the engine on the live-data failure.
-3. **Run the two skipped families**, Qwen3-30B-A3B and gpt-oss-20b, through both the speed sweep and the decision suite.
+2. **Rerun the 35B on llama.cpp with the same chat template**, to separate model from engine on the live-data failure.
+3. **Run the two skipped model families** through the speed sweep and the decision suite.
 4. **Measure system RAM bandwidth**, to put a ceiling under the CPU-expert speeds.
 
-The series started with a card on paper and ends with a decision. The most useful result was not a number. It was that the question I started with, "which model is fastest?", was the wrong one: speed did not change the answer, accuracy per second of agent time did.
+I started with a card on paper and ended with a decision. The question I began with, "which model is fastest?", was the wrong one. Speed never changed the answer. Decision quality per second of agent time did.

@@ -1,0 +1,275 @@
+[
+ {
+  "setup": "qwen3-8b ollama (run 1)",
+  "suite": "triage, fast",
+  "correct": 52,
+  "samples": 96,
+  "seconds_per_case": 0.8,
+  "input_tokens_per_case": 466,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "3/3",
+   "wake": "5/6",
+   "later": "12/12",
+   "engine, no task": "8/9",
+   "do it yourself": "3/3",
+   "answer": "12/12",
+   "capability": "0/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 1)",
+  "suite": "triage, thinking",
+  "correct": 47,
+  "samples": 96,
+  "seconds_per_case": 7.2,
+  "input_tokens_per_case": 466,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "3/3",
+   "wake": "4/6",
+   "later": "11/12",
+   "engine, no task": "6/9",
+   "do it yourself": "2/3",
+   "answer": "12/12",
+   "capability": "0/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 1)",
+  "suite": "freeform, fast",
+  "correct": 63,
+  "samples": 96,
+  "seconds_per_case": 3.1,
+  "input_tokens_per_case": 9558,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "0/3",
+   "wake": "6/6",
+   "later": "3/12",
+   "engine, no task": "6/9",
+   "do it yourself": "0/3",
+   "answer": "12/12",
+   "capability": "12/12",
+   "live": "15/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 1)",
+  "suite": "freeform, thinking",
+  "correct": 62,
+  "samples": 96,
+  "seconds_per_case": 20.9,
+  "input_tokens_per_case": 9260,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "0/3",
+   "wake": "5/6",
+   "later": "5/12",
+   "engine, no task": "6/9",
+   "do it yourself": "0/3",
+   "answer": "12/12",
+   "capability": "11/12",
+   "live": "14/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 1)",
+  "suite": "delegate, fast",
+  "correct": 51,
+  "samples": 54,
+  "seconds_per_case": 0.8,
+  "input_tokens_per_case": 412,
+  "by_category": {
+   "act": "9/12",
+   "delegate": "21/21",
+   "ask": "6/6",
+   "schedule": "9/9",
+   "answer": "6/6"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 2)",
+  "suite": "triage, fast",
+  "correct": 50,
+  "samples": 96,
+  "seconds_per_case": 1.7,
+  "input_tokens_per_case": 466,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "3/3",
+   "wake": "3/6",
+   "later": "12/12",
+   "engine, no task": "8/9",
+   "do it yourself": "3/3",
+   "answer": "12/12",
+   "capability": "0/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 2)",
+  "suite": "triage, thinking",
+  "correct": 47,
+  "samples": 96,
+  "seconds_per_case": 6.3,
+  "input_tokens_per_case": 466,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "3/3",
+   "wake": "2/6",
+   "later": "10/12",
+   "engine, no task": "8/9",
+   "do it yourself": "3/3",
+   "answer": "12/12",
+   "capability": "0/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 2)",
+  "suite": "freeform, fast",
+  "correct": 63,
+  "samples": 96,
+  "seconds_per_case": 3.1,
+  "input_tokens_per_case": 9629,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "0/3",
+   "wake": "6/6",
+   "later": "3/12",
+   "engine, no task": "6/9",
+   "do it yourself": "0/3",
+   "answer": "12/12",
+   "capability": "12/12",
+   "live": "15/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 2)",
+  "suite": "freeform, thinking",
+  "correct": 59,
+  "samples": 96,
+  "seconds_per_case": 24.0,
+  "input_tokens_per_case": 9520,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "0/3",
+   "wake": "4/6",
+   "later": "2/12",
+   "engine, no task": "6/9",
+   "do it yourself": "0/3",
+   "answer": "12/12",
+   "capability": "12/12",
+   "live": "14/15"
+  }
+ },
+ {
+  "setup": "qwen3-8b ollama (run 2)",
+  "suite": "delegate, fast",
+  "correct": 51,
+  "samples": 54,
+  "seconds_per_case": 0.8,
+  "input_tokens_per_case": 412,
+  "by_category": {
+   "act": "9/12",
+   "delegate": "21/21",
+   "ask": "6/6",
+   "schedule": "9/9",
+   "answer": "6/6"
+  }
+ },
+ {
+  "setup": "qwen3.6-35b-a3b strata",
+  "suite": "triage, fast",
+  "correct": 50,
+  "samples": 96,
+  "seconds_per_case": 2.4,
+  "input_tokens_per_case": 466,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "3/3",
+   "wake": "6/6",
+   "later": "12/12",
+   "engine, no task": "7/9",
+   "do it yourself": "1/3",
+   "answer": "12/12",
+   "capability": "0/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3.6-35b-a3b strata",
+  "suite": "triage, thinking",
+  "correct": 52,
+  "samples": 96,
+  "seconds_per_case": 39.8,
+  "input_tokens_per_case": 466,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "3/3",
+   "wake": "5/6",
+   "later": "11/12",
+   "engine, no task": "9/9",
+   "do it yourself": "3/3",
+   "answer": "12/12",
+   "capability": "0/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3.6-35b-a3b strata",
+  "suite": "freeform, fast",
+  "correct": 49,
+  "samples": 96,
+  "seconds_per_case": 15.9,
+  "input_tokens_per_case": 15877,
+  "by_category": {
+   "start now": "9/24",
+   "start or ask": "1/3",
+   "wake": "3/6",
+   "later": "6/12",
+   "engine, no task": "6/9",
+   "do it yourself": "0/3",
+   "answer": "12/12",
+   "capability": "12/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3.6-35b-a3b strata",
+  "suite": "freeform, thinking",
+  "correct": 53,
+  "samples": 96,
+  "seconds_per_case": 20.7,
+  "input_tokens_per_case": 15912,
+  "by_category": {
+   "start now": "10/24",
+   "start or ask": "0/3",
+   "wake": "4/6",
+   "later": "8/12",
+   "engine, no task": "6/9",
+   "do it yourself": "1/3",
+   "answer": "12/12",
+   "capability": "12/12",
+   "live": "0/15"
+  }
+ },
+ {
+  "setup": "qwen3.6-35b-a3b strata",
+  "suite": "delegate, fast",
+  "correct": 54,
+  "samples": 54,
+  "seconds_per_case": 1.8,
+  "input_tokens_per_case": 412,
+  "by_category": {
+   "act": "12/12",
+   "delegate": "21/21",
+   "ask": "6/6",
+   "schedule": "9/9",
+   "answer": "6/6"
+  }
+ }
+]

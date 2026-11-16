@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { allSeries, formatDate, getSeries } from "@/lib/blog";
+import { allSeries, getSeries } from "@/lib/blog";
 
 type Props = { params: Promise<{ series: string }> };
 export const dynamicParams = false;
@@ -26,7 +26,7 @@ export default async function SeriesPage({ params }: Props) {
             <Link href={`/blog/${s.slug}/${p.slug}`}>
               <span className="n">{i + 1}</span>
               <span className="t">{p.title}<small>{p.summary}</small></span>
-              <span className="m">{formatDate(p.date)}</span>
+              <span className="m">{p.when}</span>
             </Link>
           </li>
         ))}

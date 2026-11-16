@@ -1,0 +1,48 @@
+### qwen3-8b all-GPU t8
+| model                          |       size |     params | backend    | ngl | type_k | type_v |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | -----: | -----: | --: | --------------: | -------------------: |
+| qwen3 8B Q4_K - Medium         |   4.68 GiB |     8.19 B | CUDA       |  99 |   q8_0 |   q8_0 |   1 |           pp512 |      4580.28 ± 10.03 |
+| qwen3 8B Q4_K - Medium         |   4.68 GiB |     8.19 B | CUDA       |  99 |   q8_0 |   q8_0 |   1 |          pp4096 |       4223.90 ± 2.39 |
+| qwen3 8B Q4_K - Medium         |   4.68 GiB |     8.19 B | CUDA       |  99 |   q8_0 |   q8_0 |   1 |           tg128 |        119.27 ± 0.05 |
+skip qwen3-30b-a3b ncmoe=26 t8 (missing /models/Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf)
+skip qwen3-30b-a3b ncmoe=30 t8 (missing /models/Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf)
+skip qwen3-30b-a3b ncmoe=34 t8 (missing /models/Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf)
+skip qwen3-30b-a3b ncmoe=48 t8 (missing /models/Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf)
+### qwen3.6-35b-a3b ncmoe=24 t8
+| model                          |       size |     params | backend    | ngl |  n_cpu_moe | type_k | type_v |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ---------: | -----: | -----: | --: | --------------: | -------------------: |
+### qwen3.6-35b-a3b ncmoe=28 t8
+| model                          |       size |     params | backend    | ngl |  n_cpu_moe | type_k | type_v |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ---------: | -----: | -----: | --: | --------------: | -------------------: |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |   q8_0 |   q8_0 |   1 |           pp512 |       852.29 ± 21.57 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |   q8_0 |   q8_0 |   1 |          pp4096 |        839.51 ± 7.55 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |   q8_0 |   q8_0 |   1 |           tg128 |         67.48 ± 0.23 |
+### qwen3.6-35b-a3b ncmoe=32 t8
+| model                          |       size |     params | backend    | ngl |  n_cpu_moe | type_k | type_v |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ---------: | -----: | -----: | --: | --------------: | -------------------: |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         32 |   q8_0 |   q8_0 |   1 |           pp512 |       784.37 ± 28.02 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         32 |   q8_0 |   q8_0 |   1 |          pp4096 |        765.72 ± 8.47 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         32 |   q8_0 |   q8_0 |   1 |           tg128 |         62.64 ± 0.42 |
+### qwen3.6-35b-a3b ncmoe=40 t8
+| model                          |       size |     params | backend    | ngl |  n_cpu_moe | type_k | type_v |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ---------: | -----: | -----: | --: | --------------: | -------------------: |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         40 |   q8_0 |   q8_0 |   1 |           pp512 |        669.63 ± 8.20 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         40 |   q8_0 |   q8_0 |   1 |          pp4096 |        653.81 ± 9.33 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         40 |   q8_0 |   q8_0 |   1 |           tg128 |         53.99 ± 0.12 |
+skip gpt-oss-20b ncmoe=0 t8 (missing /models/gpt-oss-20b-F16.gguf)
+skip gpt-oss-20b ncmoe=8 t8 (missing /models/gpt-oss-20b-F16.gguf)
+skip gpt-oss-20b ncmoe=12 t8 (missing /models/gpt-oss-20b-F16.gguf)
+skip gpt-oss-20b ncmoe=16 t8 (missing /models/gpt-oss-20b-F16.gguf)
+### qwen3.6-35b-a3b ncmoe=28 t16
+| model                          |       size |     params | backend    | ngl |  n_cpu_moe | threads | type_k | type_v |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ---------: | ------: | -----: | -----: | --: | --------------: | -------------------: |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |      16 |   q8_0 |   q8_0 |   1 |           pp512 |       863.21 ± 23.43 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |      16 |   q8_0 |   q8_0 |   1 |          pp4096 |        844.59 ± 8.23 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |      16 |   q8_0 |   q8_0 |   1 |           tg128 |         49.98 ± 0.83 |
+### qwen3.6-35b-a3b ncmoe=28 t6
+| model                          |       size |     params | backend    | ngl |  n_cpu_moe | threads | type_k | type_v |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ---------: | ------: | -----: | -----: | --: | --------------: | -------------------: |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |       6 |   q8_0 |   q8_0 |   1 |           pp512 |       862.37 ± 23.99 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |       6 |   q8_0 |   q8_0 |   1 |          pp4096 |        838.37 ± 7.79 |
+| qwen35moe 35B.A3B Q4_K - Medium |  20.60 GiB |    34.66 B | CUDA       |  99 |         28 |       6 |   q8_0 |   q8_0 |   1 |           tg128 |         67.36 ± 0.39 |
+DONE

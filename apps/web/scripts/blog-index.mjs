@@ -16,6 +16,14 @@ function parse(file) {
   }
   return { data, body: m[2] };
 }
+// "Nov 11, 2026" or, when the work spanned days, "Apr 19 – Sep 23, 2026" (frontmatter: date, optional until)
+const fmt = (iso, o) => new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", { ...o, timeZone: "UTC" });
+const when = (from, to) => {
+  if (!to || to === from) return fmt(from, { year: "numeric", month: "short", day: "numeric" });
+  if (from.slice(0, 7) === to.slice(0, 7)) return `${fmt(from, { month: "short" })} ${+from.slice(8)}–${+to.slice(8)}, ${to.slice(0, 4)}`;
+  const sameYear = from.slice(0, 4) === to.slice(0, 4);
+  return `${fmt(from, sameYear ? { month: "short", day: "numeric" } : { year: "numeric", month: "short", day: "numeric" })} – ${fmt(to, { year: "numeric", month: "short", day: "numeric" })}`;
+};
 const need = (file, data, ...keys) => keys.forEach((k) => { if (!data[k]) throw new Error(`${file}: frontmatter needs "${k}"`); });
 
 const series = [];
@@ -29,7 +37,7 @@ for (const s of readdirSync(dir).filter((n) => statSync(join(dir, n)).isDirector
     const { data: d, body } = parse(file);
     need(file, d, "title", "summary", "date");
     if (d.draft === "true") continue;
-    posts.push({ slug: f.replace(/^\d+-/, "").replace(/\.md$/, ""), file: f, title: d.title, summary: d.summary, date: d.date, minutes: Math.max(1, Math.round(body.split(/\s+/).length / 200)) });
+    posts.push({ slug: f.replace(/^\d+-/, "").replace(/\.md$/, ""), file: f, title: d.title, summary: d.summary, date: d.date, when: when(d.date, d.until), minutes: Math.max(1, Math.round(body.split(/\s+/).length / 200)) });
   }
   if (posts.length) series.push({ slug: s, title: data.title, summary: data.summary, order: Number(data.order ?? 100), posts });
 }
