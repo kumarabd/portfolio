@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BlogMotion } from "@/components/blog-motion";
 import { allSeries, getPost } from "@/lib/blog";
 
 type Props = { params: Promise<{ series: string; post: string }> };
@@ -34,6 +35,7 @@ export default async function PostPage({ params }: Props) {
         )}
         <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
       </article>
+      <BlogMotion />
       <nav className="pager" aria-label="In this series">
         {prev ? <Link href={`/blog/${s.slug}/${prev.slug}`} rel="prev"><span>Previous</span>{prev.title}</Link> : <span />}
         {next ? <Link href={`/blog/${s.slug}/${next.slug}`} rel="next" className="next"><span>Next</span>{next.title}</Link> : <span />}

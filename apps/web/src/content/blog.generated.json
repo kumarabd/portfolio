@@ -77,13 +77,103 @@
     ]
   },
   {
-    "slug": "wtf-is-ai",
-    "title": "WTF is AI?",
-    "summary": "A plain-English tour of what \"AI\" actually means, from machine learning to language models to agents, with no hype and no maths you cannot do on a napkin.",
+    "slug": "wtf-is-agent",
+    "title": "WTF is Agent?",
+    "summary": "How an autonomous agent actually works, one component at a time, from my own build. The anatomy, the design decisions, what I deleted, and a survey of what already exists.",
     "posts": [
       {
+        "slug": "anatomy-of-an-agent",
+        "file": "01-anatomy-of-an-agent.md",
+        "title": "The anatomy of an agent",
+        "summary": "What an autonomous agent is made of, as a conceptual system design, the order I built it in, and the six rules I followed.",
+        "date": "2026-06-03",
+        "when": "Jun 3, 2026",
+        "verdict": "An agent is a model in a loop plus seven things around it. The loop, memory and toolbox are the spine; the rest is where I rebuilt the most.",
+        "minutes": 7
+      },
+      {
+        "slug": "memory",
+        "file": "02-memory.md",
+        "title": "Memory: remember, cite, forget",
+        "summary": "Three layers, one provenance trail, and a forget that follows it. What I built, rebuilt and surveyed for an agent's long-term memory.",
+        "date": "2026-06-03",
+        "when": "Jun 3, 2026",
+        "verdict": "Store the raw text, keep facts small, derive everything else, and make every belief point back to its source so it can be traced and forgotten. The design is built; its evaluation is not.",
+        "minutes": 6
+      },
+      {
+        "slug": "the-toolbox",
+        "file": "03-the-toolbox.md",
+        "title": "The toolbox: one door to every tool",
+        "summary": "Hundreds of tools cannot all sit in a prompt. A catalog that holds the logins, shows tools on demand and lets the model write code against it.",
+        "date": "2026-07-13",
+        "when": "Jul 13, 2026",
+        "verdict": "One door that holds every login, a typed catalog the model searches, and code instead of one tool call per turn. The agent never holds a secret.",
+        "minutes": 6
+      },
+      {
+        "slug": "the-harness",
+        "file": "04-the-harness.md",
+        "title": "The harness: a loop that survives",
+        "summary": "The control loop around the model, made durable and interruptible, with almost no opinions of its own. What I kept from an existing agent, what I changed and what I deleted.",
+        "date": "2026-08-14",
+        "when": "Aug 14, 2026",
+        "verdict": "Keep the model's loop, change where it runs: durable, one active turn per conversation, interrupts as signals. Let the model steer and delete the routers, lanes and planners that tried to help.",
+        "minutes": 5
+      },
+      {
+        "slug": "context-and-skills",
+        "file": "05-context-and-skills.md",
+        "title": "Context and skills: what the model reads",
+        "summary": "The prompt is a view over everything that was said, not a copy. How I keep it small without losing anything, and how skills turn procedure into scripts.",
+        "date": "2026-08-23",
+        "when": "Aug 23, 2026",
+        "verdict": "Keep everything, show the model a summarised view, store big results as files, and compact in two tiers. Put mechanical steps in skill scripts, because an agent's latency is its number of model steps.",
+        "minutes": 6
+      },
+      {
+        "slug": "runtime-and-sandbox",
+        "file": "06-runtime-and-sandbox.md",
+        "title": "Runtime and sandbox: where agent code runs",
+        "summary": "An agent that writes code needs somewhere to run it that holds no secrets and no network. Three designs in one day, and the engine that won.",
+        "date": "2026-11-14",
+        "when": "Nov 14, 2026",
+        "verdict": "One execution interface with several light engines, inside a sandbox that has no network and no secrets. I built a microVM per session first and replaced it within a day, because a pure function should not need a VM.",
+        "minutes": 6
+      },
+      {
+        "slug": "autonomy-and-governance",
+        "file": "07-autonomy-and-governance.md",
+        "title": "Waking, asking, stopping",
+        "summary": "How an agent starts without being asked, pauses to ask a person, and stops before it does damage. Three designs for waking, one primitive for asking.",
+        "date": "2026-08-07",
+        "when": "Aug 7, 2026",
+        "verdict": "An agent only needs a wake when its own reasoning is needed later; everything else is a notification. Asking is a durable pause, approvals are the same pause, and stopping is a clean result, not a crash.",
+        "minutes": 6
+      },
+      {
+        "slug": "knowing-it-works",
+        "file": "08-knowing-it-works.md",
+        "title": "Knowing it works: evals",
+        "summary": "A labelled suite for the one decision everything depends on, run on every model before I build on it. What it caught, and the ceiling I still cannot explain.",
+        "date": "2026-10-26",
+        "when": "Oct 26, 2026",
+        "verdict": "Measure a judgement before building on it: labelled cases, several samples, a held-out set. It already killed one design. My own suite has a ceiling I have not explained, so the scores are capped.",
+        "minutes": 6
+      },
+      {
+        "slug": "what-i-deleted",
+        "file": "09-what-i-deleted.md",
+        "title": "What I deleted",
+        "summary": "Thirteen things I built and then removed, why each went, and the design rules that were left standing. The finale of the build.",
+        "date": "2026-06-03",
+        "when": "Jun 3, 2026",
+        "verdict": "I deleted nearly as much as I kept, and the reasons repeat: the model did it better, it duplicated something, it sat in the wrong layer, or it was heavier than the job. The design is what survived.",
+        "minutes": 5
+      },
+      {
         "slug": "ai-is-a-label",
-        "file": "01-ai-is-a-label.md",
+        "file": "10-ai-is-a-label.md",
         "title": "AI is a label, not a thing",
         "summary": "AI\" covers a stack of ideas from rule-based programs to language models. Knowing which layer someone means clears up most of the confusion.",
         "date": "2026-11-16",
@@ -93,7 +183,7 @@
       },
       {
         "slug": "machine-learning",
-        "file": "02-machine-learning.md",
+        "file": "11-machine-learning.md",
         "title": "Machine learning is fitting a curve",
         "summary": "Instead of writing rules, you show a program examples and let it find the rules. Training, inference and overfitting in one small example.",
         "date": "2026-11-16",
@@ -103,7 +193,7 @@
       },
       {
         "slug": "neural-networks",
-        "file": "03-neural-networks.md",
+        "file": "12-neural-networks.md",
         "title": "Neural networks are lots of tiny dials",
         "summary": "A neuron is a weighted sum plus a bend. Stack millions of them and you have a network, and a reason GPUs matter.",
         "date": "2026-11-16",
@@ -113,22 +203,12 @@
       },
       {
         "slug": "language-models",
-        "file": "04-language-models.md",
+        "file": "13-language-models.md",
         "title": "Language models are autocomplete at scale",
         "summary": "Predict the next token, over and over. How that one trick produces fluent text, why it also produces confident nonsense, and what the knobs do.",
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
         "verdict": "A language model predicts the next token. Its output is fluent and plausible but unverified, so give it sources and check what matters.",
-        "minutes": 3
-      },
-      {
-        "slug": "agents-and-tools",
-        "file": "05-agents-and-tools.md",
-        "title": "Agents are language models with hands",
-        "summary": "Give a model tools and a loop and it can act. How agents work, what MCP standardizes, and why access control suddenly matters.",
-        "date": "2026-11-16",
-        "when": "Nov 16, 2026",
-        "verdict": "An agent is a model in a loop with tools. The new risk is access, so permissions, policy, audit trails and untrusted input matter.",
         "minutes": 3
       }
     ]

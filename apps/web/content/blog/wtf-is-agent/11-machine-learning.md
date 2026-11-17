@@ -68,4 +68,4 @@ The standard defence is simple: hold some data back, never train on it, and chec
 
 ## What you should take away
 
-Machine learning is statistics with a lot of compute attached. It finds patterns that were present in its training data. It is as good as those examples and as fair as they were, and it will confidently apply a pattern in places where the pattern does not hold. Keep that in mind and the rest of the series will make sense.
+Machine learning is statistics with a lot of compute attached. It finds patterns that were present in its training data. It is as good as those examples and as fair as they were, and it will confidently apply a pattern in places where the pattern does not hold. Keep that in mind and everything built on top of it will make sense.

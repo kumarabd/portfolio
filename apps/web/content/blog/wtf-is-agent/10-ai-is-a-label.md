@@ -43,4 +43,4 @@ Every system in use today is **narrow**: very good at what it was built and trai
 - It is not a mind. The words people use, such as "thinks", "understands" and "wants", are shortcuts that tend to mislead.
 - It is not magic. It is software, with inputs, outputs, costs and failure modes, and it can be reasoned about like any other.
 
-The rest of the series takes the stack one layer at a time, starting with the layer that made the rest possible.
+This post and the three after it are the appendix of the series: the AI basics every other post assumes.

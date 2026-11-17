@@ -229,3 +229,88 @@ a.row-link:hover > * { transform: translateX(0.75rem); }
 .tldr a { margin-left: 0.6rem; white-space: nowrap; font-size: 0.88rem; font-weight: 650; text-decoration: underline; text-underline-offset: 0.2em; text-decoration-color: #a16207; }
 .verdict { scroll-margin-top: 1.5rem; }
 .post-list.roomy small { color: var(--ink); font-size: 0.93rem; }
+
+/* ---- blog motion + diagrams: calm entrances, played once when scrolled into view ---- */
+.diagram { margin: 0 0 1.8rem; padding: 1.1rem 1.1rem 0.9rem; background: var(--paper-hi); border: 1px solid var(--rule); border-radius: 16px; overflow-x: auto; }
+.diagram .cap { margin: 0 0 0.6rem; font-weight: 650; font-size: 0.9rem; }
+.diagram .cap small { display: block; font-weight: 400; color: var(--ink-2); font-size: 0.8rem; }
+.diagram svg { display: block; width: 100%; height: auto; min-width: 560px; font-family: var(--font-body-face), system-ui, sans-serif; }
+.diagram .dn rect, .diagram .dn circle { fill: var(--paper-hi); stroke: var(--k, var(--ink)); stroke-width: 2; }
+.diagram .dn.solid rect { fill: var(--k, var(--ink)); }
+.diagram .dn.solid text { fill: #fff; }
+.diagram .dn.tint rect { fill: color-mix(in oklab, var(--k, var(--ink)) 9%, var(--paper-hi)); }
+.diagram text { fill: var(--ink); font-size: 14px; font-weight: 650; }
+.diagram text.sub { fill: var(--ink-2); font-size: 11.5px; font-weight: 500; }
+.diagram text.num { fill: var(--k, var(--ink)); font-size: 11px; font-weight: 700; font-family: var(--font-mono-face), monospace; }
+.diagram .de { fill: none; stroke: var(--k, var(--ink-2)); stroke-width: 2; stroke-linecap: round; opacity: 0.55; }
+.diagram .de.dash { stroke-dasharray: 5 6; }
+.diagram .pk { fill: var(--k, var(--acc)); }
+.diagram a { cursor: pointer; }
+.diagram a:hover .dn rect { stroke-width: 3; }
+.diagram .ring { fill: none; stroke: var(--k, var(--ink)); stroke-width: 2; opacity: 0; }
+.diagram .bad rect { stroke: var(--b4); } .diagram text.bad { fill: var(--b4); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes nodein { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes breathe-ring { 0%, 100% { opacity: 0; transform: scale(1); } 50% { opacity: 0.45; transform: scale(1.06); } }
+@keyframes strike { from { opacity: 1; } 40%, 70% { opacity: 1; } to { opacity: 0.18; } }
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .diagram .dn, .diagram .dl { opacity: 0; transform-box: fill-box; transform-origin: center; }
+  .diagram .de { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .diagram .de.dash { stroke-dasharray: 5 6; stroke-dashoffset: 0; opacity: 0; }
+  .diagram .pk { opacity: 0; }
+  .diagram[data-in] .dn { animation: nodein 0.5s var(--ease) both; animation-delay: var(--d, 0s); }
+  .diagram[data-in] .dl { animation: rise 0.5s var(--ease) both; animation-delay: var(--d, 0s); }
+  .diagram[data-in] .de { animation: draw 0.7s var(--ease) both; animation-delay: var(--d, 0s); }
+  .diagram[data-in] .de.dash { animation: rise 0.6s var(--ease) both; animation-delay: var(--d, 0s); opacity: 0.55; }
+  .diagram[data-in] .pk { opacity: 1; transition: opacity 0.4s 1.6s; }
+  .diagram[data-in] .ring { animation: breathe-ring 3.6s ease-in-out infinite; animation-delay: var(--d, 0s); transform-box: fill-box; transform-origin: center; }
+  .diagram[data-in] .strike { animation: strike 1.2s ease both; animation-delay: var(--d, 0s); }
+  .chart .bar i { transform-origin: left center; transition: transform 0.8s var(--ease); }
+  .chart:not([data-in]) .bar i { transform: scaleX(0); }
+  .chart .row:nth-of-type(2) .bar i { transition-delay: 0.06s; } .chart .row:nth-of-type(3) .bar i { transition-delay: 0.12s; } .chart .row:nth-of-type(4) .bar i { transition-delay: 0.18s; }
+  .chart .row:nth-of-type(5) .bar i { transition-delay: 0.24s; } .chart .row:nth-of-type(6) .bar i { transition-delay: 0.3s; } .chart .row:nth-of-type(n+7) .bar i { transition-delay: 0.36s; }
+  .stack i { transform-origin: left center; transition: transform 0.8s var(--ease), opacity 0.6s var(--ease); }
+  .chart:not([data-in]) .stack i { transform: scaleX(0); opacity: 0; }
+  .stats:not([data-in]) > div, .timeline:not([data-in]) li, .reveal:not([data-in]) { opacity: 0; transform: translateY(10px); }
+  .stats > div, .timeline li, .reveal { transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+  .stats > div:nth-child(2), .timeline li:nth-child(2) { transition-delay: 0.07s; } .stats > div:nth-child(3), .timeline li:nth-child(3) { transition-delay: 0.14s; }
+  .stats > div:nth-child(4), .timeline li:nth-child(4) { transition-delay: 0.21s; } .timeline li:nth-child(5) { transition-delay: 0.28s; } .timeline li:nth-child(n+6) { transition-delay: 0.35s; }
+}
+@media (prefers-reduced-motion: reduce) { .diagram .pk, .diagram .ring { display: none; } }
+.prose .diagram a { text-decoration: none; }
+.diagram { -webkit-overflow-scrolling: touch; }
+.diagram .box { fill: none; stroke: var(--k, var(--ink-2)); stroke-width: 1.5; stroke-dasharray: 6 5; }
+.diagram text.tag { fill: var(--k, var(--ink-2)); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.diagram .bar-state rect { fill: color-mix(in oklab, var(--ink) 5%, var(--paper-hi)); stroke: var(--rule); stroke-width: 1.5; stroke-dasharray: 6 5; }
+@keyframes forgetcycle { 0%, 35% { opacity: 1; } 50%, 85% { opacity: 0.12; } 100% { opacity: 1; } }
+@keyframes packetfade { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .diagram[data-in] .fg { animation: forgetcycle 9s ease-in-out infinite 2.6s; }
+}
+.diagram .chip rect { rx: 8; }
+.diagram text.big { font-size: 15px; }
+.diagram text.ghost { fill: var(--ink-2); font-size: 11px; font-weight: 500; }
+@keyframes growy { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.diagram .gfill { transform-box: fill-box; transform-origin: bottom; }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .diagram .gfill { transform: scaleY(0); }
+  .diagram[data-in] .gfill { animation: growy 1.4s var(--ease) both; animation-delay: var(--d, 0s); }
+}
+.heat { display: grid; grid-template-columns: minmax(6.5rem, 1.5fr) repeat(4, minmax(3rem, 1fr)); gap: 3px; margin: 0 0 1.8rem; font-size: 0.84rem; }
+.heat > div { padding: 0.5rem 0.4rem; border-radius: 8px; }
+.heat .hh { padding-bottom: 0.2rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-2); text-align: center; }
+.heat .hl { padding-left: 0; font-weight: 600; }
+.heat .hc { text-align: center; font-weight: 650; font-variant-numeric: tabular-nums; background: color-mix(in oklab, var(--b3) calc(var(--r) * 82%), var(--paper-hi)); }
+.heat .hc.hi { color: #fff; }
+.heat .hc.z { background: color-mix(in oklab, var(--b4) 14%, var(--paper-hi)); color: var(--b4); }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .heat:not([data-in]) .hc { opacity: 0; transform: scale(0.9); }
+  .heat .hc { transition: opacity 0.45s var(--ease), transform 0.45s var(--ease); }
+  .heat .hc:nth-of-type(5n+2) { transition-delay: 0.05s; } .heat .hc:nth-of-type(5n+3) { transition-delay: 0.1s; } .heat .hc:nth-of-type(5n+4) { transition-delay: 0.15s; } .heat .hc:nth-of-type(5n+5) { transition-delay: 0.2s; }
+}
+.diagram .legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin: 0.8rem 0 0; font-size: 0.78rem; color: var(--ink-2); }
+.diagram .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.diagram .legend i { width: 0.7rem; height: 0.7rem; border-radius: 3px; background: var(--bg); }

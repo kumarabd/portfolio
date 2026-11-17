@@ -49,4 +49,4 @@ The model is trained to produce text that is *plausible*, not text that is *veri
 - Give it the source material to work from instead of relying on its memory.
 - Check anything that matters, especially names, numbers and citations.
 
-Now for the last step: letting a model do things, not just say things.
+Letting a model do things, not just say things, is what the rest of this series is about. [Start with the anatomy of an agent](/blog/wtf-is-agent/anatomy-of-an-agent).
