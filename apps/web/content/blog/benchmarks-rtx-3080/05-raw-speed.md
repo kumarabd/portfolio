@@ -5,7 +5,7 @@ verdict: The 8B generates at 79% of the bandwidth ceiling and reads prompts fast
 date: 2026-11-11
 ---
 
-With the model chosen, I wanted to know how close the card gets to what the datasheet allows. I built the sweep from post 2 and ran it with the GPU free.
+With the model chosen, I wanted to know how close the card gets to what the datasheet allows. I built the sweep from [post 2](/blog/benchmarks-rtx-3080/the-tests) and ran it with the GPU free.
 
 <div class="stats">
 <div><b>4,580 <small>tok/s</small></b><span>prompt processing, Qwen3 8B fully on the GPU</span></div>
@@ -31,7 +31,7 @@ Generating a token needs every weight read from memory once, with almost no arit
 generation tok/s  ≤  760 GB/s ÷ bytes of weights
 ```
 
-For Qwen3 8B Q4_K_M, 4.68 GiB or 5.02 GB, that is **151 tok/s**. Reading a prompt is the opposite: all its tokens go through together, so each weight is reused many times and the limit is compute, about 2 operations per parameter per token. For this 8.19B model that is 16.4 GFLOP per token, and at the FP16 tensor rate I assumed in post 1 (about 60 TFLOPS), a ceiling near **3,660 tok/s**.
+For Qwen3 8B Q4_K_M, 4.68 GiB or 5.02 GB, that is **151 tok/s**. Reading a prompt is the opposite: all its tokens go through together, so each weight is reused many times and the limit is compute, about 2 operations per parameter per token. For this 8.19B model that is 16.4 GFLOP per token, and at the FP16 tensor rate I assumed in [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal) (about 60 TFLOPS), a ceiling near **3,660 tok/s**.
 
 ## What was actually run
 
@@ -105,11 +105,11 @@ Using all 16 hardware threads on 8 physical cores cost a quarter of the generati
 
 The datasheet's predictions against the card so far:
 
-| Question from post 1 | Paper said | Measured | |
+| Question from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal) | Paper said | Measured | |
 |---|---|---|---|
-| Fits | 7 to 8B at 4-bit with room | 8.3 GB at 40k (post 4) | <span class="pill good">held</span> |
+| Fits | 7 to 8B at 4-bit with room | 8.3 GB at 40k ([post 4](/blog/benchmarks-rtx-3080/fitting-a-model)) | <span class="pill good">held</span> |
 | Generation speed | at most 151 tok/s for this model | 119.3 tok/s, 79% | <span class="pill good">held</span> |
 | Prompt speed | about 3,660 tok/s | 4,580 tok/s | <span class="pill bad">wrong, ceiling assumption</span> |
-| Sharing | Memory must sum under 10 GB | One LLM stays, the rest left the GPU (post 3) | <span class="pill good">held</span> |
+| Sharing | Memory must sum under 10 GB | One LLM stays, the rest left the GPU ([post 3](/blog/benchmarks-rtx-3080/vllm-first)) | <span class="pill good">held</span> |
 
-**Verdict: the card is not the bottleneck for an 8B model.** It generates at 79% of the physical limit and reads prompts at over 4,000 tok/s. A 35B model runs but at 1.8× slower generation and 5.4× slower prompts, so it has to buy something to be worth it. That is post 7. First, the question I put off in post 3: how much speed does the engine itself cost?
+**Verdict: the card is not the bottleneck for an 8B model.** It generates at 79% of the physical limit and reads prompts at over 4,000 tok/s. A 35B model runs but at 1.8× slower generation and 5.4× slower prompts, so it has to buy something to be worth it. That is [post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off). First, the question I put off in [post 3](/blog/benchmarks-rtx-3080/vllm-first): how much speed does the engine itself cost?

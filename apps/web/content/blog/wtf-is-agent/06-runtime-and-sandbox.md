@@ -5,7 +5,7 @@ verdict: One execution interface with several light engines, inside a sandbox th
 date: 2026-11-14
 ---
 
-Once the model writes code, that code has to run somewhere. The tempting answer is the machine the agent already lives on, and it is the wrong one. **Runtime** is what executes a program. **Sandbox** is the wall around it. I designed three versions of both on one day in November, and the third is the one I kept.
+Once the model writes code, that code has to run somewhere. The tempting answer is the machine the agent already lives on, and it is the wrong one. **Runtime** is what executes a program. **Sandbox** is the wall around it. I designed three versions of both on one day, and the third is the one I kept.
 
 <div class="stats">
 <div><b>~3 <small>s</small></b><span>to boot a microVM per session, measured on my cluster</span></div>
@@ -39,10 +39,10 @@ Once the model writes code, that code has to run somewhere. The tempting answer 
 ## The journey: three designs, one day
 
 <ol class="timeline">
-<li><time>Before</time><b>The model's commands ran in the worker.</b> As subprocesses, with the worker's entire environment: its credentials, its database pool, its model keys. Anything the model wrote, or a web page made it write, ran next to all of it.</li>
-<li><time>Nov 14, first</time><b>A microVM per session.</b> Everything the agent runs goes to a sandbox that boots on demand, with its own mounted folders. Built and verified. Cold start about 3 seconds.</li>
-<li><time>Nov 14, second</time><b>Code mode in an embedded interpreter.</b> The model writes a Python program against the connected services instead of calling tools one at a time. It runs in a small Rust interpreter that starts in under a millisecond.</li>
-<li class="end"><time>Nov 14, third</time><b>One interface, light engines.</b> A skill's real scripts ran byte for byte identically on Python compiled to WebAssembly, in about 34 ms with no VM. The microVM per session was removed.</li>
+<li><b>The model's commands ran in the worker.</b> As subprocesses, with the worker's entire environment: its credentials, its database pool, its model keys. Anything the model wrote, or a web page made it write, ran next to all of it.</li>
+<li><b>A microVM per session.</b> Everything the agent runs goes to a sandbox that boots on demand, with its own mounted folders. Built and verified. Cold start about 3 seconds.</li>
+<li><b>Code mode in an embedded interpreter.</b> The model writes a Python program against the connected services instead of calling tools one at a time. It runs in a small Rust interpreter that starts in under a millisecond.</li>
+<li class="end"><b>One interface, light engines.</b> A skill's real scripts ran byte for byte identically on Python compiled to WebAssembly, in about 34 ms with no VM. The microVM per session was removed.</li>
 </ol>
 
 <div class="chart">
@@ -81,11 +81,11 @@ Published start-up figures conflict between vendors and benchmarks, so treat the
 
 | Component | Status | |
 |---|---|---|
-| Memory (post 2) | Built, traceable, unevaluated | <span class="pill warn">built, unproven</span> |
-| Tools (post 3) | Running; code-over-tools unevaluated | <span class="pill good">stable</span> |
-| Harness (post 4) | Running, shrinking | <span class="pill good">stable</span> |
-| Context and skills (post 5) | Context stable; skills thin | <span class="pill good">stable</span> |
-| Runtime and sandbox | Prototype built and tested; code mode off by default | <span class="pill warn">new</span> |
+| Memory ([post 2](/blog/wtf-is-agent/memory)) | Built, traceable; two memory journeys pass | <span class="pill warn">thin</span> |
+| Tools ([post 3](/blog/wtf-is-agent/the-toolbox)) | Running; journey suite measures discovery, chaining and failure | <span class="pill good">measured</span> |
+| Harness ([post 4](/blog/wtf-is-agent/the-harness)) | Running, shrinking | <span class="pill good">stable</span> |
+| Context and skills ([post 5](/blog/wtf-is-agent/context-and-skills)) | Context stable; skills thin | <span class="pill good">stable</span> |
+| Runtime and sandbox | Prototype built and tested; code mode off by default; the journeys do not exercise it | <span class="pill warn">new</span> |
 | Type check of a program before it runs | Planned, not in the executor yet | <span class="pill">later</span> |
 
-**Verdict: the shape is right and the evidence is thin.** Keeping the sandbox empty of secrets and network is the part I will not change. The engine choice is a day old, code mode has not been evaluated on real requests, and the first design I built was thrown away. Next: how the agent wakes up on its own, and what stops it.
+**Verdict: the shape is right and the evidence is thin.** Keeping the sandbox empty of secrets and network is the part I will not change. The engine choice is a day old, code mode has not been evaluated on real requests, the journeys never run code, and the first design I built was thrown away. Next: how the agent wakes up on its own, and what stops it.

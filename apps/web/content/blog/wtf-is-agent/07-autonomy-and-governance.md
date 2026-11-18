@@ -56,10 +56,10 @@ No outside system can wake *your* agent. That is the whole gap. The rule I wrote
 > If an external system should act at T, use that system's tool. If the agent should think at T, arm a wake. If the agent should think when something changes, arm a watch.
 
 <ol class="timeline">
-<li><time>Before Oct 8</time><b>Intentions.</b> Every request was a workflow, and the workflow's own state was the record. It failed four ways: recurring ones were schedules, not workflows, so every operation had two code paths; conditions were expensive and a stub that never fired; identity was a guess from free text; and most of it duplicated tools the agent already had.</li>
-<li><time>Oct 8</time><b>Wake tools.</b> Delete everything except the wake. A reminder is a schedule that signals the agent.</li>
-<li><time>Oct 25</time><b>Reminders move out.</b> The agent's own reminders and watches became items in a separate planning service. The harness lost its watch tools.</li>
-<li class="end"><time>Oct 26</time><b>A wake is a message to yourself.</b> It arrives as the agent's own message, "This is your own task, set to come due now", not as a tool call.</li>
+<li><b>Intentions.</b> Every request was a workflow, and the workflow's own state was the record. It failed four ways: recurring ones were schedules, not workflows, so every operation had two code paths; conditions were expensive and a stub that never fired; identity was a guess from free text; and most of it duplicated tools the agent already had.</li>
+<li><b>Wake tools.</b> Delete everything except the wake. A reminder is a schedule that signals the agent.</li>
+<li><b>Reminders move out.</b> The agent's own reminders and watches became items in a separate planning service. The harness lost its watch tools.</li>
+<li class="end"><b>A wake is a message to yourself.</b> It arrives as the agent's own message, "This is your own task, set to come due now", not as a tool call.</li>
 </ol>
 
 ## Asking: one pause for everything
@@ -92,10 +92,11 @@ A turn is bounded by a step limit, a retry limit and a spend budget. The rule I 
 
 | Component | Status | |
 |---|---|---|
-| Memory, tools, harness, context (posts 2 to 5) | Built; see earlier posts | <span class="pill good">stable</span> |
-| Runtime and sandbox (post 6) | New, unevaluated | <span class="pill warn">new</span> |
+| Memory, tools, harness, context (posts [2](/blog/wtf-is-agent/memory) to [5](/blog/wtf-is-agent/context-and-skills)) | Built; see earlier posts | <span class="pill good">stable</span> |
+| Runtime and sandbox ([post 6](/blog/wtf-is-agent/runtime-and-sandbox)) | New, unevaluated | <span class="pill warn">new</span> |
 | Waking | One small design after two removed | <span class="pill good">stable</span> |
 | Asking and approvals | Live-verified for approve, deny, timeout and interrupt | <span class="pill good">stable</span> |
+| Asking before acting | Journeys: the 35B fast asks on an ambiguous booking; Gyro-S and the thinking 35B book it; the 8B sends an email without the address | <span class="pill warn">mixed</span> |
 | Stopping on rules | Visibility only. Rule-driven stop is deferred | <span class="pill bad">gap</span> |
 
-**Verdict: I deleted my way to a small design.** Waking shrank from a whole subsystem to one idea, "the agent's own reasoning at a future time". Asking is solid. The gap is stopping: I can see spend but I cannot yet make a rule stop a run. Next: how I know any of this makes the agent decide correctly.
+**Verdict: I deleted my way to a small design.** Waking shrank from a whole subsystem to one idea, "the agent's own reasoning at a future time". Asking is solid as a mechanism. The model's side of it is not settled: the journey suite shows the 35B fast asking before an ambiguous booking, Gyro-S and the thinking 35B booking it, and the 8B sending an email without looking up the address. The gap is stopping: I can see spend but I cannot yet make a rule stop a run. Next: how I know any of this makes the agent decide correctly.

@@ -5,7 +5,7 @@ verdict: vLLM claimed 8.5 of 10 GiB for a 7B model and sharing failed twice, so 
 date: 2026-04-19
 ---
 
-The goal from post 1 was one card carrying many jobs. The first engine I reached for was the one built for serious inference, and it taught me the most important rule about this card quickly.
+The goal from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal) was one card carrying many jobs. The first engine I reached for was the one built for serious inference, and it taught me the most important rule about this card quickly.
 
 <div class="stats">
 <div><b>8.5 <small>GiB</small></b><span>claimed by vLLM at <code>gpu_memory_utilization=0.90</code></span></div>
@@ -25,12 +25,12 @@ The goal from post 1 was one card carrying many jobs. The first engine I reached
 
 
 <ol class="timeline">
-<li><time>Apr 19–20</time><b>Ray Serve + vLLM.</b> An inference image built in CI, served through KubeRay, with OpenTelemetry and monitoring from day one.</li>
-<li><time>May 17</time><b>Tuned and pinned.</b> Serving Qwen2.5-7B-Instruct (AWQ 4-bit): memory from 0.85 to 0.90, prefix caching on, context capped at 4,096, concurrency limit 8 to 128. vLLM pinned back from 0.8.5 to 0.7.3.</li>
-<li><time>Jun 1</time><b>Ollama arrives.</b> Added next to vLLM as a multi-model server, first for the embedder. The notes already say one 7B model saturates the card.</li>
-<li><time>Aug 1</time><b>Chat out, OCR in.</b> A general chat model on Ollama had seen zero requests in 72 hours, so its slot became an OCR model. By the Aug 25 notes vLLM is disabled.</li>
-<li><time>Aug 25–26</time><b>A second GPU tenant.</b> Real-time speech to text added alongside Ollama using GPU time-slicing.</li>
-<li class="end"><time>Sep 23</time><b>Removed again.</b> Ollama alone did not need time-slicing, so both went.</li>
+<li><b>Ray Serve + vLLM.</b> An inference image built in CI, served through KubeRay, with OpenTelemetry and monitoring from day one.</li>
+<li><b>Tuned and pinned.</b> Serving Qwen2.5-7B-Instruct (AWQ 4-bit): memory from 0.85 to 0.90, prefix caching on, context capped at 4,096, concurrency limit 8 to 128. vLLM pinned back from 0.8.5 to 0.7.3.</li>
+<li><b>Ollama arrives.</b> Added next to vLLM as a multi-model server, first for the embedder. The notes already say one 7B model saturates the card.</li>
+<li><b>Chat out, OCR in.</b> A general chat model on Ollama had seen zero requests in 72 hours, so its slot became an OCR model. By then vLLM is disabled.</li>
+<li><b>A second GPU tenant.</b> Real-time speech to text added alongside Ollama using GPU time-slicing.</li>
+<li class="end"><b>Removed again.</b> Ollama alone did not need time-slicing, so both went.</li>
 </ol>
 
 ## The physics: where the memory goes
@@ -51,7 +51,7 @@ The top row of the chart above is the whole story of round 1. `gpu_memory_utiliz
 
 ## Round 2: sharing the card
 
-Ollama loads and unloads models on demand, so several can coexist. I had put an embedder on it in June, then an OCR model, then added real-time speech to text through GPU time-slicing, which makes the cluster report two GPUs so two pods can each request one.
+Ollama loads and unloads models on demand, so several can coexist. I had put an embedder on it earlier, then an OCR model, then added real-time speech to text through GPU time-slicing, which makes the cluster report two GPUs so two pods can each request one.
 
 | Gotcha | What happened | What I do now |
 |---|---|---|
@@ -59,7 +59,7 @@ Ollama loads and unloads models on demand, so several can coexist. I had put an 
 | Config outside the chart | The device-plugin patch lived in `kube-system`, not in Helm | Document it, or avoid it |
 | A resident model nobody called | The chat model had zero requests in 72 hours | Measure traffic before assigning VRAM. `keepAlive` went from 24 h to 10 min |
 
-The experiment lasted about four weeks and was removed on Sep 23. It was a useful failure: it showed that "schedulable" and "fits" are different questions.
+The experiment lasted about four weeks and was then removed. It was a useful failure: it showed that "schedulable" and "fits" are different questions.
 
 ## What I produced
 
@@ -69,7 +69,7 @@ The experiment lasted about four weeks and was removed on Sep 23. It was a usefu
 
 ## Where it stands, and my verdict
 
-Against the starting position from post 1:
+Against the starting position from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal):
 
 | Criterion | Status | |
 |---|---|---|

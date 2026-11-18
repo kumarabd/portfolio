@@ -1,7 +1,7 @@
 ---
 title: Memory: remember, cite, forget
 summary: Three layers, one provenance trail, and a forget that follows it. What I built, rebuilt and surveyed for an agent's long-term memory.
-verdict: Store the raw text, keep facts small, derive everything else, and make every belief point back to its source so it can be traced and forgotten. The design is built; its evaluation is not.
+verdict: Store the raw text, keep facts small, derive everything else, and make every belief point back to its source so it can be traced and forgotten. The design is built; two journeys pass, but a memory benchmark is still missing.
 date: 2026-06-03
 ---
 
@@ -11,7 +11,7 @@ An agent that forgets is a chatbot, so memory was the first thing I built. It wa
 <div><b>3</b><span>layers: raw text, facts, conclusions</span></div>
 <div><b>1</b><span>provenance table joining every kind of record</span></div>
 <div><b>3</b><span>clocks per fact: happened, told, stored</span></div>
-<div><b>0</b><span>evaluation results so far, which is the honest gap</span></div>
+<div><b>2</b><span>memory journeys in the suite; the 35B passed all six samples</span></div>
 </div>
 
 ## The design
@@ -44,12 +44,12 @@ Four operations sit on top of that: **retain** (store a payload, extract facts),
 ## The journey
 
 <ol class="timeline">
-<li><time>Jun 3</time><b>A mining pipeline.</b> Extract entities and rules from conversations, cluster them into a knowledge graph, consolidate in the background.</li>
-<li><time>Aug 17</time><b>Rebuilt on a published design.</b> Retain, recall, reflect and mental models, following the Hindsight paper, running as durable workflows.</li>
-<li><time>Sep 13</time><b>The first pipeline is removed.</b> Mining, clustering and consolidation were taken out in full once the rebuild replaced them.</li>
-<li><time>Oct 22</time><b>Raw text first.</b> Store every payload as sent, give each fact a source, add a separate layer for conclusions.</li>
-<li><time>Oct 25–26</time><b>One provenance trail.</b> Profiles, relations and observations all cite their sources in one table, and forget walks it.</li>
-<li class="end"><time>Nov 8</time><b>Realigned with the paper.</b> Observations are recomputed per entity from all of its facts.</li>
+<li><b>A mining pipeline.</b> Extract entities and rules from conversations, cluster them into a knowledge graph, consolidate in the background.</li>
+<li><b>Rebuilt on a published design.</b> Retain, recall, reflect and mental models, following the Hindsight paper, running as durable workflows.</li>
+<li><b>The first pipeline is removed.</b> Mining, clustering and consolidation were taken out in full once the rebuild replaced them.</li>
+<li><b>Raw text first.</b> Store every payload as sent, give each fact a source, add a separate layer for conclusions.</li>
+<li><b>One provenance trail.</b> Profiles, relations and observations all cite their sources in one table, and forget walks it.</li>
+<li class="end"><b>Realigned with the paper.</b> Observations are recomputed per entity from all of its facts.</li>
 </ol>
 
 ## Decisions that held
@@ -84,7 +84,7 @@ This is from my reading notes of the papers and, for Hindsight, its released cod
 | Does it remember across sessions? | Retain, recall, reflect and mental models run | <span class="pill good">yes</span> |
 | Can a belief be traced to its words? | Yes, for everything formed after the raw layer | <span class="pill good">yes</span> |
 | Can I forget something and what came from it? | One operation does it | <span class="pill good">yes</span> |
-| Does it help the agent decide better? | Not measured | <span class="pill bad">unproven</span> |
+| Does it help the agent decide better? | Two journeys pass (a preference recalled, a fact saved); no with/without comparison | <span class="pill warn">thin</span> |
 | Do conclusions earn their cost? | No with/without comparison yet | <span class="pill bad">unproven</span> |
 
-**Verdict: the design is sound and untested.** The traceability and forgetting work as designed. I have no measurement that the layers improve what the agent does, which is the next thing I owe this component. Next: the toolbox, which is how that agent reaches anything outside itself.
+**Verdict: the design is sound and still under-tested.** The traceability and forgetting work as designed, and the journey suite now gives the memory layer a first signal: two scenarios, and the 35B passes all six samples (the thinking 8B misses one). That is not a memory benchmark. I still have no measurement that the derived layers improve what the agent does, which is the next thing I owe this component. Next: the toolbox, which is how that agent reaches anything outside itself.

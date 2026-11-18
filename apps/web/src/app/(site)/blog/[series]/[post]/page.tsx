@@ -27,6 +27,7 @@ export default async function PostPage({ params }: Props) {
         <p className="meta">
           Part {index + 1} of {s.posts.length} · {p.when} · {p.minutes} min read
         </p>
+        {p.draft && <p className="tldr"><b>Draft</b> Not published. It appears here only in local development.</p>}
         {p.verdict && (
           <p className="tldr">
             <b>In short</b> {p.verdict}

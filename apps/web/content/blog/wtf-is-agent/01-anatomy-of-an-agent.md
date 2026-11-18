@@ -11,7 +11,7 @@ I set out to build a **multi-agent system that runs on its own**. This series ta
 <div><b>9</b><span>components around one model</span></div>
 <div><b>3</b><span>components I rebuilt from scratch: memory, waking, execution</span></div>
 <div><b>6</b><span>design rules that survived every rewrite</span></div>
-<div><b>Jun 3</b><span>first commit, starting with memory</span></div>
+<div><b>Memory</b><span>the component I started with</span></div>
 </div>
 
 ## What an agent is
@@ -77,12 +77,13 @@ Everything else in this series is what it takes to make that loop **remember, re
 ## The order I built it in
 
 <ol class="timeline">
-<li><time>Jun 3</time><b>Memory.</b> Started here, because an agent that forgets is a chatbot.</li>
-<li><time>Jul 13</time><b>Tools.</b> One hub for tools, skills and logins, so no agent holds a credential.</li>
-<li><time>Aug 14</time><b>Harness.</b> A durable control loop around the model, extended from an existing open-source agent.</li>
-<li><time>Aug–Oct</time><b>Context, skills, triggers.</b> What the model reads, procedures it follows, and how it comes back unprompted.</li>
-<li><time>Oct 26</time><b>Evals.</b> A suite that checks the one decision everything depends on.</li>
-<li class="end"><time>Nov 14</time><b>Runtime and sandbox.</b> The isolation I had just built was replaced by something lighter, the same day.</li>
+<li><b>Memory.</b> Started here, because an agent that forgets is a chatbot.</li>
+<li><b>Tools.</b> One hub for tools, skills and logins, so no agent holds a credential.</li>
+<li><b>Harness.</b> A durable control loop around the model, extended from an existing open-source agent.</li>
+<li><b>Context, skills, triggers.</b> What the model reads, procedures it follows, and how it comes back unprompted.</li>
+<li><b>Evals.</b> A suite that checks the one decision everything depends on.</li>
+<li><b>Runtime and sandbox.</b> The isolation I had just built was replaced by something lighter, the same day.</li>
+<li class="end"><b>Journeys.</b> The 9/24 ceiling was the instrument, not the model. A fake world now checks what the agent does, not just its first decision.</li>
 </ol>
 
 ## Six rules I kept
@@ -118,6 +119,6 @@ I surveyed each area before building. Each post gives the detail; this is the ma
 | Context and skills | Built; skills rewritten once | <span class="pill good">stable</span> |
 | Runtime and sandbox | Replaced within a day of the first build | <span class="pill warn">churning</span> |
 | Triggers and governance | Waking redesigned three times, now small | <span class="pill warn">churning</span> |
-| Evals | One suite, with a ceiling I have not explained | <span class="pill bad">weakest</span> |
+| Evals | Four suites; the 9/24 ceiling was a measurement fault, fixed; journeys now measure whole tasks | <span class="pill good">rebuilt</span> |
 
-**Verdict: the spine held and the edges moved.** The harness, memory and tools kept their shape through every rewrite. Runtime, sandbox and waking were redesigned repeatedly, and evals is the thinnest part of the whole system. Next: memory, the first thing I built.
+**Verdict: the spine held and the edges moved.** The harness, memory and tools kept their shape through every rewrite. Runtime, sandbox and waking were redesigned repeatedly. Evals was the thinnest part and is now the most changed: its first ceiling was a measurement fault, and the journey suite is the first test that checks what the agent actually does. Next: memory, the first thing I built.

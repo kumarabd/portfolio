@@ -48,13 +48,13 @@ The rule underneath is the one I trust most: **the agent asks, the toolbox holds
 ## The journey
 
 <ol class="timeline">
-<li><time>Jul 13</time><b>A searchable registry.</b> Each service described by a manifest, every tool stored with an embedding so the agent finds one by meaning.</li>
-<li><time>Jul 28</time><b>Skills joined it.</b> Procedures are stored and searched the same way as tools.</li>
-<li><time>Aug 3</time><b>OAuth upgrade.</b> Connections sign in once and refresh, so a login belongs to the toolbox and not to an agent.</li>
-<li><time>Oct</time><b>More connections.</b> Mail, search and others, each with its own sign-in. A tool named in a query is always returned first.</li>
-<li><time>Nov 13</time><b>A cleaner idea.</b> The toolbox is the agent's device: find a capability, use it, let the device hold the sign-in.</li>
-<li><time>Nov 14</time><b>Built and removed in a day.</b> A second door for code to call tools directly, with signed tokens. Removed because the executor has no network at all.</li>
-<li class="end"><time>Nov 15–16</time><b>New connections and usage.</b> A cluster connection, a browser connection, and a record of every proxied call.</li>
+<li><b>A searchable registry.</b> Each service described by a manifest, every tool stored with an embedding so the agent finds one by meaning.</li>
+<li><b>Skills joined it.</b> Procedures are stored and searched the same way as tools.</li>
+<li><b>OAuth upgrade.</b> Connections sign in once and refresh, so a login belongs to the toolbox and not to an agent.</li>
+<li><b>More connections.</b> Mail, search and others, each with its own sign-in. A tool named in a query is always returned first.</li>
+<li><b>A cleaner idea.</b> The toolbox is the agent's device: find a capability, use it, let the device hold the sign-in.</li>
+<li><b>Built and removed in a day.</b> A second door for code to call tools directly, with signed tokens. Removed because the executor has no network at all.</li>
+<li class="end"><b>New connections and usage.</b> A cluster connection, a browser connection, and a record of every proxied call.</li>
 </ol>
 
 ## Decisions that held
@@ -92,10 +92,11 @@ The research behind it is consistent: the [CodeAct paper](https://arxiv.org/abs/
 
 | Component | Status | |
 |---|---|---|
-| Memory (post 2) | Built, traceable, no evaluation yet | <span class="pill warn">built, unproven</span> |
+| Memory ([post 2](/blog/wtf-is-agent/memory)) | Built, traceable; two memory journeys pass | <span class="pill warn">thin</span> |
 | Catalog, search and logins | Running, with usage and audit | <span class="pill good">stable</span> |
+| Tool discovery and chaining | Journey suite: 27/27 on the 35B, 6/27 on the 8B; a flaky tool, a down tool and a missing tool are all in the set | <span class="pill good">measured</span> |
 | Code against the catalog | Built behind a switch, not evaluated on real requests | <span class="pill bad">unproven</span> |
 | A second door for code | Built and removed in one day | <span class="pill warn">deleted</span> |
 | Holding a changed tool definition for approval | Hashing is built, the hold is not | <span class="pill">later</span> |
 
-**Verdict: the door and the key-holding are right; the code idea is still a bet.** Keeping secrets out of the agent has held up under every redesign. The claim that code beats one-call-per-turn rests on other people's results until I measure it on my own requests. Next: the harness, the loop that decides when to call any of this.
+**Verdict: the door and the key-holding are right; the code idea is still a bet.** Keeping secrets out of the agent has held up under every redesign. The journey suite now measures the door itself: the 35B finds hidden tools, chains them and retries a flaky one; the 8B mostly cannot. The claim that code beats one-call-per-turn still rests on other people's results until I measure it on my own requests. Next: the harness, the loop that decides when to call any of this.

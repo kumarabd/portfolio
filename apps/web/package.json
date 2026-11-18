@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "e2e": "playwright test",
-    "predev": "node scripts/blog-index.mjs",
+    "predev": "BLOG_DRAFTS=1 node scripts/blog-index.mjs",
     "prebuild": "node scripts/blog-index.mjs",
     "pretest": "node scripts/blog-index.mjs"
   },

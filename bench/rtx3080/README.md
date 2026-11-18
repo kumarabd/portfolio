@@ -11,10 +11,12 @@ Everything was run on one RTX 3080 (10 GB) shared with other services.
 | `sweep.sh` | Raw speed with `llama-bench`: prompt processing at 512 and 4,096 tokens, generation of 128. One run per configuration so an out-of-memory does not abort the rest. Run inside a llama.cpp CUDA pod with the GPU free |
 | `engine_bench.py` | Engine comparison over any OpenAI-compatible endpoint (Ollama, llama-server, Strata, vLLM): time to first token cold and warm, decode speed, aggregate speed with 1, 2 and 4 requests in flight |
 | `llm_bench.py` | Tool-calling quality and latency: 14 cases plus a follow-up, against an eight-tool set |
+| `vision_bench.py` | Image-in latency over a chat endpoint: time to first token (image encode plus prompt read) and decode speed per repetition |
+| `bench-mode.sh` | Scales the RAM- and GPU-heavy services to zero so a big model can be benchmarked, then restores them. While on, the local LLM, embeddings, rerankers, speech and the classifier are down |
 | `strata-bench.yaml` | Kubernetes manifest used to run the Strata engine for the speed run (node name removed, key replaced) |
 | `cases/tool-calling-cases.md` | The 15 prompts in `llm_bench.py` and what each tests |
 | `cases/decision-suite-cases.md` | The agent decision suite: 32 cases (run in triage and freeform modes) plus 18 delegate cases, with the decision each should produce |
-| `results/` | `sweep-results.txt`, the four `engine-*.json` files, and per-suite totals for the decision suite |
+| `results/` | `sweep-results.txt`, the seven `engine-*.json` files, and per-suite totals for the decision suite |
 
 ## Running
 

@@ -91,7 +91,7 @@ The full list of cases and accepted decisions is [published](https://github.com/
 
 ## Where it stands, and my verdict
 
-Mapping the goal from post 1 onto the instruments:
+Mapping the goal from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal) onto the instruments:
 
 | Criterion | Instrument | Covered |
 |---|---|---|

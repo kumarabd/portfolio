@@ -42,12 +42,12 @@ The harness is everything between "a message arrives" and "the reply is delivere
 ## The journey
 
 <ol class="timeline">
-<li><time>Aug 14</time><b>Extend, don't replace.</b> Keep an existing agent's loop and tools; fix where it runs. Its loop ran inside the chat process and kept state in one local file.</li>
-<li><time>Aug 28</time><b>Leverage, don't rebuild.</b> Stop writing file and web tools. Delegate coding to coding agents and orchestrate them.</li>
-<li><time>Sep 7–9</time><b>Delete the helpers.</b> Classifier-driven lanes, routing and a planner were removed. The model decides how to handle a request.</li>
-<li><time>Sep 30</time><b>Delete the modes.</b> A conversational skill and session-mode idea was removed outright.</li>
-<li><time>Oct 25</time><b>One kind of delegated work.</b> Tasks replaced subagents.</li>
-<li class="end"><time>Nov 14–15</time><b>An agent chooses its harness.</b> The platform can host a coding agent for an agent and translate its events, instead of copying it.</li>
+<li><b>Extend, don't replace.</b> Keep an existing agent's loop and tools; fix where it runs. Its loop ran inside the chat process and kept state in one local file.</li>
+<li><b>Leverage, don't rebuild.</b> Stop writing file and web tools. Delegate coding to coding agents and orchestrate them.</li>
+<li><b>Delete the helpers.</b> Classifier-driven lanes, routing and a planner were removed. The model decides how to handle a request.</li>
+<li><b>Delete the modes.</b> A conversational skill and session-mode idea was removed outright.</li>
+<li><b>One kind of delegated work.</b> Tasks replaced subagents.</li>
+<li class="end"><b>An agent chooses its harness.</b> The platform can host a coding agent for an agent and translate its events, instead of copying it.</li>
 </ol>
 
 ## Decisions that held
@@ -77,10 +77,11 @@ Most comparisons I found are written by the vendors, so I leaned on the design p
 
 | Component | Status | |
 |---|---|---|
-| Memory (post 2) | Built, traceable, unevaluated | <span class="pill warn">built, unproven</span> |
-| Tools (post 3) | Running; code-over-tools unevaluated | <span class="pill good">stable</span> |
+| Memory ([post 2](/blog/wtf-is-agent/memory)) | Built, traceable; two memory journeys pass | <span class="pill warn">thin</span> |
+| Tools ([post 3](/blog/wtf-is-agent/the-toolbox)) | Running; journey suite measures discovery, chaining and failure | <span class="pill good">measured</span> |
 | Loop, durability, interrupts | Running through every later change | <span class="pill good">stable</span> |
+| Failure handling | A tool that fails once is retried; one that stays down is disclosed | <span class="pill good">checked</span> |
 | Router, lanes, planner | Removed. A classifier now only suggests a label the model may ignore | <span class="pill warn">deleted</span> |
 | Hosting a coding agent | Designed and partly built; the platform only translates | <span class="pill warn">new</span> |
 
-**Verdict: the harness got smaller every time I touched it.** Each rewrite moved intelligence out of the harness and into the model, and kept the harness for the things that must be guaranteed: not losing work, not running two turns at once, not spending without limit. Next: what the model actually reads on each turn.
+**Verdict: the harness got smaller every time I touched it.** Each rewrite moved intelligence out of the harness and into the model, and kept the harness for the things that must be guaranteed: not losing work, not running two turns at once, not spending without limit. The journey suite now exercises the failure path: a flaky tool is retried, and a tool that stays down is disclosed rather than invented. Next: what the model actually reads on each turn.

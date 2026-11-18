@@ -12,6 +12,7 @@
         "date": "2026-04-19",
         "when": "Apr 19, 2026",
         "verdict": "A 10 GB, 760 GB/s card should fit a quantized 8B model and generate fast on paper. Sharing the card and decision quality are the open risks.",
+        "draft": false,
         "minutes": 5
       },
       {
@@ -22,6 +23,7 @@
         "date": "2026-11-09",
         "when": "Nov 9, 2026",
         "verdict": "Speed and fit can be repeated by anyone from the published folder. Quality rests on one suite I wrote for my own agent.",
+        "draft": false,
         "minutes": 5
       },
       {
@@ -32,6 +34,7 @@
         "date": "2026-04-19",
         "when": "Apr 19, 2026",
         "verdict": "vLLM claimed 8.5 of 10 GiB for a 7B model and sharing failed twice, so Ollama became the single GPU tenant.",
+        "draft": false,
         "minutes": 5
       },
       {
@@ -42,6 +45,7 @@
         "date": "2026-09-26",
         "when": "Sep 26, 2026",
         "verdict": "Qwen3 8B at 40k context with a q8_0 KV cache: the only candidate that is fully resident and best at choosing tools.",
+        "draft": false,
         "minutes": 4
       },
       {
@@ -52,34 +56,37 @@
         "date": "2026-11-11",
         "when": "Nov 11, 2026",
         "verdict": "The 8B generates at 79% of the bandwidth ceiling and reads prompts faster than my ceiling allowed, so the ceiling was wrong. The 35B runs but is 1.8x slower to generate.",
+        "draft": false,
         "minutes": 6
       },
       {
         "slug": "engines-head-to-head",
         "file": "06-engines-head-to-head.md",
         "title": "Engines head to head",
-        "summary": "Ollama against the llama.cpp server underneath it, then a third engine that cannot reuse a prompt. Decode speed, first-token time and load.",
+        "summary": "Ollama against the llama.cpp server underneath it, then a third engine that did not reuse a prompt in my run. Decode speed, first-token time and load.",
         "date": "2026-11-11",
         "when": "Nov 11, 2026",
-        "verdict": "Stay on Ollama: it costs 2 to 8% decode speed. Strata cannot reuse a prompt, which makes a warm start 42x slower.",
+        "verdict": "Stay on Ollama: it costs 2 to 8% decode speed. In my run Strata did not reuse a prompt, which made a warm start 42x slower.",
+        "draft": false,
         "minutes": 6
       },
       {
         "slug": "does-bigger-pay-off",
         "file": "07-does-bigger-pay-off.md",
         "title": "Does a bigger model pay off?",
-        "summary": "Speed is settled, so I measured decisions. My agent's suite on Qwen3 8B and a 35B mixture-of-experts model, then the whole series scored against the goal.",
+        "summary": "Speed is settled, so I measured decisions. The earlier suite said stay on the 8B, but its 9 of 24 ceiling was a measurement fault; the corrected journey suite reverses the verdict.",
         "date": "2026-11-11",
         "when": "Nov 11, 2026",
-        "verdict": "Stay on the 8B: the 35B scores 58.9% against 61.6 to 62.8% and takes over twice as long. Hardware is not the blocker; decision quality is unproven.",
-        "minutes": 8
+        "verdict": "Stay on the 35B: on the corrected journey suite it passes 72 of 81 and the 8B 32 of 81. The earlier suite's 9 of 24 ceiling was a measurement fault, and the analysis below is kept as its record.",
+        "draft": false,
+        "minutes": 9
       }
     ]
   },
   {
     "slug": "wtf-is-agent",
     "title": "WTF is Agent?",
-    "summary": "How an autonomous agent actually works, one component at a time, from my own build. The anatomy, the design decisions, what I deleted, and a survey of what already exists.",
+    "summary": "How an autonomous agent actually works, one component at a time, from my own build. The anatomy, the design decisions, what I deleted, what I measured, and a survey of what already exists.",
     "posts": [
       {
         "slug": "anatomy-of-an-agent",
@@ -89,6 +96,7 @@
         "date": "2026-06-03",
         "when": "Jun 3, 2026",
         "verdict": "An agent is a model in a loop plus seven things around it. The loop, memory and toolbox are the spine; the rest is where I rebuilt the most.",
+        "draft": false,
         "minutes": 7
       },
       {
@@ -98,7 +106,8 @@
         "summary": "Three layers, one provenance trail, and a forget that follows it. What I built, rebuilt and surveyed for an agent's long-term memory.",
         "date": "2026-06-03",
         "when": "Jun 3, 2026",
-        "verdict": "Store the raw text, keep facts small, derive everything else, and make every belief point back to its source so it can be traced and forgotten. The design is built; its evaluation is not.",
+        "verdict": "Store the raw text, keep facts small, derive everything else, and make every belief point back to its source so it can be traced and forgotten. The design is built; two journeys pass, but a memory benchmark is still missing.",
+        "draft": false,
         "minutes": 6
       },
       {
@@ -109,6 +118,7 @@
         "date": "2026-07-13",
         "when": "Jul 13, 2026",
         "verdict": "One door that holds every login, a typed catalog the model searches, and code instead of one tool call per turn. The agent never holds a secret.",
+        "draft": false,
         "minutes": 6
       },
       {
@@ -119,7 +129,8 @@
         "date": "2026-08-14",
         "when": "Aug 14, 2026",
         "verdict": "Keep the model's loop, change where it runs: durable, one active turn per conversation, interrupts as signals. Let the model steer and delete the routers, lanes and planners that tried to help.",
-        "minutes": 5
+        "draft": false,
+        "minutes": 6
       },
       {
         "slug": "context-and-skills",
@@ -129,6 +140,7 @@
         "date": "2026-08-23",
         "when": "Aug 23, 2026",
         "verdict": "Keep everything, show the model a summarised view, store big results as files, and compact in two tiers. Put mechanical steps in skill scripts, because an agent's latency is its number of model steps.",
+        "draft": false,
         "minutes": 6
       },
       {
@@ -139,6 +151,7 @@
         "date": "2026-11-14",
         "when": "Nov 14, 2026",
         "verdict": "One execution interface with several light engines, inside a sandbox that has no network and no secrets. I built a microVM per session first and replaced it within a day, because a pure function should not need a VM.",
+        "draft": false,
         "minutes": 6
       },
       {
@@ -149,17 +162,19 @@
         "date": "2026-08-07",
         "when": "Aug 7, 2026",
         "verdict": "An agent only needs a wake when its own reasoning is needed later; everything else is a notification. Asking is a durable pause, approvals are the same pause, and stopping is a clean result, not a crash.",
-        "minutes": 6
+        "draft": false,
+        "minutes": 7
       },
       {
         "slug": "knowing-it-works",
         "file": "08-knowing-it-works.md",
         "title": "Knowing it works: evals",
-        "summary": "A labelled suite for the one decision everything depends on, run on every model before I build on it. What it caught, and the ceiling I still cannot explain.",
+        "summary": "The first suite hit a 9/24 ceiling that looked like a model limit. It was the instrument. The fix, the regression tests that keep it honest, and what 27 journeys say about the models.",
         "date": "2026-10-26",
         "when": "Oct 26, 2026",
-        "verdict": "Measure a judgement before building on it: labelled cases, several samples, a held-out set. It already killed one design. My own suite has a ceiling I have not explained, so the scores are capped.",
-        "minutes": 6
+        "verdict": "A suite can cap every model by counting cases no model can pass. Exclude the unreachable, put an interval on the score, and make every scenario pass its own oracle. With that fixed, the journey suite separates the models: 72 of 81 for the 35B, 32 for the 8B.",
+        "draft": false,
+        "minutes": 10
       },
       {
         "slug": "what-i-deleted",
@@ -169,6 +184,7 @@
         "date": "2026-06-03",
         "when": "Jun 3, 2026",
         "verdict": "I deleted nearly as much as I kept, and the reasons repeat: the model did it better, it duplicated something, it sat in the wrong layer, or it was heavier than the job. The design is what survived.",
+        "draft": false,
         "minutes": 5
       },
       {
@@ -179,6 +195,7 @@
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
         "verdict": "AI is a stack of ideas: AI, machine learning, deep learning, language models. Ask which layer someone means.",
+        "draft": false,
         "minutes": 3
       },
       {
@@ -189,6 +206,7 @@
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
         "verdict": "Machine learning finds rules from examples by nudging parameters to shrink the error. Only data the model has never seen counts.",
+        "draft": false,
         "minutes": 3
       },
       {
@@ -199,6 +217,7 @@
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
         "verdict": "A neural network is stacked weighted sums with a bend, trained by gradient descent. It is matrix multiplication, which is why GPUs matter.",
+        "draft": false,
         "minutes": 2
       },
       {
@@ -209,6 +228,7 @@
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
         "verdict": "A language model predicts the next token. Its output is fluent and plausible but unverified, so give it sources and check what matters.",
+        "draft": false,
         "minutes": 3
       }
     ]

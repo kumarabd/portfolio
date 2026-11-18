@@ -30,7 +30,7 @@ With Ollama as the only GPU tenant, one question remained: which model do I leav
 | ornith-1.5:9b | 64k | 6.9 GB | <span class="pill good">100%</span> | 4 of 8 (vision, but weak at tools) |
 | qwen3:8b | 40k | 8.3 GB | <span class="pill good">100%</span> | 6 of 8 with thinking on |
 
-The 14B fell off the cliff from post 1: roughly 9 GB of weights before any KV cache, so a fifth of it ran on the CPU and generation crawled. The 9B was faster and lighter but picked the wrong tool half the time. Qwen3 8B gave up some speed and all vision for the best tool accuracy, and an agent needs tool accuracy more than anything.
+The 14B fell off the cliff from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal): roughly 9 GB of weights before any KV cache, so a fifth of it ran on the CPU and generation crawled. The 9B was faster and lighter but picked the wrong tool half the time. Qwen3 8B gave up some speed and all vision for the best tool accuracy, and an agent needs tool accuracy more than anything.
 
 ## The physics: predicting fit
 
@@ -81,13 +81,13 @@ OLLAMA_KEEP_ALIVE=10m
 
 ## Where it stands, and my verdict
 
-How the datasheet's predictions from post 1 held up so far:
+How the datasheet's predictions from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal) held up so far:
 
-| Question from post 1 | Paper said | Measured | |
+| Question from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal) | Paper said | Measured | |
 |---|---|---|---|
 | Does a 7 to 8B model fit? | Yes, with room | Qwen3 8B at 40k uses 8.3 GB, fully on GPU | <span class="pill good">held</span> |
 | Is 10 GB a cliff? | Yes | The 14B offloaded 21% and ran at 12.3 tok/s | <span class="pill good">held</span> |
 | Weights + KV + overhead | 7.7 GiB + 0.5 to 1.0 | 8.3 GB at 40k | <span class="pill good">held</span> |
-| Can several jobs share the card? | Only if memory sums to under 10 GB | Embedder and STT moved off the GPU (post 3) | <span class="pill good">held</span> |
+| Can several jobs share the card? | Only if memory sums to under 10 GB | Embedder and STT moved off the GPU ([post 3](/blog/benchmarks-rtx-3080/vllm-first)) | <span class="pill good">held</span> |
 
 **Verdict: Qwen3 8B at 40k context, q8_0 KV cache.** It is the only candidate that is both fully resident and good at choosing tools. It leaves about 1.4 GiB free, which is thin, so the embedder had to leave the GPU. Next: how fast it really is against the ceilings the datasheet drew.

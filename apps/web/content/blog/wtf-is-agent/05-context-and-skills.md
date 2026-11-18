@@ -64,19 +64,19 @@ A **skill** is a directory: a procedure the model follows, short prompt files, a
 |---|---|
 | The prompt says when, the script does how | The model keeps the judgement, the function keeps the arithmetic |
 | Fail loudly, and list every problem at once | No fallback path hides a failure. The model sees what to fix in one go |
-| A script cannot start a process or open a socket | It runs in the sandbox from post 6 and reaches the world only through the toolbox |
+| A script cannot start a process or open a socket | It runs in the sandbox from [post 6](/blog/wtf-is-agent/runtime-and-sandbox) and reaches the world only through the toolbox |
 | The agent can write a skill from a source I point it at | It goes live without a restart. Learning skills automatically from transcripts is banned |
 | No category filter on skill search | I built one and removed it the same day: labels describe the shape of a process, not the domain, so filtering excluded relevant skills |
 
 ## The journey
 
 <ol class="timeline">
-<li><time>Aug 23</time><b>A session-wide context design.</b> Summary tree, big-result files, two compaction tiers, informed by a published design.</li>
-<li><time>Oct 15</time><b>Skill search.</b> Skills found by meaning, loaded on demand. A category pre-filter was added and removed within the day.</li>
-<li><time>Oct 22</time><b>The 22-step task.</b> A planning task took 570 s, and the trace showed why.</li>
-<li><time>Oct 24</time><b>Skills with scripts.</b> A procedure plus functions the model calls.</li>
-<li><time>Oct 27</time><b>Soft compaction.</b> Background summarising added at the 50% tier.</li>
-<li class="end"><time>Nov 14</time><b>Scripts as modules.</b> Skill scripts moved from a shell to code run in the sandbox.</li>
+<li><b>A session-wide context design.</b> Summary tree, big-result files, two compaction tiers, informed by a published design.</li>
+<li><b>Skill search.</b> Skills found by meaning, loaded on demand. A category pre-filter was added and removed within the day.</li>
+<li><b>The 22-step task.</b> A planning task took 570 s, and the trace showed why.</li>
+<li><b>Skills with scripts.</b> A procedure plus functions the model calls.</li>
+<li><b>Soft compaction.</b> Background summarising added at the 50% tier.</li>
+<li class="end"><b>Scripts as modules.</b> Skill scripts moved from a shell to code run in the sandbox.</li>
 </ol>
 
 ## What already exists
@@ -91,9 +91,9 @@ A **skill** is a directory: a procedure the model follows, short prompt files, a
 
 | Component | Status | |
 |---|---|---|
-| Memory (post 2) | Built, traceable, unevaluated | <span class="pill warn">built, unproven</span> |
-| Tools (post 3) | Running; code-over-tools unevaluated | <span class="pill good">stable</span> |
-| Harness (post 4) | Running, shrinking | <span class="pill good">stable</span> |
+| Memory ([post 2](/blog/wtf-is-agent/memory)) | Built, traceable; two memory journeys pass | <span class="pill warn">thin</span> |
+| Tools ([post 3](/blog/wtf-is-agent/the-toolbox)) | Running; journey suite measures discovery, chaining and failure | <span class="pill good">measured</span> |
+| Harness ([post 4](/blog/wtf-is-agent/the-harness)) | Running, shrinking | <span class="pill good">stable</span> |
 | Context | Tree, big-result files, both compaction tiers built | <span class="pill good">stable</span> |
 | Skills | One skill built to cut a 22-step task to about 4. Not re-measured yet | <span class="pill warn">unproven</span> |
 

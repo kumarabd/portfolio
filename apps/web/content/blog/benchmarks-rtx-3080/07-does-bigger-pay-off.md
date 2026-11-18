@@ -1,11 +1,13 @@
 ---
 title: Does a bigger model pay off?
-summary: Speed is settled, so I measured decisions. My agent's suite on Qwen3 8B and a 35B mixture-of-experts model, then the whole series scored against the goal.
-verdict: Stay on the 8B: the 35B scores 58.9% against 61.6 to 62.8% and takes over twice as long. Hardware is not the blocker; decision quality is unproven.
+summary: Speed is settled, so I measured decisions. The earlier suite said stay on the 8B, but its 9 of 24 ceiling was a measurement fault; the corrected journey suite reverses the verdict.
+verdict: Stay on the 35B: on the corrected journey suite it passes 72 of 81 and the 8B 32 of 81. The earlier suite's 9 of 24 ceiling was a measurement fault, and the analysis below is kept as its record.
 date: 2026-11-11
 ---
 
-Post 5 left the 35B model at 1.8× slower generation and 5.4× slower prompts than the 8B. That is only worth paying if its answers are better. So I stopped measuring speed and measured **decisions**, with the suite from post 2.
+> **Update, 18 Nov:** The "9 of 24" ceiling below was not a model limit. The cases in that category that no skill matched could not be passed by any model, and triage was also scoring capability and live-data cases it has no tools for. The corrected suite drops unreachable cases and adds a 95% interval; the new journey suite checks what the agent actually does. On 27 journeys, the 35B passes 72 of 81 and the 8B 32 of 81, so the verdict below is reversed. See [Knowing it works: evals](/blog/wtf-is-agent/knowing-it-works). The analysis below is kept as the record of the earlier suite.
+
+[Post 5](/blog/benchmarks-rtx-3080/raw-speed) left the 35B model at 1.8× slower generation and 5.4× slower prompts than the 8B. That is only worth paying if its answers are better. So I stopped measuring speed and measured **decisions**, with the suite from [post 2](/blog/benchmarks-rtx-3080/the-tests).
 
 <div class="stats">
 <div><b>58.9<small>%</small></b><span>35B-A3B on the decision suite, 258 of 438</span></div>
@@ -22,9 +24,9 @@ Post 5 left the 35B model at 1.8× slower generation and 5.4× slower prompts th
 
 
 <ol class="timeline">
-<li><time>Nov 11</time><b>Baseline.</b> Qwen3 8B through Ollama, fast and thinking.</li>
-<li><time>Nov 11</time><b>Candidate.</b> Qwen3.6 35B-A3B on Strata, same suites.</li>
-<li class="end"><time>Nov 11</time><b>Baseline again.</b> Same 8B, same suites, to measure run-to-run noise.</li>
+<li><b>Baseline.</b> Qwen3 8B through Ollama, fast and thinking.</li>
+<li><b>Candidate.</b> Qwen3.6 35B-A3B on Strata, same suites.</li>
+<li class="end"><b>Baseline again.</b> Same 8B, same suites, to measure run-to-run noise.</li>
 </ol>
 
 ## Result 1: accuracy
@@ -91,7 +93,7 @@ Both models, both engines, both modes landed on 9 of 24 in 11 of 12 runs. When t
 | Freeform, thinking | 20.9 · 24.0 | 20.7 | <span class="pill good">level</span> |
 | Delegate | 0.8 · 0.8 | 1.8 | <span class="pill bad">2.3×</span> |
 
-Thinking is cheap for the 8B (about 9× the fast time on triage) and very expensive for the 35B (about 17×). The large freeform gap in fast mode has a cause from post 6: Strata cannot reuse the 10k-token catalog between turns, so every case re-reads it. That, not generation speed, is why freeform takes 5× longer.
+Thinking is cheap for the 8B (about 9× the fast time on triage) and very expensive for the 35B (about 17×). The large freeform gap in fast mode has a cause from [post 6](/blog/benchmarks-rtx-3080/engines-head-to-head): in my run Strata did not reuse the 10k-token catalog between turns, so every case re-read it. That, not generation speed, is why freeform takes 5× longer.
 
 ## Gotchas
 
@@ -101,11 +103,11 @@ Thinking is cheap for the 8B (about 9× the fast time on triage) and very expens
 | Three samples, two baseline runs | Anything under 3 samples on a suite is noise |
 | Triage has no home for two categories | Capability and live-data cases scored 0 for both models in every triage run, so those 27 of 96 samples look unwinnable by design and triage tops out near 69 |
 | Token counts differ | The same freeform prompt reports about 9.6k tokens on one setup and 15.9k on the other, so token figures are not comparable |
-| Two skipped model families | Qwen3-30B-A3B and gpt-oss-20b were never run (post 5) |
+| Two skipped model families | Qwen3-30B-A3B and gpt-oss-20b were never run ([post 5](/blog/benchmarks-rtx-3080/raw-speed)) |
 
 ## Where it stands, and my verdict
 
-Every post in the series, answered:
+Every post so far, answered:
 
 | Post | Question | Answer |
 |---|---|---|
@@ -127,7 +129,7 @@ The four setups side by side:
 
 ### The goal, scored
 
-Back to the criteria from post 1:
+Back to the criteria from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal):
 
 | Criterion | Result | |
 |---|---|---|
@@ -136,7 +138,7 @@ Back to the criteria from post 1:
 | Decisions I would trust | 61.6 to 62.8% on my suite, capped by a 9 of 24 ceiling I have not yet explained | <span class="pill warn">not yet</span> |
 | Easy to run | One Ollama deployment, but it ties up the GPU for the one model | <span class="pill good">met</span> |
 
-**Verdict: stay on Qwen3 8B on Ollama.** The 35B model is no better on my workload (58.9% against 61.6 to 62.8%), takes more than twice as long, and its engine cannot reuse a prompt. It wins two suites by margins near the noise and loses a whole category I could not explain.
+**Verdict: stay on Qwen3 8B on Ollama.** The 35B model is no better on my workload (58.9% against 61.6 to 62.8%), takes more than twice as long, and in my run its engine did not reuse a prompt. It wins two suites by margins near the noise and loses a whole category I could not explain.
 
 For the goal itself, **the hardware is not the blocker.** The card runs an 8B model fully resident, at interactive speed, with 40k context, and the series' physics predicted that within a known margin. What is unproven is decision quality, and the suite that would settle it has a ceiling I have not found yet. So the honest status of "fully local personal agents" is: possible on this card, not yet trustworthy.
 
@@ -146,5 +148,6 @@ What I would do next, in order of value:
 2. **Rerun the 35B on llama.cpp with the same chat template**, to separate model from engine on the live-data failure.
 3. **Run the two skipped model families** through the speed sweep and the decision suite.
 4. **Measure system RAM bandwidth**, to put a ceiling under the CPU-expert speeds.
+5. **Put a small, fast candidate through the same suite.** The 8B is the only model that has fitted beside the rest of the stack, so a faster model of that size is the experiment that could change this verdict.
 
-I started with a card on paper and ended with a decision. The question I began with, "which model is fastest?", was the wrong one. Speed never changed the answer. Decision quality per second of agent time did.
+I started with a card on paper and have reached a decision, for now. The question I began with, "which model is fastest?", was the wrong one. Speed never changed the answer. Decision quality per second of agent time did.

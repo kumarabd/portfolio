@@ -47,14 +47,14 @@ Every post so far described something that exists. This one is about what does n
 
 | Component | Status | What is open |
 |---|---|---|
-| Memory | Built, traceable | No evaluation. Do conclusions earn their cost? |
-| Tools | Running | Code over tools is unevaluated on real requests |
+| Memory | Built, traceable; two memory journeys pass | No memory benchmark. Do conclusions earn their cost? |
+| Tools | Running; journey suite measures discovery, chaining and failure | Code over tools is unevaluated on real requests |
 | Harness | Running, smaller than ever | Hosting a coding agent is designed, partly built |
 | Context and skills | Running | The skill gain is expected, not re-measured |
 | Runtime and sandbox | One day old | A type check before a program runs |
 | Waking and asking | Small and live | Rules that stop a run |
-| Evals | One suite | The 9 of 24 ceiling |
+| Evals | Four suites; journeys are the main test. 35B 72/81, 8B 32/81 | A memory benchmark, a code-mode eval, and the production prompt on every model |
 
-**Verdict: an agent that runs on its own is mostly a set of things it is not allowed to do, and a set of things I stopped building.** The loop, memory and toolbox kept their shape. Almost everything else was rebuilt or removed, usually within weeks and sometimes within a day, and each deletion made the system easier to reason about. The weakest part is the one that would have saved the most work: measuring earlier. If I did this again I would write the evaluation before the component.
+**Verdict: an agent that runs on its own is mostly a set of things it is not allowed to do, and a set of things I stopped building.** The loop, memory and toolbox kept their shape. Almost everything else was rebuilt or removed, usually within weeks and sometimes within a day, and each deletion made the system easier to reason about. The weakest part was the one that would have saved the most work: measuring earlier. The first eval suite was itself a deletion candidate: its 9 of 24 ceiling was a measurement fault, not a model limit, and fixing it changed the model verdict. If I did this again I would write the evaluation before the component.
 
-What I will do next, in order: **evaluate memory and tools**, because they have none. **Fix the decision suite's ceiling**, because it caps every score. **Measure code mode on real requests**, because I built on other people's results. **Make a rule stop a run**, because today I can only watch the spend.
+What I will do next, in order: **evaluate memory and code mode**, because neither has a dedicated test and two memory journeys are a signal, not a benchmark. **Run the production prompt on every model**, because the suite's own prompt is not the one the agent uses; Gyro-S fell from 71 to 62 on it, and the 8B production run is missing. **Make a rule stop a run**, because today I can only watch the spend.

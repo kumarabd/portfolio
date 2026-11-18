@@ -1,29 +1,29 @@
 ---
 title: Engines head to head
-summary: Ollama against the llama.cpp server underneath it, then a third engine that cannot reuse a prompt. Decode speed, first-token time and load.
-verdict: Stay on Ollama: it costs 2 to 8% decode speed. Strata cannot reuse a prompt, which makes a warm start 42x slower.
+summary: Ollama against the llama.cpp server underneath it, then a third engine that did not reuse a prompt in my run. Decode speed, first-token time and load.
+verdict: Stay on Ollama: it costs 2 to 8% decode speed. In my run Strata did not reuse a prompt, which made a warm start 42x slower.
 date: 2026-11-11
 ---
 
-Post 3 chose Ollama for operations and left a doubt: does it cost speed compared with the llama.cpp server it runs on? I put the same model, prompts and client in front of both, then later added a third engine.
+[Post 3](/blog/benchmarks-rtx-3080/vllm-first) chose Ollama for operations and left a doubt: does it cost speed compared with the llama.cpp server it runs on? I put the same model, prompts and client in front of both, then later added a third engine.
 
 <div class="stats">
 <div><b>2–8%</b><span>decode speed Ollama gives up to llama.cpp</span></div>
 <div><b>&lt; 6%</b><span>first-token time Ollama gives up</span></div>
 <div><b>2.5×</b><span>aggregate throughput from a 4-slot llama.cpp server</span></div>
-<div><b>42×</b><span>slower warm first token on Strata, which cannot reuse a prompt</span></div>
+<div><b>42×</b><span>slower warm first token on Strata, which did not reuse a prompt in my run</span></div>
 </div>
 
 | Engine | Decode at 1k | Warm first token, 14k | 4 requests at once | |
 |---|---|---|---|---|
 | Ollama, 8B | 101 tok/s | 0.20 s | 77 tok/s aggregate | <span class="pill good">keep</span> |
 | llama.cpp server, 8B | 109 tok/s | 0.16 s | 226 tok/s with 4 slots | <span class="pill good">if agents run in parallel</span> |
-| Strata, 35B | 54 tok/s | 8.27 s | 47 tok/s, flat | <span class="pill bad">cannot reuse a prompt</span> |
+| Strata, 35B | 54 tok/s | 8.27 s | 47 tok/s, flat | <span class="pill bad">no prompt reuse in this run</span> |
 
 
 <ol class="timeline">
-<li><time>Nov 11</time><b>Ollama against llama.cpp</b> on Qwen3 8B, then llama.cpp with 4 parallel slots.</li>
-<li class="end"><time>Nov 16</time><b>A third engine, Strata</b>, running the 35B mixture-of-experts model, through the same harness.</li>
+<li><b>Ollama against llama.cpp</b> on Qwen3 8B, then llama.cpp with 4 parallel slots.</li>
+<li class="end"><b>A third engine, Strata</b>, running the 35B mixture-of-experts model, through the same harness.</li>
 </ol>
 
 ## Ollama against llama.cpp
@@ -36,7 +36,7 @@ Same model, same prompts, same client:
 | 8k | 6,138 | 89.0 tok/s | 93.0 tok/s <span class="pill good">+4.5%</span> | 1.879 s | 1.854 s |
 | 14k | about 10,460 | 80.2 tok/s | 82.0 tok/s <span class="pill good">+2.1%</span> | 3.430 s | 3.253 s |
 
-A warm first token (the same prompt again, which is what an agent resending its system prompt sees) is 0.16 to 0.20 s on both. Against the 151 tok/s ceiling from post 5:
+A warm first token (the same prompt again, which is what an agent resending its system prompt sees) is 0.16 to 0.20 s on both. Against the 151 tok/s ceiling from [post 5](/blog/benchmarks-rtx-3080/raw-speed):
 
 <div class="chart">
 <div class="cap">Decode speed against the bandwidth ceiling <small>Qwen3 8B Q4_K_M; the line is 151 tok/s</small></div>
@@ -64,7 +64,7 @@ With one slot per model, extra requests queue and aggregate speed stays flat nea
 
 ## A third engine: Strata
 
-On Nov 16 I ran Strata, a CUDA inference engine, on the 35B model through the same harness. The model differs from the other runs, so compare engine behaviour and not absolute speed.
+In a later run I ran Strata, a CUDA inference engine, on the 35B model through the same harness. The model differs from the other runs, so compare engine behaviour and not absolute speed.
 
 | | Ollama, 8B | llama.cpp, 35B best split | Strata, 35B |
 |---|---|---|---|
@@ -83,7 +83,7 @@ On Nov 16 I ran Strata, a CUDA inference engine, on the 35B model through the sa
 <div class="legend"><span>Axis 0 to 8.3 s</span></div>
 </div>
 
-On Strata a warm first token costs the same as a cold one at every length (4.58 s against 4.58 s at 8k). It does not reuse a cached prompt, while Ollama does. For an agent that resends a 10k-token catalog every turn, that is a **42× difference** at 14k. Strata does process long prompts about 1.5 times faster than llama.cpp's best split (about 1,300 against 840 tok/s) and generates about 20% slower, with a different quantization, so treat that as rough.
+On Strata a warm first token costs the same as a cold one at every length (4.58 s against 4.58 s at 8k). In this run it did not reuse a cached prompt, while Ollama does. I ran only the 35B pack, so I cannot say whether that is the engine, the pack or a setting, and I have not checked. For an agent that resends a 10k-token catalog every turn, that is a **42× difference** at 14k. Strata does process long prompts about 1.5 times faster than llama.cpp's best split (about 1,300 against 840 tok/s) and generates about 20% slower, with a different quantization, so treat that as rough.
 
 ### Gotchas
 
@@ -98,10 +98,10 @@ On Strata a warm first token costs the same as a cold one at every length (4.58 
 
 | Question | Answer | |
 |---|---|---|
-| Fits | 8B at 40k, 8.3 GB (post 4) | <span class="pill good">held</span> |
+| Fits | 8B at 40k, 8.3 GB ([post 4](/blog/benchmarks-rtx-3080/fitting-a-model)) | <span class="pill good">held</span> |
 | Generation | 79% of the ceiling empty, 53 to 72% in real use | <span class="pill good">held</span> |
-| Prompt speed | Over 4,000 tok/s, ceiling assumption was wrong (post 5) | <span class="pill bad">corrected</span> |
+| Prompt speed | Over 4,000 tok/s, ceiling assumption was wrong ([post 5](/blog/benchmarks-rtx-3080/raw-speed)) | <span class="pill bad">corrected</span> |
 | What does Ollama cost? | 2 to 8% decode, under 6% first token | <span class="pill good">small</span> |
-| Can an engine reuse a prompt? | Ollama and llama.cpp yes, Strata no | <span class="pill bad">decides it</span> |
+| Can an engine reuse a prompt? | Ollama and llama.cpp yes. Strata, with the 35B pack in this run, no | <span class="pill bad">decides it</span> |
 
-**Verdict: stay on Ollama.** It costs 2 to 8% against the engine underneath, and gives me model management for free. If agents ever run in parallel, a llama-server with 4 slots gives 2.5× the aggregate. Strata is out for agent loops until it can reuse a prompt, because that single behaviour turns a 0.2 s step into 8 s. Speed is settled. Whether a bigger model is worth its cost is a quality question, and that is next.
+**Verdict: stay on Ollama.** It costs 2 to 8% against the engine underneath, and gives me model management for free. If agents ever run in parallel, a llama-server with 4 slots gives 2.5× the aggregate. Strata, as I ran it, is out for agent loops until a prompt can be reused, because that single behaviour turns a 0.2 s step into 8 s. On the models I have run, speed is settled. Whether a bigger model is worth its cost is a quality question, and that is next.

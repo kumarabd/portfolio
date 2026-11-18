@@ -72,11 +72,11 @@ Before measuring anything, the specs already make claims. These are what the res
 
 | Question | What the paper says | Tested in |
 |---|---|---|
-| Does a 7 to 8B model fit? | 4-bit weights are 3.5 to 5 GB, which leaves room for context | Post 4 |
-| How fast can it generate? | At most bandwidth ÷ weight bytes: 217 tok/s for 3.5 GB, 151 for 5 GB | Post 5 |
-| How fast can it read a prompt? | Compute ÷ (2 × parameters), roughly 3,700 to 4,300 tok/s on FP16 numbers | Post 5 |
-| Can several jobs share the card? | Only if their memory sums to under 10 GB | Post 3 |
-| Is a small model good enough to decide? | The paper cannot say | Post 7 |
+| Does a 7 to 8B model fit? | 4-bit weights are 3.5 to 5 GB, which leaves room for context | [Post 4](/blog/benchmarks-rtx-3080/fitting-a-model) |
+| How fast can it generate? | At most bandwidth ÷ weight bytes: 217 tok/s for 3.5 GB, 151 for 5 GB | [Post 5](/blog/benchmarks-rtx-3080/raw-speed) |
+| How fast can it read a prompt? | Compute ÷ (2 × parameters), roughly 3,700 to 4,300 tok/s on FP16 numbers | [Post 5](/blog/benchmarks-rtx-3080/raw-speed) |
+| Can several jobs share the card? | Only if their memory sums to under 10 GB | [Post 3](/blog/benchmarks-rtx-3080/vllm-first) |
+| Is a small model good enough to decide? | The paper cannot say | [Post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off) |
 
 ## What would count as done
 
