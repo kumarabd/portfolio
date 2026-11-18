@@ -1,7 +1,7 @@
 ---
 title: A faster challenger: Gyro-S
-summary: A small pack on the same engine decodes at 154 tok/s, reuses a prompt in 0.065 s, and passes 71 of 81 journeys. Speed beats Ollama; fit is the open question.
-verdict: Gyro-S decodes 1.5 to 1.7 times faster than Ollama's 8B, restarts a known prompt in 0.065 s, and passes 71 of 81 journeys (the 35B 72, the 8B 32). With the production prompt it falls to 62. The speed is the best in the series; the open question is whether it fits beside the stack.
+summary: A small pack on the same engine decodes at 154 tok/s, reuses a prompt in 0.065 s, and passes 71 of 81 journeys on the suite prompt. Speed beats Ollama; on the production prompt it falls to 62, and fit is the open question.
+verdict: Gyro-S decodes 1.5 to 1.7 times faster than Ollama's 8B, restarts a known prompt in 0.065 s, and passes 71 of 81 journeys on the suite prompt (the 35B 72, the 8B 32). On the production prompt the 35B fast holds 72 and Gyro-S falls to 62, so the 35B fast is still the safer decision-maker. The speed is the best in the series; the open question is fit.
 date: 2026-11-16
 ---
 
@@ -56,11 +56,15 @@ The corrected journey suite (27 scenarios, 3 samples) and the 15-prompt tool-cal
 
 | Check | Gyro-S | 35B-A3B | 8B |
 |---|---|---|---|
-| Journeys, suite prompt | 71/81 (88%) | 72/81 (89%) | 32/81 (40%) |
-| Journeys, production prompt | 62/81 (77%) | 72/81 (89%) | not run |
-| Tool calls (15) | 12/15 off, 14/15 on | 15/15 off, 14/15 on | not run on this check |
+| Journeys, suite prompt, fast | 71/81 (88%) | 72/81 (89%) | 32/81 (40%) |
+| Journeys, production prompt, fast | 62/81 (77%) | 72/81 (89%) | not run |
+| Tool calls (15), fast | 12/15 | 15/15 | not run on this check |
 
-Gyro-S is level with the 35B on the journey suite and far ahead of the 8B. Its production-prompt run is 62/81, so the prompt is part of the result. Thinking lifts the tool-call score from 12/15 to 14/15. On the journey suite it is a wash: 69/81 against 71 with the suite prompt, and 66/81 against 62 with the production prompt at 25.7 s a case. The old decision-suite percentages in [post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off) are superseded; the journey suite is the current measure.
+Gyro-S is level with the 35B on the journey suite and far ahead of the 8B, but only on the suite's own prompt. With the production prompt the 35B fast holds 72/81 and Gyro-S fast falls to 62/81, losing the hotel preference, the tool-stays-down disclosure and the Rome trip. The 35B fast is still the safer decision-maker under the prompt the agent actually uses; Gyro-S's case is speed and a possible fit.
+
+Thinking is a trade. It lifts Gyro-S's tool-call score from 12/15 to 14/15, but the journey score barely moves: 69/81 against 71 with the suite prompt, and 66/81 against 62 with the production prompt at 25.7 s a case. Without thinking it picked the wrong month (2025-10) on the grocery questions and missed the second call in a comparison; with thinking it fixed those but failed the "Send an email to Sam" restraint case. The 35B is 15/15 without thinking and 14/15 with it, where thinking drops the parallel reminder.
+
+The safety caveat is the 35B's, not Gyro-S's: the 35B thinking mode follows the held-out page's instruction to call `trip_book` in six of six samples across both prompts, while fast mode, Gyro-S and the 8B refuse. The quality totals hide that.
 
 ## Gotchas
 
@@ -84,4 +88,4 @@ The setups against the criteria from [post 1](/blog/benchmarks-rtx-3080/the-chip
 
 The decision column uses the corrected journey suite (27 scenarios, 3 samples), not the old decision suite; [post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off) has the update.
 
-**Verdict: the best speed result of the series, and the first candidate that is also as good as the 35B on decisions.** Gyro-S beats the 8B on decode and on warm start, and the engine can reuse a prompt after all. It passes 71 of 81 journeys, level with the 35B's 72 and far ahead of the 8B's 32; with the production prompt it falls to 62, so the prompt matters too. It has not been shown to fit beside the stack. The next experiment is fit, not quality.
+**Verdict: the best speed result of the series, but not yet a quality win.** Gyro-S beats the 8B on decode and on warm start, and the engine can reuse a prompt after all. It passes 71 of 81 journeys on the suite prompt, level with the 35B's 72 and far ahead of the 8B's 32. On the production prompt the 35B fast holds 72 and Gyro-S falls to 62, so the 35B fast is still the safer decision-maker. Gyro-S's case is speed and a possible fit, not a quality win; the next experiment is whether it can sit beside the stack.

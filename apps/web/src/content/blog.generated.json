@@ -19,12 +19,12 @@
         "slug": "the-tests",
         "file": "02-the-tests.md",
         "title": "The tests I wrote",
-        "summary": "Four instruments, 82 decision cases and 15 tool-calling prompts, all published. What each one measures and how I kept it honest.",
+        "summary": "Five instruments, 82 decision cases, 27 journey scenarios and 15 tool-calling prompts, all published. What each one measures and how I kept it honest.",
         "date": "2026-11-09",
         "when": "Nov 9, 2026",
-        "verdict": "Speed and fit can be repeated by anyone from the published folder. Quality rests on one suite I wrote for my own agent.",
+        "verdict": "Speed and fit can be repeated by anyone from the published folder. Quality rests on suites I wrote for my own agent; the journey suite is the current measure.",
         "draft": false,
-        "minutes": 5
+        "minutes": 6
       },
       {
         "slug": "vllm-first",
@@ -96,10 +96,10 @@
         "slug": "a-faster-challenger",
         "file": "09-a-faster-challenger.md",
         "title": "A faster challenger: Gyro-S",
-        "summary": "A small pack on the same engine decodes at 154 tok/s, reuses a prompt in 0.065 s, and passes 71 of 81 journeys. Speed beats Ollama; fit is the open question.",
+        "summary": "A small pack on the same engine decodes at 154 tok/s, reuses a prompt in 0.065 s, and passes 71 of 81 journeys on the suite prompt. Speed beats Ollama; on the production prompt it falls to 62, and fit is the open question.",
         "date": "2026-11-16",
         "when": "Nov 16, 2026",
-        "verdict": "Gyro-S decodes 1.5 to 1.7 times faster than Ollama's 8B, restarts a known prompt in 0.065 s, and passes 71 of 81 journeys (the 35B 72, the 8B 32). With the production prompt it falls to 62. The speed is the best in the series; the open question is whether it fits beside the stack.",
+        "verdict": "Gyro-S decodes 1.5 to 1.7 times faster than Ollama's 8B, restarts a known prompt in 0.065 s, and passes 71 of 81 journeys on the suite prompt (the 35B 72, the 8B 32). On the production prompt the 35B fast holds 72 and Gyro-S falls to 62, so the 35B fast is still the safer decision-maker. The speed is the best in the series; the open question is fit.",
         "draft": false,
         "minutes": 6
       }
@@ -196,7 +196,7 @@
         "when": "Oct 26, 2026",
         "verdict": "A suite can cap every model by counting cases no model can pass. Exclude the unreachable, put an interval on the score, and make every scenario pass its own oracle. With that fixed, the journey suite separates the models: 72 of 81 for the 35B, 32 for the 8B.",
         "draft": false,
-        "minutes": 10
+        "minutes": 13
       },
       {
         "slug": "what-i-deleted",

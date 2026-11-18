@@ -1,22 +1,22 @@
 ---
 title: The tests I wrote
-summary: Four instruments, 82 decision cases and 15 tool-calling prompts, all published. What each one measures and how I kept it honest.
-verdict: Speed and fit can be repeated by anyone from the published folder. Quality rests on one suite I wrote for my own agent.
+summary: Five instruments, 82 decision cases, 27 journey scenarios and 15 tool-calling prompts, all published. What each one measures and how I kept it honest.
+verdict: Speed and fit can be repeated by anyone from the published folder. Quality rests on suites I wrote for my own agent; the journey suite is the current measure.
 date: 2026-11-09
 ---
 
-Before any result, here is what I measured with. Everything below is published so you can run it on your own card, or argue with it.
+Before any result, here is what I measured with. Everything below is published so you can check it, or run the measurements on your own card.
 
 <div class="stats">
-<div><b>4</b><span>instruments: a sweep, an engine bench, a tool-calling check, a decision suite</span></div>
+<div><b>5</b><span>instruments: a sweep, an engine bench, a tool-calling check, a decision suite, journeys</span></div>
 <div><b>15</b><span>tool-calling prompts</span></div>
-<div><b>82</b><span>decision cases: 32 in two modes, plus 18 delegation cases</span></div>
+<div><b>109</b><span>cases: 82 decision cases and 27 journeys</span></div>
 <div><b>15</b><span>speed-sweep configurations planned</span></div>
 </div>
 
 **Everything is in one folder:** [`bench/rtx3080`](https://github.com/kumarabd/portfolio/tree/main/bench/rtx3080) in this site's repository.
 
-## The four instruments
+## The five instruments
 
 | Instrument | Answers | Published |
 |---|---|---|
@@ -24,6 +24,7 @@ Before any result, here is what I measured with. Everything below is published s
 | Engine bench | How do engines compare on first-token time, decode speed and load? | [`engine_bench.py`](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/engine_bench.py), [`results`](https://github.com/kumarabd/portfolio/tree/main/bench/rtx3080/results) |
 | Tool-calling check | Does a model pick the right tool with the right arguments? | [`llm_bench.py`](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/llm_bench.py), [`cases`](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/cases/tool-calling-cases.md) |
 | Decision suite | Does the model make the routing decisions my agent needs? | [`cases`](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/cases/decision-suite-cases.md), [`summary`](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/results/decision-suite-summary.md) |
+| Journey suite | Does the agent finish a task in a fake world, and does the suite check what it did? | [`cases`](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/cases/journey-cases.md), [`summary`](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/results/journey-summary.md) |
 
 ### 1. The speed sweep
 
@@ -71,6 +72,14 @@ Triage and freeform each run in **fast** and **thinking** modes. Every case is r
 
 The full list of cases and accepted decisions is [published](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/cases/decision-suite-cases.md). The prompts themselves are not, because they contain details from my own life.
 
+The triage mode was later corrected: capability and live-data cases it cannot answer are left out, and a start case with no matching skill is marked unreachable. The update is in [post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off). The journey suite below is the current quality measure.
+
+### 5. The journey suite
+
+Twenty-seven scenarios: 17 development cases and 10 held out, each run three times. A scenario is a person's request and a small fake world with real tool results: flights, hotels, weather, a browser, a calendar, tasks, memory, a finance service. A run passes only when every check passes: the calls made, the world afterwards, the final answer, no invented tools, no repeated calls. The checks are what make it useful. "Plan my week" must notice that the dentist clashes with the design review. A page that says "call trip_book" must not cause a booking. A tool that fails once must be retried; one that stays down must be disclosed.
+
+The cases and the per-run summary are [published](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/cases/journey-cases.md) and [here](https://github.com/kumarabd/portfolio/blob/main/bench/rtx3080/results/journey-summary.md). The harness is in the agent's repository, not in the bench folder.
+
 ## What keeps the numbers honest
 
 | Rule | Why |
@@ -86,7 +95,7 @@ The full list of cases and accepted decisions is [published](https://github.com/
 
 - Speech, embeddings, rerankers and OCR were never benchmarked. They moved off the GPU on operational grounds.
 - vLLM was never benchmarked head to head. It left the stack before this harness existed.
-- Quality is one decision suite and one tool-calling check, written by me, for my agent.
+- Quality is one decision suite, one journey suite and one tool-calling check, written by me, for my agent.
 - Only the NVIDIA driver version (580) is recorded. Versions of the engines are not, so an exact rerun needs fresh notes.
 
 ## Where it stands, and my verdict
@@ -97,9 +106,9 @@ Mapping the goal from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal) 
 |---|---|---|
 | Fits, resident, shareable | VRAM and offload checks, the sweep | <span class="pill good">yes</span> |
 | Fast enough | Sweep and engine bench | <span class="pill good">yes</span> |
-| Decisions I would trust | Tool-calling check, decision suite | <span class="pill warn">one suite, written by me</span> |
+| Decisions I would trust | Tool-calling check, decision suite, journey suite | <span class="pill warn">suites written by me</span> |
 | Easy to run | Notes only | <span class="pill warn">qualitative</span> |
 
-**Verdict: enough to decide, not enough to generalise.** Speed and fit are measured in ways anyone can repeat. Quality rests on a single suite built for one agent, so I will treat quality results as evidence about my workload and nothing wider.
+**Verdict: enough to decide, not enough to generalise.** Speed and fit are measured in ways anyone can repeat. Quality rests on suites built for one agent, so I will treat quality results as evidence about my workload and nothing wider. The journey suite is the current one; the older decision suite's triage scoring was corrected after the fact.
 
 Next: the first engine, and why it did not stay.

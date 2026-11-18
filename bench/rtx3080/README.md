@@ -16,7 +16,8 @@ Everything was run on one RTX 3080 (10 GB) shared with other services.
 | `strata-bench.yaml` | Kubernetes manifest used to run the Strata engine for the speed run (node name removed, key replaced) |
 | `cases/tool-calling-cases.md` | The 15 prompts in `llm_bench.py` and what each tests |
 | `cases/decision-suite-cases.md` | The agent decision suite: 32 cases (run in triage and freeform modes) plus 18 delegate cases, with the decision each should produce |
-| `results/` | `sweep-results.txt`, the seven `engine-*.json` files, and per-suite totals for the decision suite |
+| `cases/journey-cases.md` | The journey suite: 27 scenarios (17 development, 10 held out), with the checks each one makes in the fake world |
+| `results/` | `sweep-results.txt`, the seven `engine-*.json` files, per-suite totals for the decision suite, and [`journey-summary.md`](results/journey-summary.md) for the journey suite |
 
 ## Running
 
@@ -31,9 +32,12 @@ python llm_bench.py http://localhost:8080 --think off
 
 - **Raw per-sample outputs** of the decision suite. They contain details from my own agent runs, so only the per-suite totals and per-category counts are published.
 - **The decision suite's prompts and the harness that runs it.** The cases and expected decisions are listed; the prompts are personal.
+- **The journey suite's harness.** Its cases and results are published here; the harness is in the agent's repository.
+- **Raw per-sample outputs** of the journey suite. The rows contain model output, so only the totals and category counts are published.
 
 ## Known limits
 
 - Only the driver version (580) is recorded in these files. CUDA, llama.cpp, Ollama and Strata versions were not captured, so exact reproduction needs a rerun with versions noted.
 - `sweep.sh` uses 2 repetitions; the decision suite uses 3 samples per case. Differences under 3 samples on a suite are noise (see the series).
 - Two of the four model families in the sweep were not on disk when it ran and were skipped (the result file says which).
+- The 8B ran on Ollama and the 35B and Gyro-S on Strata, so model and engine changed together. The production-prompt journey runs exist for the 35B and Gyro-S; the 8B production run is missing.
