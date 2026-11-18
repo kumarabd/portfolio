@@ -5,7 +5,7 @@ verdict: Stay on the 35B: on the corrected journey suite it passes 72 of 81 and 
 date: 2026-11-11
 ---
 
-> **Update, 18 Nov:** The "9 of 24" ceiling below was not a model limit. The cases in that category that no skill matched could not be passed by any model, and triage was also scoring capability and live-data cases it has no tools for. The corrected suite drops unreachable cases and adds a 95% interval; the new journey suite checks what the agent actually does. On 27 journeys, the 35B passes 72 of 81 and the 8B 32 of 81, so the verdict below is reversed. See [Knowing it works: evals](/blog/wtf-is-agent/knowing-it-works). The analysis below is kept as the record of the earlier suite.
+> **Update, 18 Nov:** The "9 of 24" ceiling below was not a model limit. The cases in that category that no skill matched could not be passed by any model, and triage was also scoring capability and live-data cases it has no tools for. The corrected suite drops unreachable cases and adds a 95% interval; the new journey suite checks what the agent actually does. On 27 journeys, the 35B passes 72 of 81 and the 8B 32 of 81, so the verdict below is reversed. See [Knowing it works: evals](/blog/wtf-is-agent/knowing-it-works) and [A faster challenger](/blog/benchmarks-rtx-3080/a-faster-challenger). The analysis below is kept as the record of the earlier suite.
 
 [Post 5](/blog/benchmarks-rtx-3080/raw-speed) left the 35B model at 1.8× slower generation and 5.4× slower prompts than the 8B. That is only worth paying if its answers are better. So I stopped measuring speed and measured **decisions**, with the suite from [post 2](/blog/benchmarks-rtx-3080/the-tests).
 

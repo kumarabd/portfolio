@@ -80,6 +80,28 @@
         "verdict": "Stay on the 35B: on the corrected journey suite it passes 72 of 81 and the 8B 32 of 81. The earlier suite's 9 of 24 ceiling was a measurement fault, and the analysis below is kept as its record.",
         "draft": false,
         "minutes": 9
+      },
+      {
+        "slug": "parallel-and-vision",
+        "file": "08-parallel-and-vision.md",
+        "title": "The 35B with parallel slots and image input",
+        "summary": "Four more speed runs on the big model. Extra slots lift throughput but not by much, image input costs nothing in text speed, and benchmarking it takes the whole local stack offline.",
+        "date": "2026-11-16",
+        "when": "Nov 16, 2026",
+        "verdict": "Parallel slots raise the 35B's throughput from 47 to 71 tok/s at four requests, and image input costs nothing in text speed. It still cannot reuse a prompt and still needs the rest of the stack switched off — but on the corrected journey suite it passes 72 of 81, against the 8B's 32.",
+        "draft": false,
+        "minutes": 5
+      },
+      {
+        "slug": "a-faster-challenger",
+        "file": "09-a-faster-challenger.md",
+        "title": "A faster challenger: Gyro-S",
+        "summary": "A small pack on the same engine decodes at 154 tok/s, reuses a prompt in 0.065 s, and passes 71 of 81 journeys. Speed beats Ollama; fit is the open question.",
+        "date": "2026-11-16",
+        "when": "Nov 16, 2026",
+        "verdict": "Gyro-S decodes 1.5 to 1.7 times faster than Ollama's 8B, restarts a known prompt in 0.065 s, and passes 71 of 81 journeys (the 35B 72, the 8B 32). With the production prompt it falls to 62. The speed is the best in the series; the open question is whether it fits beside the stack.",
+        "draft": false,
+        "minutes": 6
       }
     ]
   },

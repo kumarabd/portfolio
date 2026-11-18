@@ -1,12 +1,9 @@
 ---
 title: A faster challenger: Gyro-S
-summary: A small pack on the same engine decodes at 154 tok/s, reuses a prompt in 0.065 s, and reads cold prompts more slowly. Speed beats Ollama on two of three measures. Quality is the open question.
-verdict: Gyro-S decodes 1.5 to 1.7 times faster than Ollama's 8B and restarts a known prompt in 0.065 s, but reads a cold prompt more slowly. Until its decisions are measured, the earlier verdict stands.
+summary: A small pack on the same engine decodes at 154 tok/s, reuses a prompt in 0.065 s, and passes 71 of 81 journeys. Speed beats Ollama; fit is the open question.
+verdict: Gyro-S decodes 1.5 to 1.7 times faster than Ollama's 8B, restarts a known prompt in 0.065 s, and passes 71 of 81 journeys (the 35B 72, the 8B 32). With the production prompt it falls to 62. The speed is the best in the series; the open question is whether it fits beside the stack.
 date: 2026-11-16
-draft: true
 ---
-
-> **Draft: still to add** the decision-suite and tool-calling scores for Gyro-S, its memory footprint and whether it fits beside the rest of the stack, a rerun of the one-request throughput figure (see gotchas), and its model size and quantization.
 
 After the 35B, I ran a different kind of candidate: **Gyro-S**, a lighter pack of Qwen3.8-Flash-Next served by the same engine. If the answer to [post 8](/blog/benchmarks-rtx-3080/parallel-and-vision)'s question is a small, fast model, this is the first test of it.
 
@@ -53,24 +50,38 @@ Decode also dipped at 4k (133 tok/s) between two runs near 154. I have not expla
 
 The cost is the cold read: Gyro-S takes 1.19 s for an 800-token prompt where Ollama takes 0.36 s. For an agent that mostly resends a long prompt, warm start is the number that matters. For one that starts fresh every time, it is the cold one.
 
+## Result 3: decisions
+
+The corrected journey suite (27 scenarios, 3 samples) and the 15-prompt tool-calling check:
+
+| Check | Gyro-S | 35B-A3B | 8B |
+|---|---|---|---|
+| Journeys, suite prompt | 71/81 (88%) | 72/81 (89%) | 32/81 (40%) |
+| Journeys, production prompt | 62/81 (77%) | 72/81 (89%) | not run |
+| Tool calls (15) | 12/15 off, 14/15 on | 15/15 off, 14/15 on | not run on this check |
+
+Gyro-S is level with the 35B on the journey suite and far ahead of the 8B. Its production-prompt run is 62/81, so the prompt is part of the result. Thinking lifts the tool-call score from 12/15 to 14/15. On the journey suite it is a wash: 69/81 against 71 with the suite prompt, and 66/81 against 62 with the production prompt at 25.7 s a case. The old decision-suite percentages in [post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off) are superseded; the journey suite is the current measure.
+
 ## Gotchas
 
 | Gotcha | Effect |
 |---|---|
-| One request in flight measured 6.5 tok/s | Two requests measured 65 and four 80. The single figure is about 12 times lower than the others would suggest and I believe it is a stall in that run, not the model. It needs a rerun before anyone quotes it |
+| One request in flight measured 6.5 tok/s | Two requests measured 65 and four 80. The single figure is about 12 times lower than the others would suggest and I believe it is a stall in that run, not the model. I have not rerun it, so do not quote it |
 | Aggregate at four requests (80 tok/s) is below single-stream decode (154) | The throughput test includes reading fresh 1k prompts, which are cold every time, so it measures prompt reading as much as generation |
 | Size and quantization unknown | The ceiling above bounds the model, but I cannot say what fits beside the other services |
-| Quality not measured | Everything here is speed |
+| Fit not measured | It ran with the rest of the stack paused, as the 35B did. Whether it can coexist is the next experiment |
 
 ## Where it stands, and my verdict
 
-All five setups against the criteria from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal):
+The setups against the criteria from [post 1](/blog/benchmarks-rtx-3080/the-chip-and-the-goal):
 
 | Setup | Decode at 1k | Warm first token | Decisions | Resident beside the stack |
 |---|---|---|---|---|
-| Qwen3 8B, Ollama | 101 tok/s | 0.16 s | 62.8% and 61.6% | <span class="pill good">yes</span> |
+| Qwen3 8B, Ollama | 101 tok/s | 0.16 s | 32/81 journeys | <span class="pill good">yes</span> |
 | Qwen3 8B, llama.cpp | 109 tok/s | 0.16 s | not run | <span class="pill good">yes</span> |
-| 35B, Strata | 54 tok/s | 0.75 s | 58.9% | <span class="pill bad">no</span> |
-| Gyro-S, Strata | 154 tok/s | 0.065 s | <span class="pill">not measured</span> | <span class="pill">not measured</span> |
+| 35B, Strata | 54 tok/s | 0.75 s | 72/81 journeys | <span class="pill bad">no</span> |
+| Gyro-S, Strata | 154 tok/s | 0.065 s | 71/81 journeys; 62/81 with the production prompt | <span class="pill warn">not measured</span> |
 
-**Verdict: the best speed result of the series, and no reason to switch yet.** Gyro-S beats the 8B on decode and on warm start, and the engine can reuse a prompt after all. But the series has one lesson that has held every time: speed never changed the answer, decision quality did. The next experiment is the decision suite on Gyro-S, and the question after that is whether it fits beside the rest of the stack.
+The decision column uses the corrected journey suite (27 scenarios, 3 samples), not the old decision suite; [post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off) has the update.
+
+**Verdict: the best speed result of the series, and the first candidate that is also as good as the 35B on decisions.** Gyro-S beats the 8B on decode and on warm start, and the engine can reuse a prompt after all. It passes 71 of 81 journeys, level with the 35B's 72 and far ahead of the 8B's 32; with the production prompt it falls to 62, so the prompt matters too. It has not been shown to fit beside the stack. The next experiment is fit, not quality.

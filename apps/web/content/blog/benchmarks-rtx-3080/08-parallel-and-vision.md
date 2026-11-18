@@ -1,12 +1,9 @@
 ---
 title: The 35B with parallel slots and image input
 summary: Four more speed runs on the big model. Extra slots lift throughput but not by much, image input costs nothing in text speed, and benchmarking it takes the whole local stack offline.
-verdict: Parallel slots raise the 35B's throughput from 47 to 71 tok/s at four requests, and image input costs nothing in text speed. It still cannot reuse a prompt and it still needs the rest of the stack switched off.
+verdict: Parallel slots raise the 35B's throughput from 47 to 71 tok/s at four requests, and image input costs nothing in text speed. It still cannot reuse a prompt and still needs the rest of the stack switched off — but on the corrected journey suite it passes 72 of 81, against the 8B's 32.
 date: 2026-11-16
-draft: true
 ---
-
-> **Draft: still to add** the image-input results from `vision_bench.py` (time to first token with an image, decode speed, and whether the answers were right), and anything you measured on memory use while it ran.
 
 [Post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off) ended with the 35B model out. Two things were still open: whether more parallel slots rescue its throughput, and whether image input, which the 8B on Ollama does not have, changes the picture. I ran both on Strata, the same engine as [post 6](/blog/benchmarks-rtx-3080/engines-head-to-head).
 
@@ -41,7 +38,7 @@ Slots help, but the gain is modest. Four slots take aggregate throughput to 1.5 
 
 ## Result 2: image input costs nothing in text speed
 
-The runs are labelled as vision runs, which I take to mean image input was enabled. Text speed with it on is identical to the run without: 54.4 against 54.1 tok/s decode, and the same 0.754 s cold first token. So enabling image input appears free when no image is sent. What an image itself costs is what `vision_bench.py` measures (time to first token with an image, then decode), and that is the part still to add.
+The runs are labelled as vision runs, which I take to mean image input was enabled. Text speed with it on is identical to the run without: 54.4 against 54.1 tok/s decode, and the same 0.754 s cold first token. So enabling image input appears free when no image is sent. The runs sent text prompts; what an image itself costs — image encode plus prompt read — is not measured here.
 
 | Prompt | Cold first token | Prompt speed |
 |---|---|---|
@@ -69,7 +66,7 @@ About 11 GB of resident services go down. Until `bench-mode.sh off`, **the local
 | Benchmark mode takes the stack down | Every local service stops until it is switched off. Do not run it while anything depends on them |
 | The warm and cold first tokens are identical | The engine does not reuse a prompt, with or without slots |
 | Four slots on a CPU-bound model | Throughput rises 50%, but per-request speed falls by more than half |
-| Image input measured separately | The speed runs use text prompts. Image latency needs its own run |
+| Image latency not measured | The speed runs use text prompts; what an image itself costs is a separate experiment |
 
 ## Where it stands, and my verdict
 
@@ -79,7 +76,7 @@ How the 35B has fared against the criteria from [post 1](/blog/benchmarks-rtx-30
 |---|---|---|
 | Fits, resident, shareable | Needs about 11 GB of other services paused | <span class="pill bad">no</span> |
 | Fast enough | 54 tok/s single, 71 aggregate at 4 slots. Cannot reuse a prompt | <span class="pill warn">partly</span> |
-| Decisions I would trust | 58.9%, below the 8B ([post 7](/blog/benchmarks-rtx-3080/does-bigger-pay-off)). Not re-run with slots | <span class="pill bad">worse</span> |
+| Decisions I would trust | 72/81 on the corrected journey suite, above the 8B's 32 ([evals](/blog/wtf-is-agent/knowing-it-works)). Not re-run with slots | <span class="pill good">better</span> |
 | Easy to run | A separate engine and a mode that stops the stack | <span class="pill bad">no</span> |
 
-**Verdict: slots and vision do not rescue the 35B.** They improve throughput by half and add image input at no text cost. It still cannot reuse a prompt, still scores below the 8B, and still needs the stack switched off to run. The question for the next post is different: is there a model that is fast enough and small enough to sit beside everything else?
+**Verdict: slots and vision do not rescue the 35B's fit.** They improve throughput by half and add image input at no text cost. It still cannot reuse a prompt and still needs the stack switched off to run. On decisions, the corrected journey suite reverses the earlier result: the 35B passes 72 of 81 and the 8B 32, so the blocker is fit, not quality. The question for the next post is different: is there a model that is fast enough, small enough, and good enough to sit beside everything else?
