@@ -94,6 +94,11 @@
 .map-panel h2 { margin: 0 0 0.35rem; font-size: 1.9rem; line-height: 1.08; font-weight: 600; letter-spacing: -0.02em; }
 .map-panel .sub { margin: 0 0 1rem; font-size: 0.9rem; font-weight: 600; color: var(--c); }
 .map-panel .body { margin: 0 0 0.9rem; font-size: 0.98rem; line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
+.map-children { display: grid; gap: 0; margin: 1rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.map-children li { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid var(--rule); }
+.map-children button { display: inline-flex; align-items: center; gap: 0.3rem; border: 0; padding: 0; background: none; text-align: left; font-size: 0.88rem; font-weight: 600; line-height: 1.25; }
+.map-children button:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.map-children small { flex: none; color: var(--ink-2); font-size: 0.7rem; white-space: nowrap; }
 .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
 .tags li { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.28rem 0.65rem; border-radius: 99px; font-family: var(--font-mono-face), ui-monospace, monospace; font-size: 0.74rem; background: color-mix(in oklab, var(--c) 10%, var(--paper-hi)); border: 1px solid color-mix(in oklab, var(--c) 30%, transparent); }
 .links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 1.25rem 0 0; padding: 0; list-style: none; font-weight: 600; }
@@ -104,6 +109,10 @@
 
 /* narrow screens: the panel becomes a bottom sheet */
 @media (max-width: 899px) {
+  .map-head { align-items: flex-start; padding: 0.75rem 0.9rem; }
+  .map-id h1 { font-size: 1rem; line-height: 1.2; }
+  .map-role { display: none; }
+  .map-head nav { gap: 0.85rem; font-size: 0.82rem; padding-top: 0.1rem; }
   .map-panel { left: 0.75rem; right: 0.75rem; top: auto; bottom: 0.75rem; width: auto; max-height: 40dvh; padding: 1.25rem 1.25rem 1rem; }
   .map-panel h2 { font-size: 1.5rem; }
   .map-tools { bottom: auto; top: 3.75rem; left: auto; right: 0.75rem; flex-direction: column; }

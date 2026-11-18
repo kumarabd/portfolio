@@ -8,12 +8,18 @@ import { ArrowUpRight, Briefcase, ChevronRight, Maximize2, Minus, Plus, Send, Tr
 import { PROFILE } from "@/content/profile";
 import { TREE, nodeById, pathTo, type MindNode } from "@/content/tree";
 import { NodeGlyph, TagGlyph } from "./glyph";
-import { layout, openFor, type Box } from "./layout";
+import { layout, openFor, RAIL_MAX, type Box } from "./layout";
 
 const ICON: Record<string, typeof Briefcase> = { professional: Briefcase, fame: Trophy, contact: Send };
 const SPRING = { type: "spring", stiffness: 170, damping: 22, mass: 0.9 } as const;
 
-const edge = (a: { x: number; y: number }, b: { x: number; y: number }) => {
+const edge = (a: Box, b: Box) => {
+  if (b.trunk !== undefined && b !== a) {
+    const dir = Math.sign(b.x - a.x) || 1;
+    const x0 = a.x + (a.w / 2) * dir;
+    const x1 = b.x - (b.w / 2) * dir;
+    return `M ${x0} ${a.y} C ${b.trunk} ${a.y}, ${b.trunk} ${b.y}, ${x1} ${b.y}`;
+  }
   const horizontal = Math.abs(b.x - a.x) >= Math.abs(b.y - a.y);
   const m = horizontal ? { x: (a.x + b.x) / 2, y: 0 } : { x: 0, y: (a.y + b.y) / 2 };
   return horizontal
@@ -36,10 +42,11 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
   const camZ = useMotionValue(0.8);
 
   const open = useMemo(() => openFor(focus), [focus]);
-  const boxes = useMemo(() => layout(open), [open]);
   const trail = useMemo(() => pathTo(focus), [focus]);
   const node = nodeById(focus)!;
   const wide = size.w >= 900;
+  const boxes = useMemo(() => layout(open, focus, wide ? "rail" : "hide"), [open, focus, wide]);
+  const rail = (node.children?.length ?? 0) > RAIL_MAX;
 
   useLayoutEffect(() => {
     const el = viewport.current!;
@@ -62,14 +69,18 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
     const x1 = Math.max(...bs.map((b) => b.x + b.w / 2));
     const y0 = Math.min(...bs.map((b) => b.y - b.h / 2));
     const y1 = Math.max(...bs.map((b) => b.y + b.h / 2));
-    const availW = size.w - (wide ? 420 : 0) - 48;
-    const availH = size.h - (wide ? 0 : Math.min(size.h * 0.42, 320)) - 120;
-    const z = Math.max(wide ? 0.42 : 0.6, Math.min(1.05, availW / (x1 - x0), availH / (y1 - y0))) * zoomMul;
-    return { z, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, availW: availW + 48, availH: availH + 120 };
+    const left = 24;
+    const right = wide ? 420 : 24;
+    const top = wide ? 84 : 76;
+    const bottom = wide ? 92 : Math.min(size.h * 0.42, 320) + 24;
+    const viewW = size.w - left - right;
+    const viewH = size.h - top - bottom;
+    const z = Math.max(wide ? 0.42 : 0.6, Math.min(1.05, viewW / (x1 - x0), viewH / (y1 - y0))) * zoomMul;
+    return { z, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, x: left + viewW / 2, y: top + viewH / 2 };
   }, [boxes, focus, node, size, wide, zoomMul]);
 
   useEffect(() => {
-    const target = { x: frame.availW / 2 - frame.cx * frame.z + 24 * 0, y: frame.availH / 2 - frame.cy * frame.z + 56, z: frame.z };
+    const target = { x: frame.x - frame.cx * frame.z, y: frame.y - frame.cy * frame.z, z: frame.z };
     if (!placed.current) {
       // first measured frame: jump, don't fly in from the default size
       camX.set(target.x); camY.set(target.y); camZ.set(target.z);
@@ -85,7 +96,7 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
   useEffect(() => {
     const fromHash = () => {
       const id = decodeURIComponent(location.hash.slice(1));
-      if (id && nodeById(id)) setFocus(id);
+      if (id && nodeById(id)) { setFocus(id); setTouched(true); }
     };
     fromHash();
     addEventListener("hashchange", fromHash);
@@ -143,7 +154,7 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
     >
       <header className="map-head">
         <button className="map-id" onClick={() => go("me")} aria-label="Back to the centre of the map">
-          <h1>{PROFILE.name} — {PROFILE.role}</h1>
+          <h1>{PROFILE.name}<span className="map-role"> — {PROFILE.role}</span></h1>
         </button>
         <nav aria-label="Elsewhere">
           <Link href="/blog">Writing</Link>
@@ -185,14 +196,14 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
             const Icon = ICON[n.id];
             const kids = n.children?.length ?? 0;
             const isFocus = n.id === focus;
-            const lit = near.has(n.id) || n.depth === 1 || n.id === "me";
+            const lit = near.has(n.id) || n.id === "me" || (!rail && n.depth === 1);
             return (
               <motion.div
                 key={n.id}
                 className="node-pos"
                 style={{ width: b.w, height: b.h, left: -b.w / 2, top: -b.h / 2 }}
                 initial={{ x: from.x, y: from.y, scale: 0.2, opacity: 0 }}
-                animate={{ x: b.x, y: b.y, scale: 1, opacity: lit ? 1 : 0.7 }}
+                animate={{ x: b.x, y: b.y, scale: 1, opacity: lit ? 1 : rail ? 0.25 : 0.7 }}
                 exit={{ scale: 0.3, opacity: 0, transition: { duration: 0.18 } }}
                 transition={reduce ? { duration: 0 } : { ...SPRING, delay: ready ? (n.parent ? (i % 8) * 0.035 : 0) : 0.15 + i * 0.08 }}
               >
@@ -243,6 +254,19 @@ export function MindMap({ initial = "me" }: { initial?: string }) {
             <h2><span className="title-glyph"><NodeGlyph id={node.id} size={22} colored /></span>{node.label}</h2>
             {node.sub && <p className="sub">{node.sub}</p>}
             {node.body?.map((p) => <p key={p} className="body">{p}</p>)}
+            {!wide && rail && node.children?.length ? (
+              <ul className="map-children" aria-label="Inside this node">
+                {node.children.map((c) => (
+                  <li key={c.id}>
+                    <button onClick={() => select(c)}>
+                      {c.label}
+                      {c.href ? <ArrowUpRight size={13} aria-hidden="true" /> : <ChevronRight size={13} aria-hidden="true" />}
+                    </button>
+                    {c.sub && <small>{c.sub}</small>}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
             {node.tags && (
               <ul className="tags">
                 {node.tags.map((t) => <li key={t}><TagGlyph tag={t} />{t}</li>)}
